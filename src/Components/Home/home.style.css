@@ -1,0 +1,26 @@
+.home-body{
+    margin:10% 40% 0;
+}
+
+.template-opt{
+    display: flex;
+    margin-top:20px;
+    align-items: center;
+    cursor: pointer;
+    
+}
+
+.template-opt span{
+    padding:0 1.1rem;
+    font-size: 1.085rem;
+    font-weight: 600;
+    color:#918e8e;
+}
+
+.template-opt span:hover{
+    color:black;
+}
+
+.home-hr{
+    width:200%;
+}

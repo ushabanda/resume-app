@@ -1,0 +1,411 @@
+.resume-body {
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.resume-content {
+    flex: 1 1 0%;
+    width: 100%;
+}
+
+.resume-left {
+    /* background-color: #aaa; */
+    height: 100%;
+    max-width: 850px;
+    width: 100%;
+}
+
+/* 
+.resume-right {
+    width: 50%;
+} */
+
+.resume-account {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.resume-acc-content {
+    position: relative;
+    margin-left: auto;
+}
+
+.resume-account1 {
+    display: flex;
+    align-items: center;
+}
+
+.resume-account1 button {
+    position: relative;
+    display: flex;
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 1px solid #1e25320a;
+    outline: none;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+}
+
+.resume-account1 img {
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+}
+
+/* .resume-left-part {
+    height: inherit;
+    width: inherit;
+} */
+
+.resume-left-content {
+    padding: 45px;
+    height: inherit;
+    width: inherit;
+}
+
+.resume-title {
+    position: relative;
+    font-size: 1.5rem;
+    font-weight: 500;
+    padding: 0 32px;
+    text-align: center;
+    margin-bottom: .5rem;
+}
+
+.title-content {
+    max-width: 100%;
+    vertical-align: top;
+
+}
+
+.content-box {
+    max-width: 100%;
+    height: 35px;
+}
+
+.content-box input {
+    width: 100%;
+    height: 100%;
+    font: inherit;
+    outline: none;
+    border: none;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    caret-color: rgba(133, 133, 238, 0.678);
+}
+
+.lang-body {
+    display: flex;
+    justify-content: center;
+}
+
+.lang-selector {
+    display: flex;
+    justify-content: center;
+    user-select: none;
+}
+
+.lang-content {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+}
+
+.score-body {
+    position: sticky;
+    background-color: white;
+    padding-bottom: 1rem;
+    padding-top: .8rem;
+    user-select: none;
+}
+
+.score-body::before {
+    right: 100%;
+}
+
+.score-body::after {
+    left: 100%;
+}
+
+.score-body::before,
+.score-body::after {
+    width: 48px;
+    height: 100%;
+    content: "";
+    position: absolute;
+    top: 0;
+
+}
+
+.score-content {
+    display: flex;
+    flex-direction: row;
+}
+
+.score-left-body {
+    display: flex;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.score-percent {
+    font-size: .875rem;
+    line-height: 1rem;
+    letter-spacing: .3px;
+    margin-right: 10px;
+    background-color: #ec930c;
+    padding: 2px 5px;
+    height: 20px;
+    font-weight: 600;
+    border-radius: 2px;
+    width: fit-content;
+    color: white;
+}
+
+.resume-para {
+    font-size: 1rem;
+    color: #757272;
+}
+
+.resume-profile-body {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 1 0 auto;
+    margin-bottom: 5px;
+}
+
+.resume-profile-content {
+    position: relative;
+}
+
+.profile-body {
+    display: flex;
+    flex-direction: row-reverse;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.profile-body p {
+    line-height: 1.2rem;
+    font-size: 1rem;
+    color: #757272;
+    font-weight: 400;
+}
+
+.profile-sum-percent p {
+    font-size: .875rem;
+    font-weight: 500;
+    line-height: 1rem;
+    padding: 2px 4.5px;
+    border-radius: 4px;
+    color: #217d47;
+    background-color: #e7f4ed;
+    height: 1.2rem;
+    margin-right: 7px;
+}
+
+.profile-body p:hover {
+    color: blue;
+}
+
+.profile-sum-percent p::after {
+    content: "%"
+}
+
+.profile-sum-suggest {
+    height: 1.2rem;
+    width: 1.5rem;
+    margin-bottom: 1rem;
+    color: #339d5d;
+    margin-left: 1rem;
+    cursor: pointer;
+    position: relative;
+}
+
+.resume-hr-body {
+    height: 3px;
+    background-color: #eff2f9;
+}
+
+.resume-hr-content {
+    transform: scaleX(.35);
+    background-color: #ec930c;
+    height: 3px;
+    transform-origin: left center;
+}
+
+.personal-details {
+    position: relative;
+    margin-bottom: 40px;
+}
+
+.details-heading-content {
+    display: flex;
+    flex-flow: row;
+}
+
+.edit-details{
+    display: flex;
+}
+.header-label {
+    display: flex;
+    margin-bottom: 1rem;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    
+}
+
+.header-label h3 {
+    font-size: 1rem;
+    line-height: 28px;
+    overflow: hidden;
+    min-width: 0px;
+    font-weight: 600;
+    align-items: center;
+    margin-right: 4px;
+    font-size: 23px;
+    font-weight: 600;
+    
+}
+
+.header-label svg{
+    height:1.2rem;
+    width:1.2rem;
+    margin-left: 4px;
+    margin-bottom: 6px;
+}
+
+.title-body {
+    position: relative;
+}
+
+.title-input {
+    background-color: #eff2f9;
+    width: 100%;
+    display: block;
+    caret-color: #1a91f0;
+    outline: none;
+    border: none;
+    padding: .85rem 1.2rem;
+    border-radius: 3px;
+}
+
+.photo-content {
+    padding-top: 24px;
+    user-select: none;
+}
+
+.photo-input {
+    visibility: hidden;
+    position: absolute;
+    height: 0px;
+    width: 0px;
+    outline: none;
+}
+
+.photo-container {
+    display: flex;
+    flex-flow: row;
+    cursor: pointer;
+}
+
+.photo-body {
+    margin-right: 50px;
+}
+
+.image-container {
+    flex: 0 0 60px;
+    width: 60px;
+    height: 60px;
+    margin-right: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #eff2f9;
+    background-size: cover;
+    position: relative;
+    color: #bec4d5;
+}
+
+.upload-photo-body {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+}
+
+.upload-photo-body p {
+    font-size: 0.875rem;
+    line-height: 1.2rem;
+    color: #1a91f0;
+}
+
+.help-icon {
+    display: flex;
+    grid-gap: 5px;
+}
+
+.help-icon svg {
+    width: 16px;
+    color: #1a91f0;
+    margin-bottom: 5px;
+}
+
+.input-section {
+    margin-bottom: 24px;
+    display: flex;
+    flex-flow: wrap;
+    grid-gap: 20px;
+}
+
+.field-section {
+    flex-grow: 1;
+}
+
+.input-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.875rem;
+    line-height: 2.2rem;
+    color: #828ba2;
+}
+
+.field-input {
+    width: 100%;
+    padding: 12px 16px;
+    outline: none;
+    border: none;
+    background-color: #eff2f9;
+    caret-color: #1a91f0;
+    display: block;
+    border-radius: 3px;
+}
+
+.edit-button{
+    outline: none;
+    border:none;
+    color:#1a91f0;
+    background-color: transparent;
+    font-weight: 500;
+}
+.text-editor{
+margin-bottom: 8px;
+
+}
+
+.text-editor span{
+    font-size: 14px;
+    line-height: 20px;
+    color:#828ba2;
+    font-weight: 400;
+}
