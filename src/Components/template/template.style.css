@@ -253,16 +253,17 @@
     flex-flow: row;
 }
 
-.edit-details{
+.edit-details {
     display: flex;
 }
+
 .header-label {
     display: flex;
     margin-bottom: 1rem;
     position: relative;
     display: inline-flex;
     align-items: center;
-    
+
 }
 
 .header-label h3 {
@@ -275,12 +276,12 @@
     margin-right: 4px;
     font-size: 23px;
     font-weight: 600;
-    
+
 }
 
-.header-label svg{
-    height:1.2rem;
-    width:1.2rem;
+.header-label svg {
+    height: 1.2rem;
+    width: 1.2rem;
     margin-left: 4px;
     margin-bottom: 6px;
 }
@@ -306,17 +307,17 @@
 }
 
 .photo-input {
-    visibility: hidden;
+    opacity: 0;
     position: absolute;
-    height: 0px;
-    width: 0px;
-    outline: none;
+    height: 60px;
+    width: 200px;
+    cursor: pointer;
+    z-index: 1;
 }
 
 .photo-container {
     display: flex;
     flex-flow: row;
-    cursor: pointer;
 }
 
 .photo-body {
@@ -335,6 +336,7 @@
     background-size: cover;
     position: relative;
     color: #bec4d5;
+    cursor: pointer;
 }
 
 .upload-photo-body {
@@ -391,21 +393,86 @@
     border-radius: 3px;
 }
 
-.edit-button{
+.edit-button {
     outline: none;
-    border:none;
-    color:#1a91f0;
+    border: none;
+    color: #1a91f0;
     background-color: transparent;
     font-weight: 500;
 }
-.text-editor{
-margin-bottom: 8px;
+
+.text-editor {
+    margin-bottom: 8px;
 
 }
 
-.text-editor span{
+.text-editor span {
     font-size: 14px;
     line-height: 20px;
-    color:#828ba2;
+    color: #828ba2;
     font-weight: 400;
+}
+
+.drag-container-fluid {
+    margin-bottom: 40px;
+    user-select: none;
+    margin-top: 40px;
+}
+
+.drag-body {
+    margin-bottom: 16px;
+    padding: 0px;
+}
+
+.drag-content {
+    display: flex;
+    align-items: center;
+    flex-flow: row;
+}
+
+.drag-content h3 {
+    font-size: 23px;
+    line-height: 20px;
+    align-items: center;
+    margin-right: 5px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.drag-icon-container {
+    margin-bottom: 6px;
+}
+
+.drag-para {
+    margin-top: 3px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #828ba2;
+
+}
+
+.add-extra {
+    font-size: 14px;
+    line-height: 20px;
+    color: #1a91f0;
+    font-weight: 600;
+}
+
+.handle-heading {
+    display: flex;
+}
+
+.handle-heading button {
+    outline: none;
+    border: none;
+    background-color: transparent;
+
+}
+
+.handle-input {
+    border: none;
+    outline: none;
+    font-size: 23px;
+    margin-right: 4px;
+    font-weight: 600;
 }
