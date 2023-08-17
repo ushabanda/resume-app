@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import "./template.style.css";
 import DragDrop from "./DragDrop";
 import ReactLanguageSelect from "react-languages-select";
@@ -25,7 +25,8 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import EditIcon from "@mui/icons-material/Edit";
 import Tooltip from "@mui/material/Tooltip";
-import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+
+import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
 
 function Template() {
   // Remove a few plugins from the default setup.
@@ -43,9 +44,39 @@ function Template() {
 
   // myeditor = {toolbar: [ 'bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote' ] }
 
+  /* Start PDF Code */
+  const ddData = [
+    { text: "A4", value: "size-a4" },
+    { text: "Letter", value: "size-letter" },
+    { text: "Executive", value: "size-executive" }
+  ];
+
+  const [layoutSelection, setLayoutSelection] = useState({
+    text: "A4",
+    value: "size-a4"
+  });
+
+  const updatePageLayout = event => {
+    setLayoutSelection(event.target.value);
+  };
+
+  const pdfExportComponent = useRef(null);
+
+  const downloadPDF = event => {
+    pdfExportComponent.current.save();
+  };
+
+  /* End PDF Code */
+
+
   const [select, setSelect] = useState("SE");
   const onSelect = (code) => setSelect(code);
   // console.log("SELECT", select);
+
+  let [firstName, setfirstName] = useState("Usha");
+  let [profile_summary, setprofile_summary] = useState(`Hardworking and experienced receptionist with several years of experience serving as a supporting and integral employee in high volume client settings.
+  Experienced in creating schedules, marking appointments, setting products, and provinding clients with optimal customer service. Bringing fourth the ability to manage front desk settings with poise and grace, in addition to managing a variety of administrative duties.
+  Eager to join a new people an assist them as a dedicated and passionate receptionist.`);
 
   const [editing, setEditing] = useState(false);
   const [heading, setHeading] = useState("Personal Details");
@@ -99,10 +130,10 @@ function Template() {
                   <div className="lang-selector">
                     <div className="lang-content">
                       <div className="country-flag"></div>
-                      <ReactLanguageSelect
+                      {/* <ReactLanguageSelect
                         defaultLanguage="en"
                         searchable={true}
-                      />
+                      /> */}
                     </div>
                   </div>
                 </div>
@@ -210,6 +241,7 @@ function Template() {
                           type="text"
                           className="field-input"
                           name="firstname"
+                          value={firstName}
                         />
                       </div>
                     </div>
@@ -395,7 +427,7 @@ function Template() {
 
                   <CKEditor
                     editor={ClassicEditor}
-                    data="<p>e.g. Passionate science teacher with 8+ years of experience and track of record of ...</p>"
+                    data={profile_summary}
                     onReady={(editor) => {
                       console.log(
                         "CKEditor5 React Component is ready to use!",
@@ -403,8 +435,8 @@ function Template() {
                       );
                     }}
                     onChange={(event, editor) => {
-                      const data = editor.getData();
-                      console.log({ event, editor, data });
+                      // console.log({ event, editor, editor.getData() });
+                      console.log(setprofile_summary(editor.getData()));
                     }}
                   />
 
@@ -429,7 +461,19 @@ function Template() {
             </div>
           </div>
 
-          <div className="resume-right"></div>
+          <div className="resume-right">
+            <div className="right-body">
+              <button className="btn btn-primary" onClick={downloadPDF}>Download PDF</button>
+              <PDFExport ref={pdfExportComponent}>
+                <div className="preview-body">
+                    <div className="profile-summary">
+                      <h6>Profile</h6>
+                      {profile_summary}
+                    </div>
+                </div>
+              </PDFExport>
+            </div>
+          </div>
         </div>
       </div>
     </div>

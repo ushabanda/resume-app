@@ -10,16 +10,23 @@
 }
 
 .resume-left {
-    /* background-color: #aaa; */
+    border-right: 2px solid grey;
     height: 100%;
     max-width: 850px;
-    width: 100%;
+    width: 50%;
 }
 
-/* 
+
 .resume-right {
     width: 50%;
-} */
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    background-color: #656e83;
+
+}
 
 .resume-account {
     position: fixed;
@@ -475,4 +482,29 @@
     font-size: 23px;
     margin-right: 4px;
     font-weight: 600;
+}
+
+.right-body button {
+    position: relative;
+    top: 15px;
+    align-items: center;
+    justify-content: center;
+    left: 300px;
+    font-weight: 600;
+}
+
+.preview-body {
+    display: flex;
+    font-size: 10px;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    inset: 90px 135px 40px;
+    border-radius: 10px;
+    background-color: white;
+}
+
+.profile-summary {
+    width: 70%;
+    margin-left: 100px;
 }
