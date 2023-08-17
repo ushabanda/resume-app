@@ -48,39 +48,57 @@ function Template() {
   const ddData = [
     { text: "A4", value: "size-a4" },
     { text: "Letter", value: "size-letter" },
-    { text: "Executive", value: "size-executive" }
+    { text: "Executive", value: "size-executive" },
   ];
 
   const [layoutSelection, setLayoutSelection] = useState({
     text: "A4",
-    value: "size-a4"
+    value: "size-a4",
   });
 
-  const updatePageLayout = event => {
+  const updatePageLayout = (event) => {
     setLayoutSelection(event.target.value);
   };
 
   const pdfExportComponent = useRef(null);
 
-  const downloadPDF = event => {
+  const downloadPDF = (event) => {
     pdfExportComponent.current.save();
   };
 
   /* End PDF Code */
 
-
   const [select, setSelect] = useState("SE");
   const onSelect = (code) => setSelect(code);
+  const [selectedImage, setSelectedImage] = useState(null);
   // console.log("SELECT", select);
 
-  let [firstName, setfirstName] = useState("Usha");
-  let [profile_summary, setprofile_summary] = useState(`Hardworking and experienced receptionist with several years of experience serving as a supporting and integral employee in high volume client settings.
+  let [firstName, setfirstName] = useState();
+  let [lastName, setlastName] = useState();
+  let [email, setEmail] = useState();
+  let [phone, setPhone] = useState();
+  let [country, setCountry] = useState();
+  let [city, setCity] = useState();
+
+  const inputRef = useRef(null);
+
+  const handleImageChange = () => {
+    const file = inputRef.current.files[0];
+    if (file) {
+      setSelectedImage(file);
+    }
+  };
+
+  const imageUrl = selectedImage ? URL.createObjectURL(selectedImage) : "";
+  let [profile_summary, setprofile_summary] =
+    useState(`Hardworking and experienced receptionist with several years of experience serving as a supporting and integral employee in high volume client settings.
   Experienced in creating schedules, marking appointments, setting products, and provinding clients with optimal customer service. Bringing fourth the ability to manage front desk settings with poise and grace, in addition to managing a variety of administrative duties.
   Eager to join a new people an assist them as a dedicated and passionate receptionist.`);
 
   const [editing, setEditing] = useState(false);
   const [heading, setHeading] = useState("Personal Details");
 
+  // let [profile] = useState(`<p>profile_summary</p>`)
   let handleEditClick = () => {
     setEditing(true);
   };
@@ -190,13 +208,13 @@ function Template() {
                     </div>
                   </div>
 
-                  <div className="input-section">
+                  <div className="job-title input-section">
                     <div className="job-title-section field-section">
                       <div className="help-icon">
                         <label className="input-label">Wanted Job Title</label>
                         <Tooltip
                           title="Add a title like 'Senior Marketer' or 'Sales Executive' 
-                        that quickly describes your overall experience or the type of role you are applying to"
+                                that quickly describes your overall experience or the type of role you are applying to"
                           arrow
                           placement="top"
                         >
@@ -220,11 +238,22 @@ function Template() {
                           type="file"
                           accept="image/* , jpeg, jpg, png, gif "
                           className="photo-input"
+                          ref={inputRef}
+                          onChange={handleImageChange}
                         />
                         <div className="photo-container">
                           <div className="image-container">
-                            <PersonIcon className="person-pic" />
+                            {selectedImage ? (
+                              <img
+                                src={imageUrl}
+                                alt="Selected"
+                                className="person-pic"
+                              />
+                            ) : (
+                              <PersonIcon className="person-pic" />
+                            )}
                           </div>
+
                           <div className="upload-photo-body">
                             <p>Upload photo</p>
                           </div>
@@ -242,6 +271,9 @@ function Template() {
                           className="field-input"
                           name="firstname"
                           value={firstName}
+                          onChange={(e) => {
+                            setfirstName(e.target.value);
+                          }}
                         />
                       </div>
                     </div>
@@ -253,6 +285,10 @@ function Template() {
                           type="text"
                           name="lastname"
                           className="field-input"
+                          value={lastName}
+                          onChange={(e) => {
+                            setlastName(e.target.value);
+                          }}
                         />
                       </div>
                     </div>
@@ -266,6 +302,10 @@ function Template() {
                           type="text"
                           className="field-input"
                           name="email"
+                          value={email}
+                          onChange={(e) => {
+                            setEmail(e.target.value);
+                          }}
                         />
                       </div>
                     </div>
@@ -274,9 +314,16 @@ function Template() {
                       <label className="input-label">Phone</label>
                       <div className="phone-input-body">
                         <input
-                          type="text"
+                          type="number"
                           name="phone"
                           className="field-input"
+                          value={phone}
+                          onChange={(e) => {
+                            setPhone(e.target.value);
+                            if (e.target.value.length > 15) {
+                              e.stopPropagation()
+                            }
+                          }}
                         />
                       </div>
                     </div>
@@ -290,6 +337,10 @@ function Template() {
                           type="text"
                           className="field-input"
                           name="country"
+                          value={country}
+                          onChange={(e) => {
+                            setCountry(e.target.value);
+                          }}
                         />
                       </div>
                     </div>
@@ -301,6 +352,10 @@ function Template() {
                           type="text"
                           name="city"
                           className="field-input"
+                          value={city}
+                          onChange={(e) => {
+                            setCity(e.target.value);
+                          }}
                         />
                       </div>
                     </div>
@@ -463,13 +518,23 @@ function Template() {
 
           <div className="resume-right">
             <div className="right-body">
-              <button className="btn btn-primary" onClick={downloadPDF}>Download PDF</button>
+              <button className="btn btn-primary" onClick={downloadPDF}>
+                Download PDF
+              </button>
               <PDFExport ref={pdfExportComponent}>
                 <div className="preview-body">
-                    <div className="profile-summary">
-                      <h6>Profile</h6>
-                      {profile_summary}
-                    </div>
+                  <div className="photo-body"></div>
+                  <div className="photo-data">{firstName}</div>
+                  <div className="photo-data">{lastName}</div>
+                  <div className="photo-data">{email}</div>
+                  <div className="photo-data">{phone}</div>
+                  <div className="photo-data">{country}</div>
+                  <div className="photo-data">{city}</div>
+                  <br></br>
+                  <div className="profile-summary">
+                    <h6>Profile</h6>
+                    {profile_summary}
+                  </div>
                 </div>
               </PDFExport>
             </div>

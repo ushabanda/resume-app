@@ -358,6 +358,10 @@
     color: #1a91f0;
 }
 
+.image-container img {
+	width: 50px;
+}
+
 .help-icon {
     display: flex;
     grid-gap: 5px;
@@ -494,7 +498,7 @@
 }
 
 .preview-body {
-    display: flex;
+    /* display: flex; */
     font-size: 10px;
     justify-content: center;
     align-items: center;
@@ -504,7 +508,19 @@
     background-color: white;
 }
 
+.photo-body {
+    height: 80px;
+}
+
+.photo-data {
+	margin-left: 100px;
+}
+
 .profile-summary {
     width: 70%;
     margin-left: 100px;
+}
+
+.add-extra {
+    cursor: pointer;
 }
