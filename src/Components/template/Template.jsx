@@ -16,7 +16,6 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 // import 'bootstrap/js/tooltip';
 // import 'bootstrap/dist/css/bootstrap.css';
 
-import Edit from "../Edit/Edit";
 import image from "../images/account-image.svg";
 
 import HelpIcon from "@mui/icons-material/Help";
