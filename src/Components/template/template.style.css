@@ -359,7 +359,7 @@
 }
 
 .image-container img {
-	width: 50px;
+    width: 50px;
 }
 
 .help-icon {
@@ -497,30 +497,55 @@
     font-weight: 600;
 }
 
-.preview-body {
-    /* display: flex; */
+.container {
     font-size: 10px;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    inset: 90px 135px 40px;
-    border-radius: 10px;
     background-color: white;
+    width: 400px;
+    height: 530px;
+    margin: 40px 0 60px 140px;
+    border-radius: 5px;
+    display: grid;
+    padding: 10px 10px 10px 10px;
+    gap: 2px;
 }
 
-.photo-body {
-    height: 80px;
+.pic-container {
+    height: 100px;
+    flex-wrap: nowrap;
+    background-color: #5dffd4;
 }
 
-.photo-data {
-	margin-left: 100px;
+.profile-photo {
+    height: inherit;
+    padding: 0;
 }
 
-.profile-summary {
-    width: 70%;
-    margin-left: 100px;
+.profile-photo img {
+    height: inherit;
+    width: -webkit-fill-available;
+    width: -moz-fill-avalable;
 }
 
-.add-extra {
-    cursor: pointer;
+.row {
+    margin: 10px 10px;
+}
+
+.custom-height-column {
+    width: 250px;
+}
+
+.resume-name .fname {
+    margin-right: 4px;
+}
+
+.resume-pic {
+    height: 50px;
+}
+
+.resume-name{
+    display: flex;
+}
+
+.resume-title{
+    font-size: 12px;
 }

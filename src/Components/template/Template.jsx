@@ -72,13 +72,28 @@ function Template() {
   const onSelect = (code) => setSelect(code);
   const [selectedImage, setSelectedImage] = useState(null);
   // console.log("SELECT", select);
-
+  let [pdetails, setPdetails] = useState();
   let [firstName, setfirstName] = useState();
   let [lastName, setlastName] = useState();
   let [email, setEmail] = useState();
   let [phone, setPhone] = useState();
   let [country, setCountry] = useState();
   let [city, setCity] = useState();
+  let [address, setAddress] = useState();
+  let [code, setCode] = useState();
+  let [license, setLicense] = useState();
+  let [nation, setNation] = useState();
+  let [pob, setpob] = useState();
+  let [dob, setdob] = useState();
+  let [image, setImage] = useState();
+  let [title, setTitle] = useState();
+
+  const [selectedSkills, setSelectedSkills] = useState([]);
+
+  const handleSelectSkill = (selectedSkill) => {
+    setSelectedSkills((prevSkills) => [...prevSkills, selectedSkill]);
+    this.onSelectSkill(selectedSkill);
+  };
 
   const inputRef = useRef(null);
 
@@ -228,6 +243,10 @@ function Template() {
                           className="field-input"
                           name="job-title"
                           placeholder="e.g Teacher"
+                          value={title}
+                          onChange={(e) => {
+                            setTitle(e.target.value);
+                          }}
                         />
                       </div>
                     </div>
@@ -321,7 +340,7 @@ function Template() {
                           onChange={(e) => {
                             setPhone(e.target.value);
                             if (e.target.value.length > 15) {
-                              e.stopPropagation()
+                              e.stopPropagation();
                             }
                           }}
                         />
@@ -371,6 +390,10 @@ function Template() {
                               type="text"
                               className="field-input"
                               name="address"
+                              value={address}
+                              onChange={(e) => {
+                                setAddress(e.target.value);
+                              }}
                             />
                           </div>
                         </div>
@@ -382,6 +405,10 @@ function Template() {
                               type="text"
                               name="code"
                               className="field-input"
+                              value={code}
+                              onChange={(e) => {
+                                setCode(e.target.value);
+                              }}
                             />
                           </div>
                         </div>
@@ -393,13 +420,23 @@ function Template() {
                             <label className="input-label">
                               Driving License
                             </label>
-                            <HelpOutlineIcon></HelpOutlineIcon>
+                            <Tooltip
+                              title="include this section if your profession requires a certain type of license. If not, leave it blank."
+                              arrow
+                              placement="top"
+                            >
+                              <HelpOutlineIcon></HelpOutlineIcon>
+                            </Tooltip>
                           </div>
                           <div className="driving-input-body">
                             <input
                               type="text"
                               className="field-input"
                               name="driving"
+                              value={license}
+                              onChange={(e) => {
+                                setLicense(e.target.value);
+                              }}
                             />
                           </div>
                         </div>
@@ -407,13 +444,23 @@ function Template() {
                         <div className="nationality-section field-section">
                           <div className="help-icon">
                             <label className="input-label">Nationality</label>
-                            <HelpOutlineIcon></HelpOutlineIcon>
+                            <Tooltip
+                              title="Include your nationality only if it is relevant to your position. In most cases, leave this blank."
+                              arrow
+                              placement="top"
+                            >
+                              <HelpOutlineIcon></HelpOutlineIcon>
+                            </Tooltip>
                           </div>
                           <div className="nationality-input-body">
                             <input
                               type="text"
                               name="nationality"
                               className="field-input"
+                              value={nation}
+                              onChange={(e) => {
+                                setNation(e.target.value);
+                              }}
                             />
                           </div>
                         </div>
@@ -427,6 +474,10 @@ function Template() {
                               type="text"
                               className="field-input"
                               name="pob"
+                              value={pob}
+                              onChange={(e) => {
+                                setpob(e.target.value);
+                              }}
                             />
                           </div>
                         </div>
@@ -434,13 +485,23 @@ function Template() {
                         <div className="dob-section field-section">
                           <div className="help-icon">
                             <label className="input-label">Date of Birth</label>
-                            <HelpOutlineIcon></HelpOutlineIcon>
+                            <Tooltip
+                              title="Add your date of birth only if it is a relevant requirement for your position. In most cases, leave this blank."
+                              arrow
+                              placement="top"
+                            >
+                              <HelpOutlineIcon></HelpOutlineIcon>
+                            </Tooltip>
                           </div>
                           <div className="dob-input-body">
                             <input
                               type="text"
                               name="dob"
                               className="field-input"
+                              value={dob}
+                              onChange={(e) => {
+                                setdob(e.target.value);
+                              }}
                             />
                           </div>
                         </div>
@@ -522,18 +583,33 @@ function Template() {
                 Download PDF
               </button>
               <PDFExport ref={pdfExportComponent}>
-                <div className="preview-body">
-                  <div className="photo-body"></div>
-                  <div className="photo-data">{firstName}</div>
-                  <div className="photo-data">{lastName}</div>
-                  <div className="photo-data">{email}</div>
-                  <div className="photo-data">{phone}</div>
-                  <div className="photo-data">{country}</div>
-                  <div className="photo-data">{city}</div>
-                  <br></br>
-                  <div className="profile-summary">
-                    <h6>Profile</h6>
-                    {profile_summary}
+                <div className="container ">
+                  <div className="row pic-container">
+                    <div className="col-4 profile-photo">
+                    {selectedImage && (
+                    <img src={imageUrl} alt="Selected" className="resume-pic" />
+                  )}
+                    </div>
+                    <div className="col-8 custom-height-column personal">
+                      <div className="resume-name">
+                      <h6 className="fname">{firstName}</h6>
+                      <h6>{lastName}</h6>
+                        </div>
+                        <br />
+                      <p className="resume-title">{title}</p>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-5">skills</div>
+                    <div className="col-6 ">{profile_summary}</div>
+                  </div>
+                  <div className="row">
+                    <div className="col-5">Language</div>
+                    <div className="col-6 ">emp history</div>
+                  </div>
+                  <div className="row">
+                    <div className="col-5"></div>
+                    <div className="col-6 ">Education</div>
                   </div>
                 </div>
               </PDFExport>

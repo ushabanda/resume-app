@@ -44,7 +44,7 @@ const SortableItem = SortableElement(({ value}) =>
 	  <div className="skill-list">
 		<ul>
 		  {value['data'].map(skill => (
-			<li>{skill['skill_type']}     Level - {skill['level']} </li>
+			<li><button>{skill['skill_type']}</button> </li>
 		  ))}
 		</ul>  
 	  </div>
@@ -52,7 +52,7 @@ const SortableItem = SortableElement(({ value}) =>
 	  <div className="education-list">
 		<ul>
 		  {value['data'].map(edu => (
-			<li>{edu['edu_type']}  Grade - {edu['CGPA']} </li>
+			<li><button>{edu['edu_type']}</button></li>
 		  ))}
 		</ul>  
 	  </div>
@@ -72,6 +72,8 @@ class DragDrop extends Component {
       this.setState({
         items: arrayMoveImmutable(this.state.items, oldIndex, newIndex),
       });
+	//   this.handleSkillSelect = this.handleSkillSelect.bind(this);
+	  
     };
 
     this.state = {
@@ -83,13 +85,26 @@ class DragDrop extends Component {
 		  {"label":"skill", 
 		  "data": [{"skill_type": "React", "level": 5},{"skill_type": "Python", "level": 3},{"skill_type": "Java", "level": 1}],
 		  "description": "Choose 5 important skills that show you fit the position. Make sure they match the key skills mentioned in the job listing (especially when applying via an online system)."}],
-    };
+		//   selectedSkills: [],
+		};
 	
-	this.skills = [{"skill_type": "React", "level": 5},{"skill_type": "Python", "level": 3},{"skill_type": "Java", "level": 1}]
+	this.skills = [{"skill_type": "React", "level": 5},
+	{"skill_type": "Python", "level": 3},
+	{"skill_type": "Java", "level": 1}]
+	 
   }
 
-  render() {
-    return <SortableList items={this.state.items} onSortEnd={this.sortEnd} />;
+  handleSelectSkill = (selectedSkill) => {
+    this.setState((prevState) => ({
+      selectedSkills: [...prevState.selectedSkills, selectedSkill],
+    }));
+	this.props.onSelectSkill(selectedSkill);
+  };
+
+  render()
+   {
+	const { selectedSkills } = this.state;
+    return <SortableList items={this.state.items} onSortEnd={this.sortEnd} onSelectSkill={this.handleSelectSkill} />;
   }
 }
 
