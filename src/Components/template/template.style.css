@@ -467,6 +467,7 @@
     line-height: 20px;
     color: #1a91f0;
     font-weight: 600;
+    cursor: pointer;
 }
 
 .handle-heading {
@@ -491,8 +492,8 @@
 .right-body button {
     position: relative;
     top: 15px;
-    align-items: center;
-    justify-content: center;
+    font-size: 14px;
+    padding: 5px 10px;
     left: 300px;
     font-weight: 600;
 }
@@ -507,11 +508,13 @@
     display: grid;
     padding: 10px 10px 10px 10px;
     gap: 2px;
+    /* max-width: auto;
+    max-height: auto; */
 }
 
 .pic-container {
     height: 100px;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     background-color: #5dffd4;
 }
 
@@ -531,7 +534,7 @@
 }
 
 .custom-height-column {
-    width: 250px;
+    flex-wrap: wrap;
 }
 
 .resume-name .fname {
@@ -542,10 +545,94 @@
     height: 50px;
 }
 
-.resume-name{
+.resume-name {
     display: flex;
 }
 
-.resume-title{
+.right-title {
     font-size: 12px;
+    position: relative;
+    bottom: 8px;
+    font-weight: 500;
+
+}
+
+.personal-data {
+    display: flex;
+    align-items: center;
+    position: relative;
+    bottom: 15px;
+}
+
+.resume-address,
+.resume-city,
+.resume-code,
+.resume-country {
+    margin: 0;
+}
+
+.left-education {
+    display: flex;
+}
+
+.left-education h6 {
+    font-size: 23px;
+    line-height: 20px;
+    align-items: center;
+    font-weight: 500;
+}
+
+.dragdrop-box {
+    position: relative;
+    top: 40px;
+}
+
+.dragdrop-box p {
+    color: #828ba2;
+    font-size: 16px;
+    margin-top: 3px;
+}
+
+.education-content {
+    display: flex;
+}
+
+.education-box1 {
+    border: 1px solid #e7eaf4;
+    border-radius: 4px;
+}
+
+.education-list button,
+.skill-list button {
+    border: none;
+    outline: none;
+    margin: 5px;
+    padding: 0px;
+    border-radius: 25px;
+    background-color: #1a91f0;
+    color: white;
+    font-weight: 600;
+    width: 100px;
+}
+
+.education-list ul,
+.skill-list ul {
+    list-style-type: none;
+}
+
+.add-container h6 {
+    font-size: 23px;
+    line-height: 20px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.custom-content {
+    display: flex;
+}
+
+.custom-content h6 {
+    font-size: 16px;
+    font-weight: 400;
+    margin-left: 10px;
 }

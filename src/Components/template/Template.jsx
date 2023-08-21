@@ -3,6 +3,8 @@ import "./template.style.css";
 import DragDrop from "./DragDrop";
 import ReactLanguageSelect from "react-languages-select";
 import "react-languages-select/css/react-languages-select.css";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+import TuneIcon from '@mui/icons-material/Tune';
 
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -109,6 +111,7 @@ function Template() {
     useState(`Hardworking and experienced receptionist with several years of experience serving as a supporting and integral employee in high volume client settings.
   Experienced in creating schedules, marking appointments, setting products, and provinding clients with optimal customer service. Bringing fourth the ability to manage front desk settings with poise and grace, in addition to managing a variety of administrative duties.
   Eager to join a new people an assist them as a dedicated and passionate receptionist.`);
+  
 
   const [editing, setEditing] = useState(false);
   const [heading, setHeading] = useState("Personal Details");
@@ -543,7 +546,7 @@ function Template() {
 
                   <CKEditor
                     editor={ClassicEditor}
-                    data={profile_summary}
+                     data={profile_summary}
                     onReady={(editor) => {
                       console.log(
                         "CKEditor5 React Component is ready to use!",
@@ -552,7 +555,8 @@ function Template() {
                     }}
                     onChange={(event, editor) => {
                       // console.log({ event, editor, editor.getData() });
-                      console.log(setprofile_summary(editor.getData()));
+                       console.log(setprofile_summary(editor.getData()));
+                      const data = editor.getData();
                     }}
                   />
 
@@ -569,9 +573,46 @@ function Template() {
                     </span>
                   </div>
                 </div>
+                {/* <div className="dragdrop-box">
+                  <div className="left-education">
+                    <DragIndicatorIcon />
+                    <h6>Education</h6>
+                  </div>
+                  <p>
+                    A varied education on your resume sums up the value that
+                    your learnings and background will bring to job.
+                  </p>
+                  <div className="education-content">
+                    <DragIndicatorIcon />
+                    <div className="education-box">
+                      <div className="education-box1">
 
+                      </div>
+                    </div>
+                  </div>
+                </div> */}
                 <div className="drag-drop-fields">
                   <DragDrop />
+                </div>
+                
+                <div className="add-container">
+                  <h6>Add Section</h6>
+                  <div className="custom-content">
+                  <TuneIcon />
+                  <h6>Custom Section</h6>
+                  </div>
+                  <div className="custom-content">
+                  <TuneIcon />
+                  <h6>Custom Section</h6>
+                  </div>
+                  <div className="custom-content">
+                  <TuneIcon />
+                  <h6>Custom Section</h6>
+                  </div>
+                  <div className="custom-content">
+                  <TuneIcon />
+                  <h6>Custom Section</h6>
+                  </div>
                 </div>
               </div>
             </div>
@@ -586,17 +627,26 @@ function Template() {
                 <div className="container ">
                   <div className="row pic-container">
                     <div className="col-4 profile-photo">
-                    {selectedImage && (
-                    <img src={imageUrl} alt="Selected" className="resume-pic" />
-                  )}
+                      {selectedImage && (
+                        <img
+                          src={imageUrl}
+                          alt="Selected"
+                          className="resume-pic"
+                        />
+                      )}
                     </div>
                     <div className="col-8 custom-height-column personal">
                       <div className="resume-name">
-                      <h6 className="fname">{firstName}</h6>
-                      <h6>{lastName}</h6>
-                        </div>
-                        <br />
-                      <p className="resume-title">{title}</p>
+                        <h6 className="fname">{firstName}</h6>
+                        <h6>{lastName}</h6>
+                      </div>
+                      <p className="right-title">{title}</p>
+                      <div className="personal-data">
+                        <p className="resume-address">{address}</p>
+                        <p className="resume-city">{city}</p>
+                        <p className="resume-code">{code}</p>
+                        <p className="resume-country">{country}</p>
+                      </div>
                     </div>
                   </div>
                   <div className="row">
@@ -608,7 +658,7 @@ function Template() {
                     <div className="col-6 ">emp history</div>
                   </div>
                   <div className="row">
-                    <div className="col-5"></div>
+                    <div className="col-5">{heading}</div>
                     <div className="col-6 ">Education</div>
                   </div>
                 </div>
