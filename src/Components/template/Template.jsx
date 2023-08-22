@@ -1,22 +1,16 @@
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import "./template.style.css";
 import DragDrop from "./DragDrop";
+
 import ReactLanguageSelect from "react-languages-select";
 import "react-languages-select/css/react-languages-select.css";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
-import TuneIcon from '@mui/icons-material/Tune';
+import TuneIcon from "@mui/icons-material/Tune";
 
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
-// import ReactSummernote from 'react-summernote';
-// import 'react-summernote/dist/react-summernote.css'; // import styles
-// import 'react-summernote/lang/summernote-ru-RU'; // you can import any other locale
 
-// import 'bootstrap/js/modal';
-// import 'bootstrap/js/dropdown';
-// import 'bootstrap/js/tooltip';
-// import 'bootstrap/dist/css/bootstrap.css';
 
 import image from "../images/account-image.svg";
 
@@ -73,30 +67,27 @@ function Template() {
   const [select, setSelect] = useState("SE");
   const onSelect = (code) => setSelect(code);
   const [selectedImage, setSelectedImage] = useState(null);
-  // console.log("SELECT", select);
-  let [pdetails, setPdetails] = useState();
-  let [firstName, setfirstName] = useState();
-  let [lastName, setlastName] = useState();
-  let [email, setEmail] = useState();
-  let [phone, setPhone] = useState();
-  let [country, setCountry] = useState();
-  let [city, setCity] = useState();
-  let [address, setAddress] = useState();
-  let [code, setCode] = useState();
-  let [license, setLicense] = useState();
-  let [nation, setNation] = useState();
-  let [pob, setpob] = useState();
-  let [dob, setdob] = useState();
-  let [image, setImage] = useState();
-  let [title, setTitle] = useState();
-
+  const [pdetails, setPdetails] = useState();
+  const [firstName, setfirstName] = useState();
+  const [lastName, setlastName] = useState();
+  const [email, setEmail] = useState();
+  const [phone, setPhone] = useState();
+  const [country, setCountry] = useState();
+  const [city, setCity] = useState();
+  const [address, setAddress] = useState();
+  const [code, setCode] = useState();
+  const [license, setLicense] = useState();
+  const [nation, setNation] = useState();
+  const [pob, setpob] = useState();
+  const [dob, setdob] = useState();
+  const [image, setImage] = useState();
+  const [title, setTitle] = useState();
+  const [editing, setEditing] = useState(false);
+  const [heading, setHeading] = useState("Personal Details");
   const [selectedSkills, setSelectedSkills] = useState([]);
-
-  const handleSelectSkill = (selectedSkill) => {
-    setSelectedSkills((prevSkills) => [...prevSkills, selectedSkill]);
-    this.onSelectSkill(selectedSkill);
-  };
-
+  const [profile_summary, setprofile_summary] = useState(`Hardworking and experienced receptionist with several years of experience serving as a supporting and integral employee in high volume client settings.
+                                                          Experienced in creating schedules, marking appointments, setting products, and provinding clients with optimal customer service. Bringing fourth the ability to manage front desk settings with poise and grace, in addition to managing a variety of administrative duties.
+                                                          Eager to join a new people an assist them as a dedicated and passionate receptionist.`);
   const inputRef = useRef(null);
 
   const handleImageChange = () => {
@@ -107,19 +98,15 @@ function Template() {
   };
 
   const imageUrl = selectedImage ? URL.createObjectURL(selectedImage) : "";
-  let [profile_summary, setprofile_summary] =
-    useState(`Hardworking and experienced receptionist with several years of experience serving as a supporting and integral employee in high volume client settings.
-  Experienced in creating schedules, marking appointments, setting products, and provinding clients with optimal customer service. Bringing fourth the ability to manage front desk settings with poise and grace, in addition to managing a variety of administrative duties.
-  Eager to join a new people an assist them as a dedicated and passionate receptionist.`);
-  
-
-  const [editing, setEditing] = useState(false);
-  const [heading, setHeading] = useState("Personal Details");
 
   // let [profile] = useState(`<p>profile_summary</p>`)
   let handleEditClick = () => {
     setEditing(true);
   };
+
+  const showSkills = useCallback(() => {
+    console.log("======= show Skills =======");
+  });
 
   const handleHeadingChange = (event) => {
     setHeading(event.target.value);
@@ -546,7 +533,7 @@ function Template() {
 
                   <CKEditor
                     editor={ClassicEditor}
-                     data={profile_summary}
+                    data={profile_summary}
                     onReady={(editor) => {
                       console.log(
                         "CKEditor5 React Component is ready to use!",
@@ -555,7 +542,7 @@ function Template() {
                     }}
                     onChange={(event, editor) => {
                       // console.log({ event, editor, editor.getData() });
-                       console.log(setprofile_summary(editor.getData()));
+                      console.log(setprofile_summary(editor.getData()));
                       const data = editor.getData();
                     }}
                   />
@@ -573,6 +560,7 @@ function Template() {
                     </span>
                   </div>
                 </div>
+
                 {/* <div className="dragdrop-box">
                   <div className="left-education">
                     <DragIndicatorIcon />
@@ -591,27 +579,28 @@ function Template() {
                     </div>
                   </div>
                 </div> */}
+
                 <div className="drag-drop-fields">
-                  <DragDrop />
+                  <DragDrop displaySkills="{showSkills}" />
                 </div>
-                
+
                 <div className="add-container">
                   <h6>Add Section</h6>
                   <div className="custom-content">
-                  <TuneIcon />
-                  <h6>Custom Section</h6>
+                    <TuneIcon />
+                    <h6>Custom Section</h6>
                   </div>
                   <div className="custom-content">
-                  <TuneIcon />
-                  <h6>Custom Section</h6>
+                    <TuneIcon />
+                    <h6>Custom Section</h6>
                   </div>
                   <div className="custom-content">
-                  <TuneIcon />
-                  <h6>Custom Section</h6>
+                    <TuneIcon />
+                    <h6>Custom Section</h6>
                   </div>
                   <div className="custom-content">
-                  <TuneIcon />
-                  <h6>Custom Section</h6>
+                    <TuneIcon />
+                    <h6>Custom Section</h6>
                   </div>
                 </div>
               </div>
