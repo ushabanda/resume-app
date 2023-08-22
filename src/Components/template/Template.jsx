@@ -86,8 +86,7 @@ function Template() {
   const [editing, setEditing] = useState(false);
   const [heading, setHeading] = useState("Personal Details");
   const [selectedSkills, setSelectedSkills] = useState([]);
-  const [newSkill, setNewSkill] = useState();
-  const [skillLevel, setSkillLevel] = useState("1");
+  const [showMoreSkill, setShowMoreSkill] = useState();
 
   const [profile_summary, setprofile_summary] =
     useState(`Hardworking and experienced receptionist with several years of experience serving as a supporting and integral employee in high volume client settings.
@@ -98,8 +97,8 @@ function Template() {
       {
         label: "education",
         data: [
-          { edu_type: "Bachelores", CGPA: 78 },
-          { edu_type: "Masters", CGPA: 68 },
+          // { edu_type: "Bachelores", CGPA: 78 },
+          // { edu_type: "Masters", CGPA: 68 },
         ],
         description:
           "A varied education on your resume sums up the value that your learnings and background will bring to job",
@@ -107,11 +106,7 @@ function Template() {
 
       {
         label: "skill",
-        data: [
-          { skill_type: "React", level: 5 },
-          { skill_type: "Python", level: 3 },
-          { skill_type: "Java", level: 1 },
-        ],
+        data: [],
         description:
           "Choose 5 important skills that show you fit the position. Make sure they match the key skills mentioned in the job listing (especially when applying via an online system).",
       },
@@ -134,10 +129,6 @@ function Template() {
     setEditing(true);
   };
 
-  const showSkills = useCallback(() => {
-    console.log("======= show Skills =======");
-  });
-
   const handleHeadingChange = (event) => {
     setHeading(event.target.value);
   };
@@ -150,21 +141,13 @@ function Template() {
     setEditing(!editing);
   };
 
-  function addMore() {
-    console.log(345);
+  function addMore(type) {
+    if (type == "education") {
+      // console.log("edu")
+    } else if (type == "skill") {
+      setShowMoreSkill(!showMoreSkill);
+    }
   }
-
-  // function addSkill(skill) {
-
-  //   let new_skill = document.getElementById("new_skill").value;
-  //   let skill_level = document.getElementById("skill_level").value;
-  //   let skill_out=skill.concat({ skill_type: new_skill, level: Number(skill_level) })
-  //   console.log(
-  //     new_skill,
-  //     skill_level,
-  //     skill_out
-  //   );
-  // }
 
   function addSkill(selectedSkills, new_skill, skill_level) {
     const updatedSkills = [
@@ -182,6 +165,7 @@ function Template() {
 
   const SortableItem = SortableElement(({ value }) => (
     <div>
+      <br></br>
       <div className="drag-content">
         <div className="drag-icon-container">
           <DragIndicatorIcon />
@@ -194,7 +178,7 @@ function Template() {
         <p>{value["description"]}</p>
       </div>
 
-      {value["label"] == "skill" ? (
+      {value["label"] == "skill" && (
         <div>
           <div className="skill-list">
             <ul>
@@ -205,35 +189,40 @@ function Template() {
               ))}
             </ul>
           </div>
+          {showMoreSkill && (
+            <div className="more-skill">
+              {/* <div>{newSkill}</div> */}
+              <input
+                placeholder="Enter Skill"
+                id="new_skill"
+                // value={newSkill}
+                // onChange={(e) => setNewSkill(e.target.value)}
+              />
+              <select id="skill_level">
+                <option value="1">Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4">Level 4</option>
+                <option value="5">Level 5</option>
+              </select>
 
-          <div className="more-skill">
-            {/* <div>{newSkill}</div> */}
-            <input
-              placeholder="Enter Skill"
-              id="new_skill"
-              // value={newSkill}
-              // onChange={(e) => setNewSkill(e.target.value)}
-            />
-            <select id="skill_level">
-              <option value="1">Level 1</option>
-              <option value="2">Level 2</option>
-              <option value="3">Level 3</option>
-              <option value="4">Level 4</option>
-              <option value="5">Level 5</option>
-            </select>
-            <button
-              className="add"
-              onClick={() => {
-                const newSkill = document.getElementById("new_skill").value;
-                const skillLevel = document.getElementById("skill_level").value;
-                addSkill(selectedSkills, newSkill, skillLevel);
-              }}
-            >
-              Add
-            </button>
-          </div>
+              <button
+                className="add"
+                onClick={() => {
+                  const newSkill = document.getElementById("new_skill").value;
+                  const skillLevel =
+                    document.getElementById("skill_level").value;
+                  addSkill(selectedSkills, newSkill, skillLevel);
+                }}
+              >
+                Add
+              </button>
+            </div>
+          )}
         </div>
-      ) : (
+      ) }
+
+      {value["label"] == "education" && (
         <div>
           <div className="education-list">
             <ul>
@@ -261,7 +250,12 @@ function Template() {
         </div>
       )}
 
-      <button className="add-extra" onClick={addMore}>
+      <button
+        className="add-extra"
+        onClick={() => {
+          addMore(value["label"]);
+        }}
+      >
         + Add {value["label"]}
       </button>
     </div>
@@ -818,7 +812,7 @@ function Template() {
                   </div>
                   <div className="row">
                     <div className="col-5">
-                      <h4>Selected Skills</h4>
+                      <h6>Skills</h6>
                       <ul>
                         {selectedSkills.map((skill, index) => (
                           <li key={index}>
