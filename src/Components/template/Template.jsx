@@ -10,8 +10,6 @@ import TuneIcon from "@mui/icons-material/Tune";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
-
-
 import image from "../images/account-image.svg";
 
 import HelpIcon from "@mui/icons-material/Help";
@@ -23,6 +21,9 @@ import EditIcon from "@mui/icons-material/Edit";
 import Tooltip from "@mui/material/Tooltip";
 
 import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
+
+import { SortableContainer, SortableElement } from "react-sortable-hoc";
+import { arrayMoveImmutable } from "array-move";
 
 function Template() {
   // Remove a few plugins from the default setup.
@@ -85,9 +86,35 @@ function Template() {
   const [editing, setEditing] = useState(false);
   const [heading, setHeading] = useState("Personal Details");
   const [selectedSkills, setSelectedSkills] = useState([]);
-  const [profile_summary, setprofile_summary] = useState(`Hardworking and experienced receptionist with several years of experience serving as a supporting and integral employee in high volume client settings.
+  const [profile_summary, setprofile_summary] =
+    useState(`Hardworking and experienced receptionist with several years of experience serving as a supporting and integral employee in high volume client settings.
                                                           Experienced in creating schedules, marking appointments, setting products, and provinding clients with optimal customer service. Bringing fourth the ability to manage front desk settings with poise and grace, in addition to managing a variety of administrative duties.
                                                           Eager to join a new people an assist them as a dedicated and passionate receptionist.`);
+  const [state, setState] = useState({
+    items: [
+      {
+        label: "education",
+        data: [
+          { edu_type: "Bachelores", CGPA: 78 },
+          { edu_type: "Masters", CGPA: 68 },
+        ],
+        description:
+          "A varied education on your resume sums up the value that your learnings and background will bring to job",
+      },
+
+      {
+        label: "skill",
+        data: [
+          { skill_type: "React", level: 5 },
+          { skill_type: "Python", level: 3 },
+          { skill_type: "Java", level: 1 },
+        ],
+        description:
+          "Choose 5 important skills that show you fit the position. Make sure they match the key skills mentioned in the job listing (especially when applying via an online system).",
+      },
+    ],
+  });
+
   const inputRef = useRef(null);
 
   const handleImageChange = () => {
@@ -118,6 +145,128 @@ function Template() {
 
   let toggleDetails = () => {
     setEditing(!editing);
+  };
+
+  function addMore() {
+    console.log(345);
+  }
+
+  function addSkill(skill) {
+
+    let new_skill = document.getElementById("new_skill").value;
+    let skill_level = document.getElementById("skill_level").value;
+    console.log(
+      new_skill,
+      skill_level,
+      skill.concat({ skill_type: new_skill, level: Number(skill_level) })
+    );
+  }
+
+  let addEducation = () => {
+    let new_education = document.getElementById("new_education").value;
+    let education_level = document.getElementById("education_level").value;
+    console.log(new_education, education_level);
+  };
+
+  const SortableItem = SortableElement(({ value }) => (
+    <div>
+      <div className="drag-content">
+        <div className="drag-icon-container">
+          <DragIndicatorIcon />
+        </div>
+        <h3>{value["label"]}</h3>
+        <EditIcon />
+      </div>
+
+      <div className="drag-para">
+        <p>{value["description"]}</p>
+      </div>
+
+      {value["label"] == "skill" ? (
+        <div>
+          <div className="skill-list">
+            <ul>
+              {value["data"].map((skill) => (
+                <li>
+                  <button>{skill["skill_type"]}</button>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="more-skill">
+            <input placeholder="Enter Skill" id="new_skill" />
+            <select id="skill_level">
+              <option value="1">Level 1</option>
+              <option value="2">Level 2</option>
+              <option value="3">Level 3</option>
+              <option value="4">Level 4</option>
+              <option value="5">Level 5</option>
+            </select>
+            <button className="add" onClick={() => addSkill(value["data"])}>
+              Add
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div>
+          <div className="education-list">
+            <ul>
+              {value["data"].map((edu) => (
+                <li>
+                  <button>{edu["edu_type"]}</button>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="more-education">
+            <input placeholder="Enter education" id="new_education" />
+            <select id="education_level">
+              <option value="1">Level 1</option>
+              <option value="2">Level 2</option>
+              <option value="3">Level 3</option>
+              <option value="4">Level 4</option>
+              <option value="5">Level 5</option>
+            </select>
+            <button className="add" onClick={addEducation}>
+              Add
+            </button>
+          </div>
+        </div>
+      )}
+
+      <button className="add-extra" onClick={addMore}>
+        + Add {value["label"]}
+      </button>
+    </div>
+  ));
+
+  const SortableList = SortableContainer(({ items }) => {
+    return (
+      <div>
+        <br></br>
+        <ul className="drag-body">
+          {items.map((value, index) => (
+            <SortableItem key={`item-${index}`} index={index} value={value} />
+          ))}
+        </ul>
+        <br></br>
+      </div>
+    );
+  });
+
+  const sortEnd = ({ oldIndex, newIndex }) => {
+    setState({
+      items: arrayMoveImmutable(state.items, oldIndex, newIndex),
+    });
+  };
+
+  const handleSelectSkill = (selectedSkill) => {
+    setState((prevState) => ({
+      selectedSkills: [...prevState.selectedSkills, selectedSkill],
+    }));
+    // props.onSelectSkill(selectedSkill);
   };
 
   return (
@@ -581,7 +730,11 @@ function Template() {
                 </div> */}
 
                 <div className="drag-drop-fields">
-                  <DragDrop displaySkills="{showSkills}" />
+                  <SortableList
+                    items={state.items}
+                    onSortEnd={sortEnd}
+                    onSelectSkill={handleSelectSkill}
+                  />
                 </div>
 
                 <div className="add-container">
