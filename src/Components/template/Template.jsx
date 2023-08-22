@@ -155,10 +155,11 @@ function Template() {
 
     let new_skill = document.getElementById("new_skill").value;
     let skill_level = document.getElementById("skill_level").value;
+    let skill_out=skill.concat({ skill_type: new_skill, level: Number(skill_level) })
     console.log(
       new_skill,
       skill_level,
-      skill.concat({ skill_type: new_skill, level: Number(skill_level) })
+      skill_out
     );
   }
 
@@ -792,7 +793,7 @@ function Template() {
                     </div>
                   </div>
                   <div className="row">
-                    <div className="col-5">skills</div>
+                    <div className="col-5">{addSkill}</div>
                     <div className="col-6 ">{profile_summary}</div>
                   </div>
                   <div className="row">
