@@ -1,6 +1,5 @@
 import React, { useCallback, useRef, useState } from "react";
 import "./template.style.css";
-import DragDrop from "./DragDrop";
 
 import ReactLanguageSelect from "react-languages-select";
 import "react-languages-select/css/react-languages-select.css";
@@ -86,7 +85,13 @@ function Template() {
   const [editing, setEditing] = useState(false);
   const [heading, setHeading] = useState("Personal Details");
   const [selectedSkills, setSelectedSkills] = useState([]);
+  const [selectedLinks, setSelectedLinks] = useState([]);
+  const [selectedEdus, setSelectedEdus] = useState([]);
+  const [selectedEmps, setSelectedEmps] = useState([]);
   const [showMoreSkill, setShowMoreSkill] = useState();
+  const [showMoreLink, setShowMoreLink] = useState();
+  const [showMoreEdu, setShowMoreEdu] = useState();
+  const [showMoreEmp, setshowMoreEmp] = useState();
 
   const [profile_summary, setprofile_summary] =
     useState(`Hardworking and experienced receptionist with several years of experience serving as a supporting and integral employee in high volume client settings.
@@ -96,12 +101,23 @@ function Template() {
     items: [
       {
         label: "education",
-        data: [
-          // { edu_type: "Bachelores", CGPA: 78 },
-          // { edu_type: "Masters", CGPA: 68 },
-        ],
+        data: [],
         description:
           "A varied education on your resume sums up the value that your learnings and background will bring to job",
+      },
+
+      {
+        label: "Websites & social links",
+        data: [],
+        description: `You can add links to websites you want hiring managers to see! 
+        Perhaps It will be  a link to your portfolio, LinkedIn profile, or personal website`,
+      },
+
+      {
+        label: "Employment History",
+        data: [],
+        description: `Show your relevant experience (last 10 years). 
+        Use bullet points to note your achievements, if possible - use numbers/facts (Achieved X, measured by Y, by doing Z).`,
       },
 
       {
@@ -143,9 +159,13 @@ function Template() {
 
   function addMore(type) {
     if (type == "education") {
-      // console.log("edu")
+      setShowMoreEdu(!showMoreEdu);
     } else if (type == "skill") {
       setShowMoreSkill(!showMoreSkill);
+    } else if (type == "Websites & social links") {
+      setShowMoreLink(!showMoreLink);
+    } else if (type == "Employment History") {
+      setshowMoreEmp(!showMoreEmp);
     }
   }
 
@@ -157,11 +177,26 @@ function Template() {
     setSelectedSkills(updatedSkills);
   }
 
-  let addEducation = () => {
-    let new_education = document.getElementById("new_education").value;
-    let education_level = document.getElementById("education_level").value;
-    console.log(new_education, education_level);
-  };
+  function addEducation(selectedEdus, new_edu) {
+    const updatedEdu = [...selectedEdus, { edu_type: new_edu }];
+    setSelectedEdus(updatedEdu);
+  }
+
+  function addSocialLink(setSelectedLinks, new_link, link_label) {
+    const updatedLinks = [
+      ...selectedLinks,
+      { link_type: new_link, link: link_label },
+    ];
+    setSelectedLinks(updatedLinks);
+  }
+
+  function addEmployment(selectedEmps, new_emp, emp_exp) {
+    const updatedEmp = [
+      ...selectedEmps,
+      { emp_type: new_emp, level: Number(emp_exp) },
+    ];
+    setSelectedEmps(updatedEmp);
+  }
 
   const SortableItem = SortableElement(({ value }) => (
     <div>
@@ -220,11 +255,11 @@ function Template() {
             </div>
           )}
         </div>
-      ) }
+      )}
 
       {value["label"] == "education" && (
         <div>
-          <div className="education-list">
+          <div className="edu-list">
             <ul>
               {value["data"].map((edu) => (
                 <li>
@@ -233,20 +268,91 @@ function Template() {
               ))}
             </ul>
           </div>
+          {showMoreEdu && (
+            <div className="more-skill">
+              <input placeholder="Enter education" id="new_edu" />
+              <button
+                onClick={() => {
+                  const newEdu = document.getElementById("new_edu").value;
+                  addEducation(selectedEdus, newEdu);
+                }}
+              >
+                Add
+              </button>
+            </div>
+          )}
+        </div>
+      )}
 
-          <div className="more-education">
-            <input placeholder="Enter education" id="new_education" />
-            <select id="education_level">
-              <option value="1">Level 1</option>
-              <option value="2">Level 2</option>
-              <option value="3">Level 3</option>
-              <option value="4">Level 4</option>
-              <option value="5">Level 5</option>
-            </select>
-            <button className="add" onClick={addEducation}>
-              Add
-            </button>
+      {value["label"] == "Websites & social links" && (
+        <div>
+          <div className="link-list">
+            <ul>
+              {value["data"].map((link) => (
+                <li>
+                  <button>{link["link_type"]}</button>
+                </li>
+              ))}
+            </ul>
           </div>
+          {showMoreLink && (
+            <div className="more-skill">
+              <input
+                placeholder="Enter label"
+                id="new_link"
+                
+              />
+              <input
+                placeholder="Enter link"
+                id="link_label"
+              />
+
+              <button
+                className="add"
+                onClick={() => {
+                  const newLink = document.getElementById("new_link").value;
+                  const linkLevel =
+                    document.getElementById("link_label").value;
+                  addSocialLink(setSelectedLinks, newLink, linkLevel);
+                }}
+              >
+                Add
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      {value["label"] == "Employment History" && (
+        <div>
+          <div className="skill-list">
+            <ul>
+              {value["data"].map((emp) => (
+                <li>
+                  <button>{emp["emp_type"]}</button>
+                </li>
+              ))}
+            </ul>
+          </div>
+          {showMoreEmp && (
+            <div className="more-skill">
+              {/* <div>{newSkill}</div> */}
+              <input placeholder="Enter Job-title" id="new_emp" />
+              <input placeholder="Enter Employer" id="new_employer" />
+
+              <button
+                className="add"
+                onClick={() => {
+                  const newEmp = document.getElementById("new_emp").value;
+                  const empLevel =
+                    document.getElementById("new_employer").value;
+                  addEmployment(selectedEmps, newEmp, empLevel);
+                }}
+              >
+                Add
+              </button>
+            </div>
+          )}
         </div>
       )}
 
@@ -286,6 +392,25 @@ function Template() {
       selectedSkills: [...prevState.selectedSkills, selectedSkill],
     }));
     // props.onSelectSkill(selectedSkill);
+  };
+
+  const handleSelectLink = (selectedLink) => {
+    setState((prevState) => ({
+      selectedLinks: [...prevState.selectedLinks, selectedLink],
+    }));
+    // props.onSelectSkill(selectedSkill);
+  };
+
+  const handleSelectEdu = (selectedEdu) => {
+    setState((prevState) => ({
+      selectedEdus: [...prevState.selectedEdus, selectedEdu],
+    }));
+  };
+
+  const handleSelectEmp = (selectedEmp) => {
+    setState((prevState) => ({
+      selectedEmps: [...prevState.selectedEmps, selectedEmp],
+    }));
   };
 
   return (
@@ -753,6 +878,9 @@ function Template() {
                     items={state.items}
                     onSortEnd={sortEnd}
                     onSelectSkill={handleSelectSkill}
+                    onSelectLink={handleSelectLink}
+                    onSelectEmp={handleSelectEmp}
+                    onSelectEdu={handleSelectEdu}
                   />
                 </div>
 
@@ -824,12 +952,28 @@ function Template() {
                     <div className="col-6 ">{profile_summary}</div>
                   </div>
                   <div className="row">
-                    <div className="col-5">Language</div>
-                    <div className="col-6 ">emp history</div>
+                    <div className="col-5">
+                      <h6>Social links</h6>
+                      {selectedLinks.map((link, index) => (
+                        <p key={index}>{link.link_type}</p>
+                      ))}
+                    </div>
+                    <div className="col-6 ">
+                      <h6>Employment History</h6>
+                      {selectedEmps.map((emp, index) => (
+                        <p key={index}>{emp.emp_type}</p>
+                      ))}
+                    </div>
                   </div>
                   <div className="row">
                     <div className="col-5">{heading}</div>
-                    <div className="col-6 ">Education</div>
+                    <div className="col-6 ">
+                      <h6>Education</h6>
+
+                      {selectedEdus.map((edu, index) => (
+                        <p key={index}>{edu.edu_type}</p>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </PDFExport>
