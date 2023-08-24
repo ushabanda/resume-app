@@ -92,7 +92,7 @@ function Template() {
   const [showMoreLink, setShowMoreLink] = useState();
   const [showMoreEdu, setShowMoreEdu] = useState();
   const [showMoreEmp, setshowMoreEmp] = useState();
-
+  const [draggedComponents, setDraggedComponents] = useState([]);
   const [profile_summary, setprofile_summary] =
     useState(`Hardworking and experienced receptionist with several years of experience serving as a supporting and integral employee in high volume client settings.
                                                           Experienced in creating schedules, marking appointments, setting products, and provinding clients with optimal customer service. Bringing fourth the ability to manage front desk settings with poise and grace, in addition to managing a variety of administrative duties.
@@ -101,13 +101,15 @@ function Template() {
     items: [
       {
         label: "education",
+        label_value: "Education Details",
         data: [],
         description:
           "A varied education on your resume sums up the value that your learnings and background will bring to job",
       },
 
       {
-        label: "Websites & social links",
+        label: "Websites and social links",
+        label_value: "social profile Details",
         data: [],
         description: `You can add links to websites you want hiring managers to see! 
         Perhaps It will be  a link to your portfolio, LinkedIn profile, or personal website`,
@@ -115,6 +117,7 @@ function Template() {
 
       {
         label: "Employment History",
+        label_value: "Employment Details",
         data: [],
         description: `Show your relevant experience (last 10 years). 
         Use bullet points to note your achievements, if possible - use numbers/facts (Achieved X, measured by Y, by doing Z).`,
@@ -122,6 +125,7 @@ function Template() {
 
       {
         label: "skill",
+        label_value: "skill Details",
         data: [],
         description:
           "Choose 5 important skills that show you fit the position. Make sure they match the key skills mentioned in the job listing (especially when applying via an online system).",
@@ -162,7 +166,7 @@ function Template() {
       setShowMoreEdu(!showMoreEdu);
     } else if (type == "skill") {
       setShowMoreSkill(!showMoreSkill);
-    } else if (type == "Websites & social links") {
+    } else if (type == "Websites and social links") {
       setShowMoreLink(!showMoreLink);
     } else if (type == "Employment History") {
       setshowMoreEmp(!showMoreEmp);
@@ -170,6 +174,8 @@ function Template() {
   }
 
   function addSkill(selectedSkills, new_skill, skill_level) {
+    // state.items[3]["data"].concat({ "skill_type": new_skill, "level": Number(skill_level) });
+    // console.log(state.items[3]["data"], new_skill, Number(skill_level))
     const updatedSkills = [
       ...selectedSkills,
       { skill_type: new_skill, level: Number(skill_level) },
@@ -284,7 +290,7 @@ function Template() {
         </div>
       )}
 
-      {value["label"] == "Websites & social links" && (
+      {value["label"] == "Websites and social links" && (
         <div>
           <div className="link-list">
             <ul>
@@ -297,22 +303,14 @@ function Template() {
           </div>
           {showMoreLink && (
             <div className="more-skill">
-              <input
-                placeholder="Enter label"
-                id="new_link"
-                
-              />
-              <input
-                placeholder="Enter link"
-                id="link_label"
-              />
+              <input placeholder="Enter label" id="new_link" />
+              <input placeholder="Enter link" id="link_label" />
 
               <button
                 className="add"
                 onClick={() => {
                   const newLink = document.getElementById("new_link").value;
-                  const linkLevel =
-                    document.getElementById("link_label").value;
+                  const linkLevel = document.getElementById("link_label").value;
                   addSocialLink(setSelectedLinks, newLink, linkLevel);
                 }}
               >
@@ -385,13 +383,6 @@ function Template() {
     setState({
       items: arrayMoveImmutable(state.items, oldIndex, newIndex),
     });
-  };
-
-  const handleSelectSkill = (selectedSkill) => {
-    setState((prevState) => ({
-      selectedSkills: [...prevState.selectedSkills, selectedSkill],
-    }));
-    // props.onSelectSkill(selectedSkill);
   };
 
   const handleSelectLink = (selectedLink) => {
@@ -874,14 +865,7 @@ function Template() {
                 </div> */}
 
                 <div className="drag-drop-fields">
-                  <SortableList
-                    items={state.items}
-                    onSortEnd={sortEnd}
-                    onSelectSkill={handleSelectSkill}
-                    onSelectLink={handleSelectLink}
-                    onSelectEmp={handleSelectEmp}
-                    onSelectEdu={handleSelectEdu}
-                  />
+                  <SortableList items={state.items} onSortEnd={sortEnd} />
                 </div>
 
                 <div className="add-container">
@@ -938,20 +922,39 @@ function Template() {
                       </div>
                     </div>
                   </div>
+
                   <div className="row">
                     <div className="col-5">
-                      <h6>Skills</h6>
                       <ul>
-                        {selectedSkills.map((skill, index) => (
-                          <li key={index}>
-                            {skill.skill_type} - Level {skill.level}
-                          </li>
+                        {state.items.map((item) => (
+                          <div>
+                            {item["label"] == "skill" && (
+                              <div>
+                                <h6>Skills</h6>
+                                {selectedSkills.map((skill, index) => (
+                                  <li key={index}>
+                                    {skill.skill_type} - Level {skill.level}
+                                  </li>
+                                ))}
+                              </div>
+                            )}
+
+                            {item["label"] == "Websites and social links" && (
+                              <div>
+                                <h6>Websites and social links</h6>
+                                {selectedLinks.map((link, index) => (
+                                  <p key={index}>{link.link_type} - Link {link.link}</p>
+                                ))}
+                              </div>
+                            )}
+                          </div>
                         ))}
                       </ul>
                     </div>
                     <div className="col-6 ">{profile_summary}</div>
                   </div>
-                  <div className="row">
+
+                  {/* <div className="row">
                     <div className="col-5">
                       <h6>Social links</h6>
                       {selectedLinks.map((link, index) => (
@@ -974,7 +977,7 @@ function Template() {
                         <p key={index}>{edu.edu_type}</p>
                       ))}
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </PDFExport>
             </div>
