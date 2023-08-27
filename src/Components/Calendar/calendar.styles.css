@@ -1,0 +1,42 @@
+.fromdate, .todate{
+    display: flex;
+    border:1px solid rgb(202, 196, 196);
+    padding:10px 16px;
+    width:120px;
+    background-color: #eff2f9;
+    border-radius: 3px;
+    color:red;
+    border:none;
+    text-align: start;
+    
+}
+
+
+.fromda, .toda{
+    border:none;
+    text-align: start;
+    
+}
+.fromda:focus, .toda:focus{
+    outline:none;
+}
+
+.fromdate input,
+.todate input
+{
+    width:90px;
+    background-color: transparent;
+    text-align: center;
+}
+
+.edu-left-name input{
+    width:100%;
+    padding:10px 16px;
+}
+
+.calendar{
+    display: flex;
+    margin:0;
+    padding:0;
+    gap:20px;
+}
