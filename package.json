@@ -18,6 +18,8 @@
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
     "react-flags-select": "^2.2.3",
+    "react-input-date-mask": "^2.0.0",
+    "react-input-mask": "^2.0.4",
     "react-languages-select": "^1.0.20",
     "react-router-dom": "^6.15.0",
     "react-scripts": "5.0.1",

@@ -1,17 +1,15 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import "./template.style.css";
 
-import ReactLanguageSelect from "react-languages-select";
 import "react-languages-select/css/react-languages-select.css";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
-import TuneIcon from "@mui/icons-material/Tune";
 import LinkIcon from "@mui/icons-material/Link";
 
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import DOMPurify from "dompurify";
 
-import image from "../images/account-image.svg";
+// import image from "../images/account-image.svg";
 
 import HelpIcon from "@mui/icons-material/Help";
 import PersonIcon from "@mui/icons-material/Person";
@@ -20,11 +18,10 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import EditIcon from "@mui/icons-material/Edit";
 import Tooltip from "@mui/material/Tooltip";
-import Calendar from "../Calendar/Calendar";
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
-import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
+import { PDFExport} from "@progress/kendo-react-pdf";
 
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
 import { arrayMoveImmutable } from "array-move";
@@ -46,20 +43,20 @@ function Template() {
   // myeditor = {toolbar: [ 'bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote' ] }
 
   /* Start PDF Code */
-  const ddData = [
-    { text: "A4", value: "size-a4" },
-    { text: "Letter", value: "size-letter" },
-    { text: "Executive", value: "size-executive" },
-  ];
+  // const ddData = [
+  //   { text: "A4", value: "size-a4" },
+  //   { text: "Letter", value: "size-letter" },
+  //   { text: "Executive", value: "size-executive" },
+  // ];
 
-  const [layoutSelection, setLayoutSelection] = useState({
-    text: "A4",
-    value: "size-a4",
-  });
+  // const [layoutSelection, setLayoutSelection] = useState({
+  //   text: "A4",
+  //   value: "size-a4",
+  // });
 
-  const updatePageLayout = (event) => {
-    setLayoutSelection(event.target.value);
-  };
+  // const updatePageLayout = (event) => {
+  //   setLayoutSelection(event.target.value);
+  // };
 
   const pdfExportComponent = useRef(null);
 
@@ -70,9 +67,9 @@ function Template() {
   /* End PDF Code */
 
   const [select, setSelect] = useState("SE");
-  const onSelect = (code) => setSelect(code);
+  // const onSelect = (code) => setSelect(code);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [pdetails, setPdetails] = useState();
+  // const [pdetails, setPdetails] = useState();
   const [firstName, setfirstName] = useState();
   const [lastName, setlastName] = useState();
   const [email, setEmail] = useState();
@@ -85,9 +82,10 @@ function Template() {
   const [nation, setNation] = useState();
   const [pob, setpob] = useState();
   const [dob, setdob] = useState();
-  const [image, setImage] = useState();
+  // const [image, setImage] = useState();
   const [title, setTitle] = useState();
   const [editing, setEditing] = useState(false);
+  const editingRef = useRef(editing);
   const [heading, setHeading] = useState("Personal Details");
   const [selectedSkills, setSelectedSkills] = useState([]);
   const [selectedLinks, setSelectedLinks] = useState([]);
@@ -97,11 +95,14 @@ function Template() {
   const [showMoreLink, setShowMoreLink] = useState();
   const [showMoreEdu, setShowMoreEdu] = useState();
   const [showMoreEmp, setshowMoreEmp] = useState();
-  const [draggedComponents, setDraggedComponents] = useState([]);
+  // const [draggedComponents, setDraggedComponents] = useState([]);
   const [profile_summary, setprofile_summary] = useState("");
   const [education_summary, seteducation_summary] = useState("");
   const [job_summary, setjob_summary] = useState("");
-
+  const [showSkillsHeading, setShowSkillsHeading] = useState(false);
+  const [showEdusHeading, setShowEdusHeading] = useState(false);
+  const [skillName, setSkillName] = useState();
+  
   const [state, setState] = useState({
     items: [
       {
@@ -159,63 +160,101 @@ function Template() {
   };
 
   const handleBlur = () => {
-    setEditing(false);
+    editingRef.current = false;
   };
 
   let toggleDetails = () => {
     setEditing(!editing);
   };
 
+  const handleDeleteSkill = (index) => {
+    const newSkills = selectedSkills.filter((_, i) => i !== index);
+    setSelectedSkills(newSkills);
+  };
+
+  // const handleDeleteEdu = (index) => {
+  //   const newEdus = selectedEdus.filter((_, i) => i !== index);
+  //   setSelectedEdus(newEdus);
+  // };
+
   function addMore(type) {
-    if (type == "education") {
+    if (type === "education") {
       setShowMoreEdu(!showMoreEdu);
-    } else if (type == "skill") {
+    } else if (type === "skill") {
       setShowMoreSkill(!showMoreSkill);
-    } else if (type == "Websites and social links") {
+    } else if (type === "Websites and social links") {
       setShowMoreLink(!showMoreLink);
-    } else if (type == "Employment History") {
+    } else if (type === "Employment History") {
       setshowMoreEmp(!showMoreEmp);
     }
   }
 
   function RenderedContent({ content }) {
     const sanitizedContent = DOMPurify.sanitize(content);
-  
+
     return <div dangerouslySetInnerHTML={{ __html: sanitizedContent }} />;
   }
 
+  function getSkillLevelClass(skillLevel) {
+    switch (skillLevel) {
+      case "Novice":
+        console.log('hello graph')
+        return "1";
+        break;
+      case "Beginner":
+        return "2";
+        break;
+      case "Skillful":
+        return "3";
+        break;
+      case "Experienced":
+        return "4";
+        break;
+      case "Expert":
+        return "5";
+        break;
+      default:
+        return "1"; // Default to Novice
+        break;
+    }
+  }
+  
   function addSkill(selectedSkills, new_skill, skill_level) {
-    // state.items[3]["data"].concat({ "skill_type": new_skill, "level": Number(skill_level) });
-    // console.log(state.items[3]["data"], new_skill, Number(skill_level))
     if (new_skill) {
       const updatedSkills = [
         ...selectedSkills,
-        { skill_type: new_skill, level: Number(skill_level) },
+        { skill_type: new_skill, level: skill_level },
       ];
       setSelectedSkills(updatedSkills);
     }
+    setSkillName()
   }
 
-  function addEducation(
-    selectedEdus,
-    new_edu,
-    new_degree,
-    new_city,
-    edu_ckedit
-  ) {
-    if (new_edu) {
-      const updatedEdu = [
-        ...selectedEdus,
-        {
-          edu_type: new_edu,
-          edu_degree: new_degree,
-          edu_city: new_city,
-          edu_ckedit: edu_ckedit,
-        },
-      ];
-      setSelectedEdus(updatedEdu);
-    }
+  function handleSkill() {
+    console.log(document.getElementById("new_skill").value)
+    setSkillName(document.getElementById("new_skill").value);
   }
+
+  // function addEducation(
+  //   selectedEdus,
+  //   new_edu,
+  //   new_degree,
+  //   new_city,
+  //   edu_ckedit
+  // ) {
+  //   if (new_edu) {
+  //     const updatedEdu = [
+  //       ...selectedEdus,
+  //       {
+  //         edu_type: new_edu,
+  //         edu_degree: new_degree,
+  //         edu_city: new_city,
+  //         edu_ckedit: edu_ckedit,
+  //       },
+  //     ];
+  //     setSelectedEdus(updatedEdu);
+  //   }
+  // }
 
   function addSocialLink(setSelectedLinks, new_link, link_label) {
     if (new_link) {
@@ -227,15 +266,114 @@ function Template() {
     }
   }
 
-  function addEmployment(selectedEmps, new_emp, new_employer, emp_city) {
-    if (new_emp) {
-      const updatedEmp = [
-        ...selectedEmps,
-        { emp_type: new_emp, emp_level: new_employer, emp_city: emp_city },
-      ];
-      setSelectedEmps(updatedEmp);
-    }
-  }
+  // function addEmployment(
+  //   selectedEmps,
+  //   new_emp,
+  //   new_employer,
+  //   emp_city,
+  //   job_ckedit
+  // ) {
+  //   if (new_emp) {
+  //     const updatedEmp = [
+  //       ...selectedEmps,
+  //       {
+  //         emp_type: new_emp,
+  //         emp_level: new_employer,
+  //         emp_city: emp_city,
+  //         job_ckedit: job_ckedit,
+  //       },
+  //     ];
+  //     setSelectedEmps(updatedEmp);
+  //   }
+  // }
+
+
+  // const handleSelectLink = (selectedLink) => {
+  //   setState((prevState) => ({
+  //     selectedLinks: [...prevState.selectedLinks, selectedLink],
+  //   }));
+  //   // props.onSelectSkill(selectedSkill);
+  // };
+
+  // const handleSelectEdu = (selectedEdu) => {
+  //   setState((prevState) => ({
+  //     selectedEdus: [...prevState.selectedEdus, selectedEdu],
+  //   }));
+  // };
+
+  // const handleSelectEmp = (selectedEmp) => {
+  //   setState((prevState) => ({
+  //     selectedEmps: [...prevState.selectedEmps, selectedEmp],
+  //   }));
+  // };
+
+  // function handleAddSkill(skill_type, new_skill, skill_level) {
+  //   if (skill_type)
+  //     setSelectedSkills((prevSkills) => [
+  //       ...prevSkills,
+  //       { skill_type: new_skill, level: skill_level },
+  //     ]);
+  //   setShowSkillsHeading(true);
+  // }
+
+  // const handleAddEducation = (
+  //   edu_type,
+  //   new_edu,
+  //   edu_degree,
+  //   new_degree,
+  //   edu_city,
+  //   new_city,
+  //   edu_ckedit
+  // ) => {
+  //   if (edu_type)
+  //     setSelectedSkills((prevSkills) => [
+  //       ...prevSkills,
+  //       {
+  //         edu_type: new_edu,
+  //         edu_degree: new_degree,
+  //         edu_city: new_city,
+  //         edu_ckedit: edu_ckedit,
+  //       },
+  //     ]);
+  //   setShowEdusHeading(true);
+  // };
+
+  // const splitContentIntoPages = (content) => {
+  //   const pageHeight = '800px'; // Define the height of each page
+  //   const pages = [];
+
+  //   let currentPage = [];
+  //   let currentPageHeight = 0;
+
+  //   for (const section of content) {
+  //     const sectionHeight = '85vh';
+
+  //     // Check if adding the section will exceed the page height
+  //     if (currentPageHeight + sectionHeight > parseInt(pageHeight)) {
+  //       pages.push(currentPage);
+  //       currentPage = [section];
+  //       currentPageHeight = sectionHeight;
+  //     } else {
+  //       currentPage.push(section);
+  //       currentPageHeight += sectionHeight;
+  //     }
+  //   }
+
+  //   // Push the last page
+  //   if (currentPage.length > 0) {
+  //     pages.push(currentPage);
+  //   }
+
+  //   return pages.map((pageSections, index) => (
+  //     <div key={index} style={{ height: pageHeight, overflow: 'auto', pageBreakAfter: 'always' }}>
+  //       {pageSections.map((section, sectionIndex) => (
+  //         <div key={sectionIndex}>
+  //           {section}
+  //         </div>
+  //       ))}
+  //     </div>
+  //   ));
+  // };
 
   const SortableItem = SortableElement(({ value }) => (
     <div>
@@ -252,12 +390,12 @@ function Template() {
         <p>{value["description"]}</p>
       </div>
 
-      {value["label"] == "skill" && (
+      {value["label"] === "skill" && (
         <div>
           <div className="skill-list">
             <ul>
               {value["data"].map((skill, index) => (
-                <li key={index}>
+                <li key={skill.index}>
                   <button>{skill["skill_type"]}</button>
                 </li>
               ))}
@@ -266,13 +404,13 @@ function Template() {
           {showMoreSkill && (
             <div className="more-skill skill">
               <div className="skill-left-option">
-                <input placeholder="Enter Skill" id="new_skill" />
+                <input placeholder="Enter Skill" id="new_skill" value={skillName} onBlur={handleSkill}/>
                 <select id="skill_level">
-                  <option value="1">Level 1</option>
-                  <option value="2">Level 2</option>
-                  <option value="3">Level 3</option>
-                  <option value="4">Level 4</option>
-                  <option value="5">Level 5</option>
+                  <option value="Novice">Novice</option>
+                  <option value="Beginner">Beginner</option>
+                  <option value="Skillful">Skillful</option>
+                  <option value="Experienced">Experienced</option>
+                  <option value="Expert">Expert</option>
                 </select>
               </div>
               <div className="skill-button">
@@ -280,8 +418,7 @@ function Template() {
                   className="add"
                   onClick={() => {
                     const newSkill = document.getElementById("new_skill").value;
-                    const skillLevel =
-                      document.getElementById("skill_level").value;
+                    const skillLevel = document.getElementById("skill_level").value;
                     addSkill(selectedSkills, newSkill, skillLevel);
                   }}
                 >
@@ -290,9 +427,20 @@ function Template() {
               </div>
             </div>
           )}
+          <div className="selected-skills-container">
+            <h6>Selected Skills</h6>
+            <ul>
+              {selectedSkills.map((skill, index) => (
+                <li key={skill.index}>
+                  {skill.skill_type} - {skill.level}
+                  <button onClick={() => handleDeleteSkill(index)}>X</button>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       )}
-
+{/* 
       {value["label"] == "education" && (
         <div>
           <div className="edu-list">
@@ -311,7 +459,18 @@ function Template() {
                 <input placeholder="Enter Degree" id="new_degree" />
               </div>
               <div className="edu-left-city">
-                <Calendar id="edu-calendar" />
+                <InputMask
+                  mask="99.99.9999"
+                  placeholder="start-date"
+                  id="edu-calendar"
+                  className="fromdate"
+                />
+                <InputMask
+                  mask="99.99.9999"
+                  placeholder="end-date"
+                  id="edu-calendar"
+                  className="todate"
+                />
                 <input placeholder="Enter City" id="new_city" />
               </div>
               <div className="education-ckeditor">
@@ -327,8 +486,7 @@ function Template() {
                   }}
                   onChange={(event, editor) => {
                     // console.log({ event, editor, editor.getData() });
-                    console.log(setprofile_summary(editor.getData()));
-                    const data = editor.getData();
+                    console.log(seteducation_summary(editor.getData()));
                   }}
                 />
               </div>
@@ -342,6 +500,9 @@ function Template() {
                     const eduCity = document.getElementById("new_city").value;
                     // const eduCkedit= document.getElementById('edu_ckedit').value;
                     addEducation(selectedEdus, newEdu, eduDegree, eduCity);
+                    {
+                      handleAddEducation();
+                    }
                   }}
                 >
                   Add
@@ -349,15 +510,28 @@ function Template() {
               </div>
             </div>
           )}
+          <div className="selected-edus-container">
+            <h6>Selected Education History</h6>
+            <ul>
+              {selectedEdus.map((edu, index) => (
+                <li key={edu.index}>
+                  {edu.edu_degree}
+                  <span>at</span>
+                  {edu.edu_type} - {edu.level}
+                  <button onClick={() => handleDeleteEdu(index)}>X</button>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-      )}
+      )} */}
 
-      {value["label"] == "Websites and social links" && (
+      {value["label"] === "Websites and social links" && (
         <div>
           <div className="link-list">
             <ul>
               {value["data"].map((link, index) => (
-                <li key={index}>
+                <li key={link.index}>
                   <button>{link["link_type"]}</button>
                 </li>
               ))}
@@ -386,13 +560,13 @@ function Template() {
           )}
         </div>
       )}
-
+{/* 
       {value["label"] == "Employment History" && (
         <div>
           <div className="skill-list">
             <ul>
               {value["data"].map((emp, index) => (
-                <li key={index}>
+                <li key={emp.index}>
                   <button>{emp["emp_type"]}</button>
                 </li>
               ))}
@@ -405,14 +579,25 @@ function Template() {
                 <input placeholder="Enter Employer" id="new_employer" />
               </div>
               <div className="edu-left-city">
-                <Calendar id="edu-calendar" />
+                <InputMask
+                  mask="99.99.9999"
+                  placeholder="start-date"
+                  id="edu-calendar"
+                  className="fromdate"
+                />
+                <InputMask
+                  mask="99.99.9999"
+                  placeholder="end-date"
+                  id="edu-calendar"
+                  className="todate"
+                />
                 <input placeholder="Enter City" id="emp_city" />
               </div>
               <div className="education-ckeditor">
                 <CKEditor
                   editor={ClassicEditor}
-                  data={profile_summary}
-                  id="edu_ckedit"
+                  data={job_summary}
+                  id="job_ckedit"
                   onReady={(editor) => {
                     console.log(
                       "CKEditor5 React Component is ready to use!",
@@ -421,8 +606,7 @@ function Template() {
                   }}
                   onChange={(event, editor) => {
                     // console.log({ event, editor, editor.getData() });
-                    console.log(setprofile_summary(editor.getData()));
-                    const data = editor.getData();
+                    console.log(setjob_summary(editor.getData()));
                   }}
                 />
               </div>
@@ -443,7 +627,7 @@ function Template() {
             </div>
           )}
         </div>
-      )}
+      )} */}
 
       <button
         className="add-extra"
@@ -476,31 +660,12 @@ function Template() {
     });
   };
 
-  // const handleSelectLink = (selectedLink) => {
-  //   setState((prevState) => ({
-  //     selectedLinks: [...prevState.selectedLinks, selectedLink],
-  //   }));
-  //   // props.onSelectSkill(selectedSkill);
-  // };
-
-  const handleSelectEdu = (selectedEdu) => {
-    setState((prevState) => ({
-      selectedEdus: [...prevState.selectedEdus, selectedEdu],
-    }));
-  };
-
-  const handleSelectEmp = (selectedEmp) => {
-    setState((prevState) => ({
-      selectedEmps: [...prevState.selectedEmps, selectedEmp],
-    }));
-  };
-
   return (
     <div className="resume-builder">
       <div className="resume-body">
         <div className="resume-content">
           <div className="resume-left">
-            <div className="resume-account">
+            {/* <div className="resume-account">
               <div className="resume-acc-content">
                 <div className="resume-account1">
                   <button type="button">
@@ -512,7 +677,7 @@ function Template() {
                   </button>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <div className="resume-left-part">
               <div className="resume-left-content">
@@ -587,7 +752,7 @@ function Template() {
                   <div className="job-title input-section">
                     <div className="job-title-section field-section">
                       <div className="help-icon">
-                        <label className="input-label">Wanted Job Title</label>
+                        <label className="input-label">Job Title</label>
                         <Tooltip
                           title="Add a title like 'Senior Marketer' or 'Sales Executive' 
                                 that quickly describes your overall experience or the type of role you are applying to"
@@ -904,6 +1069,10 @@ function Template() {
 
                   <CKEditor
                     editor={ClassicEditor}
+                    //   config={ {
+                    //     plugins: [ Paragraph, Bold, Italic, Essentials ],
+                    //     toolbar: [ 'bold', 'italic' ]
+                    // } }
                     data={profile_summary}
                     onReady={(editor) => {
                       console.log(
@@ -954,26 +1123,6 @@ function Template() {
                 <div className="drag-drop-fields">
                   <SortableList items={state.items} onSortEnd={sortEnd} />
                 </div>
-
-                {/* <div className="add-container">
-                  <h6>Add Section</h6>
-                  <div className="custom-content">
-                    <TuneIcon />
-                    <h6>Custom Section</h6>
-                  </div>
-                  <div className="custom-content">
-                    <TuneIcon />
-                    <h6>Custom Section</h6>
-                  </div>
-                  <div className="custom-content">
-                    <TuneIcon />
-                    <h6>Custom Section</h6>
-                  </div>
-                  <div className="custom-content">
-                    <TuneIcon />
-                    <h6>Custom Section</h6>
-                  </div>
-                </div> */}
               </div>
             </div>
           </div>
@@ -983,8 +1132,16 @@ function Template() {
               <button className="btn btn-primary" onClick={downloadPDF}>
                 Download PDF
               </button>
-              <PDFExport ref={pdfExportComponent}>
+              <PDFExport
+                scale={1.1}
+                paperSize="A4"
+                margin="2cm"
+                ref={pdfExportComponent}
+                // keepTogether="p"
+                margin={{ top: 20, left: 10, right: 10, bottom: 2 }}
+              >
                 <div className="container ">
+                  {/* {splitContentIntoPages(state.items)} */}
                   <div className="row pic-container">
                     <div className="col-4 profile-photo">
                       {selectedImage && (
@@ -1001,8 +1158,8 @@ function Template() {
                         <h6>{lastName}</h6>
                       </div>
                       <p className="right-title">{title}</p>
+                      <p className="resume-address">{address}</p>
                       <div className="personal-data">
-                        <p className="resume-address">{address}</p>
                         <p className="resume-city">{city}</p>
                         <p className="resume-code">{code}</p>
                         <p className="resume-country">{country}</p>
@@ -1023,30 +1180,39 @@ function Template() {
                     </div>
                     <div className="col-8 profile-details">
                       <h6>Profile summary</h6>
-                    <RenderedContent content={profile_summary} />
+                      <p>
+                        <RenderedContent content={profile_summary} />
+                      </p>
                     </div>
                   </div>
                   <div className="row">
-                    <div className="col-4">
+                    <div className="col-4 skill-links">
                       <ul>
                         {state.items.map((item, ind) => (
-                          <div key={ind}>
-                            {item["label"] == "skill" && (
+                          <div key={item.ind}>
+                            {item["label"] === "skill" && (
                               <div>
                                 <h6>Skills</h6>
                                 {selectedSkills.map((skill, index) => (
-                                  <li key={index}>
-                                    {skill.skill_type} - Level {skill.level}
-                                  </li>
+                                  // <li key={index}>
+                                  //   {skill.skill_type} - {skill.level}
+                                  // </li>
+                                  <div key={skill.index} className="selected-skill">
+                                    <div
+                                      className={`skill-level-${getSkillLevelClass(skill.level)}`}
+                                    ></div>
+                                    <span >{skill.skill_type}</span>
+                                    
+                                  </div>
                                 ))}
                               </div>
                             )}
 
-                            {item["label"] == "Websites and social links" && (
+                            {item["label"] === "Websites and social links" && (
                               <div className="right-link-box">
                                 <LinkIcon />
                                 {selectedLinks.map((link, index) => (
-                                  <p key={index}>{link.link_type}</p>
+                                  <p key={link.index}>{link.link_type}</p>
                                 ))}
                               </div>
                             )}
@@ -1054,11 +1220,11 @@ function Template() {
                         ))}
                       </ul>
                     </div>
-                    <div className="col-8">
+                    <div className="col-8 edu-emp">
                       <ul>
                         {state.items.map((item, ind) => (
                           <div key={ind}>
-                            {item["label"] == "education" && (
+                            {item["label"] === "education" && (
                               <div>
                                 <h6>Education</h6>
                                 {selectedEdus.map((edu, index) => (
@@ -1068,13 +1234,18 @@ function Template() {
                                       <p key={index}>{edu.edu_type}</p>
                                       <p key={index}>{edu.edu_city}</p>
                                     </div>
-                                    <p key={index}>{edu.edu_ckedit}</p>
+                                    <p key={edu.index}>
+                                      <RenderedContent
+                                        content={education_summary}
+                                      />
+                                      {edu.edu_ckedit}
+                                    </p>
                                   </div>
                                 ))}
                               </div>
                             )}
 
-                            {item["label"] == "Employment History" && (
+                            {item["label"] === "Employment History" && (
                               <div>
                                 <h6>Employment History</h6>
                                 {selectedEmps.map((emp, index) => (
@@ -1084,6 +1255,10 @@ function Template() {
                                       <p key={index}> {emp.emp_level}</p>
                                       <p key={index}> {emp.emp_city}</p>
                                     </div>
+                                    <p key={emp.index}>
+                                      <RenderedContent content={job_summary} />
+                                      {emp.job_ckedit}
+                                    </p>
                                   </div>
                                 ))}
                               </div>
@@ -1099,7 +1274,7 @@ function Template() {
                       <ul>
                         {state.items.map((item) => (
                           <div>
-                            {item["label"] == "skill" && (
+                            {item["label"] === "skill" && (
                               <div>
                                 <h6>Skills</h6>
                                 {selectedSkills.map((skill, index) => (
@@ -1110,7 +1285,7 @@ function Template() {
                               </div>
                             )}
 
-                            {item["label"] == "Websites and social links" && (
+                            {item["label"] === "Websites and social links" && (
                               <div>
                                 <h6>Websites and social links</h6>
                                 {selectedLinks.map((link, index) => (
@@ -1152,9 +1327,9 @@ function Template() {
                 </div>
               </PDFExport>
               <div className="page-handle-container">
-              <ArrowBackIosIcon />
-              <p className="right-page-num">1 / 2</p>
-              <ArrowForwardIosIcon />
+                <ArrowBackIosIcon />
+                <p className="right-page-num">1 / 2</p>
+                <ArrowForwardIosIcon />
               </div>
             </div>
           </div>
