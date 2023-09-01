@@ -766,12 +766,12 @@ font-weight: 700;
 .link-left-input input,
 .emp-left-input input,
 .skill-left-option input {
-    width: 100%;
+    /* width: 100%; */
     padding: 10px 16px;
 }
 
 .skill-left-option select {
-    width: 100%;
+    /* width: 100%; */
     padding: 10px 16px;
     outline: none;
     border: none;

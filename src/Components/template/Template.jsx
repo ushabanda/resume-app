@@ -20,9 +20,9 @@ import EditIcon from "@mui/icons-material/Edit";
 import Tooltip from "@mui/material/Tooltip";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import InputMask from 'react-input-mask';
+import InputMask from "react-input-mask";
 
-import { PDFExport} from "@progress/kendo-react-pdf";
+import { PDFExport } from "@progress/kendo-react-pdf";
 
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
 import { arrayMoveImmutable } from "array-move";
@@ -92,7 +92,7 @@ function Template() {
   const [selectedLinks, setSelectedLinks] = useState([]);
   const [selectedEdus, setSelectedEdus] = useState([]);
   const [selectedEmps, setSelectedEmps] = useState([]);
-  const [showMoreSkill, setShowMoreSkill] = useState();
+  const [showMoreSkill, setShowMoreSkill] = useState(false);
   const [showMoreLink, setShowMoreLink] = useState();
   const [showMoreEdu, setShowMoreEdu] = useState();
   const [showMoreEmp, setshowMoreEmp] = useState();
@@ -103,7 +103,8 @@ function Template() {
   const [showSkillsHeading, setShowSkillsHeading] = useState(false);
   const [showEdusHeading, setShowEdusHeading] = useState(false);
   const [skillName, setSkillName] = useState();
-  
+  const [skillList, setSkillList] = useState([{ skill: "", level: "" }]);
+
   const [state, setState] = useState({
     items: [
       {
@@ -182,13 +183,34 @@ function Template() {
     if (type === "education") {
       setShowMoreEdu(!showMoreEdu);
     } else if (type === "skill") {
-      setShowMoreSkill(!showMoreSkill);
+      setShowMoreSkill(true);
+
+      // const newSkill = document.getElementById("new_skill").value;
+      // const skillLevel = document.getElementById("skill_level").value;
+      // addSkill(selectedSkills, newSkill, skillLevel);
     } else if (type === "Websites and social links") {
       setShowMoreLink(!showMoreLink);
     } else if (type === "Employment History") {
       setshowMoreEmp(!showMoreEmp);
     }
   }
+
+  const addSkillList = () => {
+    setSkillList([...skillList, { skill: "", level: "" }]);
+  };
+
+  function removeSkill(index) {
+    const list = [...skillList];
+    list.splice(index, 1);
+    setSkillList(list);
+  }
+
+  const skillChange = (e, index) => {
+    const { name, value } = e.target;
+    const list = [...skillList];
+    list[index][name] = value;
+    setSkillList(list);
+  };
 
   function RenderedContent({ content }) {
     const sanitizedContent = DOMPurify.sanitize(content);
@@ -199,7 +221,7 @@ function Template() {
   function getSkillLevelClass(skillLevel) {
     switch (skillLevel) {
       case "Novice":
-        console.log('hello graph')
+        console.log("hello graph");
         return "1";
       case "Beginner":
         return "2";
@@ -213,7 +235,7 @@ function Template() {
         return "1"; // Default to Novice
     }
   }
-  
+
   function addSkill(selectedSkills, new_skill, skill_level) {
     if (new_skill) {
       const updatedSkills = [
@@ -222,11 +244,11 @@ function Template() {
       ];
       setSelectedSkills(updatedSkills);
     }
-    setSkillName()
+    setSkillName();
   }
 
   function handleSkill() {
-    console.log(document.getElementById("new_skill").value)
+    console.log(document.getElementById("new_skill").value);
     setSkillName(document.getElementById("new_skill").value);
   }
 
@@ -281,7 +303,6 @@ function Template() {
       setSelectedEmps(updatedEmp);
     }
   }
-
 
   // const handleSelectLink = (selectedLink) => {
   //   setState((prevState) => ({
@@ -398,25 +419,42 @@ function Template() {
           </div>
           {showMoreSkill && (
             <div className="more-skill skill">
-              <div className="skill-left-option">
-                <input placeholder="Enter Skill" id="new_skill" value={skillName} onBlur={handleSkill}/>
-                <select id="skill_level">
-                  <option value="Novice">Novice</option>
-                  <option value="Beginner">Beginner</option>
-                  <option value="Skillful">Skillful</option>
-                  <option value="Experienced">Experienced</option>
-                  <option value="Expert">Expert</option>
-                </select>
-              </div>
+              {skillList.map((skillData, index) => (
+                <div className="skill-container">
+                  <div key={index} className="skill-left-option">
+                    <input
+                      placeholder="Enter Skill"
+                      id="new_skill"
+                      // value={skillName} 
+                      // onBlur={handleSkill}
+                      onChange={(e) => skillChange(e, index)}
+                      value={skillData.skill}
+                    />
+                    <select
+                      id="skill_level"
+                      onChange={(e) => skillChange(e, index)}
+                    >
+                      <option value="1">Level 1</option>
+                      <option value="2">Level 2</option>
+                      <option value="3">Level 3</option>
+                      <option value="4">Level 4</option>
+                      <option value="5">Level 5</option>
+                    </select>
+
+                    <div className="skill-remover">
+                        <button
+                          type="button"
+                          onClick={() => removeSkill(index)}
+                          className="remove-btn"
+                        >
+                          Remove
+                        </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
               <div className="skill-button">
-                <button
-                  className="add"
-                  onClick={() => {
-                    const newSkill = document.getElementById("new_skill").value;
-                    const skillLevel = document.getElementById("skill_level").value;
-                    addSkill(selectedSkills, newSkill, skillLevel);
-                  }}
-                >
+                <button className="add" onClick={addSkillList}>
                   Add
                 </button>
               </div>
@@ -435,7 +473,7 @@ function Template() {
           </div>
         </div>
       )}
- 
+
       {value["label"] == "education" && (
         <div>
           <div className="edu-list">
@@ -519,7 +557,7 @@ function Template() {
             </ul>
           </div>
         </div>
-      )} 
+      )}
 
       {value["label"] === "Websites and social links" && (
         <div>
@@ -555,7 +593,7 @@ function Template() {
           )}
         </div>
       )}
- 
+
       {value["label"] == "Employment History" && (
         <div>
           <div className="skill-list">
@@ -622,7 +660,7 @@ function Template() {
             </div>
           )}
         </div>
-      )} 
+      )}
 
       <button
         className="add-extra"
@@ -1130,7 +1168,7 @@ function Template() {
               <PDFExport
                 scale={1.1}
                 paperSize="A4"
-                margin="2cm"
+                // margin="2cm"
                 ref={pdfExportComponent}
                 // keepTogether="p"
                 margin={{ top: 20, left: 10, right: 10, bottom: 2 }}
@@ -1192,12 +1230,16 @@ function Template() {
                                   // <li key={index}>
                                   //   {skill.skill_type} - {skill.level}
                                   // </li>
-                                  <div key={skill.index} className="selected-skill">
+                                  <div
+                                    key={skill.index}
+                                    className="selected-skill"
+                                  >
                                     <div
-                                      className={`skill-level-${getSkillLevelClass(skill.level)}`}
+                                      className={`skill-level-${getSkillLevelClass(
+                                        skill.level
+                                      )}`}
                                     ></div>
-                                    <span >{skill.skill_type}</span>
-                                    
+                                    <span>{skill.skill_type}</span>
                                   </div>
                                 ))}
                               </div>
