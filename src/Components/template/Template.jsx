@@ -200,22 +200,16 @@ function Template() {
       case "Novice":
         console.log('hello graph')
         return "1";
-        break;
       case "Beginner":
         return "2";
-        break;
       case "Skillful":
         return "3";
-        break;
       case "Experienced":
         return "4";
-        break;
       case "Expert":
         return "5";
-        break;
       default:
         return "1"; // Default to Novice
-        break;
     }
   }
   
