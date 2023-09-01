@@ -20,6 +20,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import Tooltip from "@mui/material/Tooltip";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import InputMask from 'react-input-mask';
 
 import { PDFExport} from "@progress/kendo-react-pdf";
 
@@ -172,10 +173,10 @@ function Template() {
     setSelectedSkills(newSkills);
   };
 
-  // const handleDeleteEdu = (index) => {
-  //   const newEdus = selectedEdus.filter((_, i) => i !== index);
-  //   setSelectedEdus(newEdus);
-  // };
+  const handleDeleteEdu = (index) => {
+    const newEdus = selectedEdus.filter((_, i) => i !== index);
+    setSelectedEdus(newEdus);
+  };
 
   function addMore(type) {
     if (type === "education") {
@@ -229,26 +230,26 @@ function Template() {
     setSkillName(document.getElementById("new_skill").value);
   }
 
-  // function addEducation(
-  //   selectedEdus,
-  //   new_edu,
-  //   new_degree,
-  //   new_city,
-  //   edu_ckedit
-  // ) {
-  //   if (new_edu) {
-  //     const updatedEdu = [
-  //       ...selectedEdus,
-  //       {
-  //         edu_type: new_edu,
-  //         edu_degree: new_degree,
-  //         edu_city: new_city,
-  //         edu_ckedit: edu_ckedit,
-  //       },
-  //     ];
-  //     setSelectedEdus(updatedEdu);
-  //   }
-  // }
+  function addEducation(
+    selectedEdus,
+    new_edu,
+    new_degree,
+    new_city,
+    edu_ckedit
+  ) {
+    if (new_edu) {
+      const updatedEdu = [
+        ...selectedEdus,
+        {
+          edu_type: new_edu,
+          edu_degree: new_degree,
+          edu_city: new_city,
+          edu_ckedit: edu_ckedit,
+        },
+      ];
+      setSelectedEdus(updatedEdu);
+    }
+  }
 
   function addSocialLink(setSelectedLinks, new_link, link_label) {
     if (new_link) {
@@ -260,26 +261,26 @@ function Template() {
     }
   }
 
-  // function addEmployment(
-  //   selectedEmps,
-  //   new_emp,
-  //   new_employer,
-  //   emp_city,
-  //   job_ckedit
-  // ) {
-  //   if (new_emp) {
-  //     const updatedEmp = [
-  //       ...selectedEmps,
-  //       {
-  //         emp_type: new_emp,
-  //         emp_level: new_employer,
-  //         emp_city: emp_city,
-  //         job_ckedit: job_ckedit,
-  //       },
-  //     ];
-  //     setSelectedEmps(updatedEmp);
-  //   }
-  // }
+  function addEmployment(
+    selectedEmps,
+    new_emp,
+    new_employer,
+    emp_city,
+    job_ckedit
+  ) {
+    if (new_emp) {
+      const updatedEmp = [
+        ...selectedEmps,
+        {
+          emp_type: new_emp,
+          emp_level: new_employer,
+          emp_city: emp_city,
+          job_ckedit: job_ckedit,
+        },
+      ];
+      setSelectedEmps(updatedEmp);
+    }
+  }
 
 
   // const handleSelectLink = (selectedLink) => {
@@ -310,27 +311,27 @@ function Template() {
   //   setShowSkillsHeading(true);
   // }
 
-  // const handleAddEducation = (
-  //   edu_type,
-  //   new_edu,
-  //   edu_degree,
-  //   new_degree,
-  //   edu_city,
-  //   new_city,
-  //   edu_ckedit
-  // ) => {
-  //   if (edu_type)
-  //     setSelectedSkills((prevSkills) => [
-  //       ...prevSkills,
-  //       {
-  //         edu_type: new_edu,
-  //         edu_degree: new_degree,
-  //         edu_city: new_city,
-  //         edu_ckedit: edu_ckedit,
-  //       },
-  //     ]);
-  //   setShowEdusHeading(true);
-  // };
+  const handleAddEducation = (
+    edu_type,
+    new_edu,
+    edu_degree,
+    new_degree,
+    edu_city,
+    new_city,
+    edu_ckedit
+  ) => {
+    if (edu_type)
+      setSelectedSkills((prevSkills) => [
+        ...prevSkills,
+        {
+          edu_type: new_edu,
+          edu_degree: new_degree,
+          edu_city: new_city,
+          edu_ckedit: edu_ckedit,
+        },
+      ]);
+    setShowEdusHeading(true);
+  };
 
   // const splitContentIntoPages = (content) => {
   //   const pageHeight = '800px'; // Define the height of each page
@@ -434,7 +435,7 @@ function Template() {
           </div>
         </div>
       )}
-{/* 
+ 
       {value["label"] == "education" && (
         <div>
           <div className="edu-list">
@@ -518,7 +519,7 @@ function Template() {
             </ul>
           </div>
         </div>
-      )} */}
+      )} 
 
       {value["label"] === "Websites and social links" && (
         <div>
@@ -554,7 +555,7 @@ function Template() {
           )}
         </div>
       )}
-{/* 
+ 
       {value["label"] == "Employment History" && (
         <div>
           <div className="skill-list">
@@ -621,7 +622,7 @@ function Template() {
             </div>
           )}
         </div>
-      )} */}
+      )} 
 
       <button
         className="add-extra"
