@@ -21,11 +21,41 @@ import Tooltip from "@mui/material/Tooltip";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import InputMask from "react-input-mask";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+// import Dropzone from 'react-dropzone';
 
 import { PDFExport } from "@progress/kendo-react-pdf";
 
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
 import { arrayMoveImmutable } from "array-move";
+import Calendar from "../Calendar/Calendar";
+
+const Data = [
+  {
+    id: "01",
+    name: "Employment History",
+    description:
+      "Show your relevent experince (last 10 years). use bullet points to note your achievments,if possible use numbers/facts(Achieved X, measured by Y, by doing Z)",
+  },
+  {
+    id: "02",
+    name: "Education",
+    description:
+      "A varied education on your resume sums up the value that your learnings and background will bring to job",
+  },
+  {
+    id: "03",
+    name: "Website & Social Links",
+    description:
+      "You can add links to websites you want hiring managers to see! Perhaps it will be a link to your portfolio,LinkedIn profile or personal website",
+  },
+  {
+    id: "04",
+    name: "Skills",
+    description:
+      "Choose 5 important skills that show you fit the position. Make sure they match the key skills mentioned in the job listing(especially when applying via an online system)",
+  },
+];
 
 function Template() {
   // Remove a few plugins from the default setup.
@@ -104,42 +134,175 @@ function Template() {
   const [showEdusHeading, setShowEdusHeading] = useState(false);
   const [skillName, setSkillName] = useState();
   const [skillList, setSkillList] = useState([{ skill: "", level: "" }]);
+  const [store, setStores] = useState(Data);
 
-  const [state, setState] = useState({
-    items: [
-      {
-        label: "education",
-        label_value: "Education Details",
-        data: [],
-        description:
-          "A varied education on your resume sums up the value that your learnings and background will bring to job",
-      },
+  // const Data = [
+  //   {
+  //     label: "education",
+  //     label_value: "Education Details",
+  //     description:
+  //       "A varied education on your resume sums up the value that your learnings and background will bring to job",
+  //   },
 
-      {
-        label: "Websites and social links",
-        label_value: "social profile Details",
-        data: [],
-        description: `You can add links to websites you want hiring managers to see! 
-        Perhaps It will be  a link to your portfolio, LinkedIn profile, or personal website`,
-      },
+  //   {
+  //     label: "Websites and social links",
+  //     label_value: "social profile Details",
+  //     description: `You can add links to websites you want hiring managers to see!
+  //     Perhaps It will be  a link to your portfolio, LinkedIn profile, or personal website`,
+  //   },
 
-      {
-        label: "Employment History",
-        label_value: "Employment Details",
-        data: [],
-        description: `Show your relevant experience (last 10 years). 
-        Use bullet points to note your achievements, if possible - use numbers/facts (Achieved X, measured by Y, by doing Z).`,
-      },
+  //   {
+  //     label: "Employment History",
+  //     label_value: "Employment Details",
+  //     description: `Show your relevant experience (last 10 years).
+  //     Use bullet points to note your achievements, if possible - use numbers/facts (Achieved X, measured by Y, by doing Z).`,
+  //   },
 
-      {
-        label: "skill",
-        label_value: "skill Details",
-        data: [],
-        description:
-          "Choose 5 important skills that show you fit the position. Make sure they match the key skills mentioned in the job listing (especially when applying via an online system).",
-      },
-    ],
-  });
+  //   {
+  //     label: "skill",
+  //     label_value: "skill Details",
+  //     description:
+  //       "Choose 5 important skills that show you fit the position. Make sure they match the key skills mentioned in the job listing (especially when applying via an online system).",
+  //   },
+  // ]
+
+  const handleDragDrop = (results) => {
+    const { source, destination, type } = results;
+
+    if (!destination) return;
+    if (
+      source.droppableId === destination.droppableId &&
+      source.index === destination.index
+    )
+      return;
+
+    if (type === "group") {
+      const reorderedStores = [...store];
+
+      const sourceindex = source.index;
+      const destinationindex = destination.index;
+
+      const [removedStore] = reorderedStores.splice(sourceindex, 1);
+      reorderedStores.splice(destinationindex, 0, removedStore);
+
+      return setStores(reorderedStores);
+    }
+  };
+
+  // ======  End of Employment History code  =========
+
+  const [objects, setObjects] = useState([]);
+
+  const createObject = () => {
+    const newObject = {
+      id: objects.length + 1,
+      input1: "",
+      input2: "",
+      input3: "",
+      input4: "",
+      input5: "",
+    };
+    setObjects([...objects, newObject]);
+  };
+
+  const handleInputChange = (e, objectId, inputName) => {
+    const updatedObjects = objects.map((object) => {
+      if (object.id === objectId) {
+        return { ...object, [inputName]: e.target.value };
+      }
+      return object;
+    });
+    setObjects(updatedObjects);
+  };
+
+  const deleteObject = (objectId) => {
+    const updatedObjects = objects.filter((object) => object.id !== objectId);
+    setObjects(updatedObjects);
+  };
+  // ======  End of Employment History code  =========
+
+  // ======  Start of Education code  =========
+
+  const [education, seteducation] = useState([]);
+
+  const createeducation = () => {
+    const newObject = {
+      id: education.length + 1,
+      input1: "",
+      input2: "",
+      input3: "",
+      input4: "",
+      input5: "",
+    };
+    seteducation([...education, newObject]);
+  };
+
+  const handleInputedu = (e, objectId, inputName) => {
+    const updatedObjects = education.map((object) => {
+      if (object.id === objectId) {
+        return { ...object, [inputName]: e.target.value };
+      }
+      return object;
+    });
+    seteducation(updatedObjects);
+  };
+
+  const deleteedu = (objectId) => {
+    const updatedObjects = education.filter((object) => object.id !== objectId);
+    seteducation(updatedObjects);
+  };
+  // ======  End of Education code  =========
+
+  // ======  Start of website code  =========
+
+  const [website, setwebsite] = useState([]);
+
+  const createweb = () => {
+    const newObject = { id: website.length + 1, input1: "", input2: "" };
+    setwebsite([...website, newObject]);
+  };
+
+  const handleInputweb = (e, objectId, inputName) => {
+    const updatedObjects = website.map((object) => {
+      if (object.id === objectId) {
+        return { ...object, [inputName]: e.target.value };
+      }
+      return object;
+    });
+    setwebsite(updatedObjects);
+  };
+
+  const deleteweb = (objectId) => {
+    const updatedObjects = website.filter((object) => object.id !== objectId);
+    setwebsite(updatedObjects);
+  };
+  // ======  End of website code  =========
+
+  //  ======  Start of skill code  =========
+
+  const [skill, setskill] = useState([]);
+
+  const createskill = () => {
+    const newObject = { id: skill.length + 1, input1: "", input2: "" };
+    setskill([...skill, newObject]);
+  };
+
+  const handleInputskill = (e, objectId, inputName) => {
+    const updatedObjects = skill.map((object) => {
+      if (object.id === objectId) {
+        return { ...object, [inputName]: e.target.value };
+      }
+      return object;
+    });
+    setskill(updatedObjects);
+  };
+
+  const deleteskill = (objectId) => {
+    const updatedObjects = skill.filter((object) => object.id !== objectId);
+    setskill(updatedObjects);
+  };
+
+  //  ======  End of skill code  =========
 
   const inputRef = useRef(null);
 
@@ -184,7 +347,7 @@ function Template() {
       setShowMoreEdu(!showMoreEdu);
     } else if (type === "skill") {
       setShowMoreSkill(true);
-
+      // addSkillList()
       // const newSkill = document.getElementById("new_skill").value;
       // const skillLevel = document.getElementById("skill_level").value;
       // addSkill(selectedSkills, newSkill, skillLevel);
@@ -205,12 +368,34 @@ function Template() {
     setSkillList(list);
   }
 
-  const skillChange = (e, index) => {
-    const { name, value } = e.target;
+  function skillChange(e, index) {
+    let skillName = e.target.value;
+    let labelValue = e.target.value;
+
     const list = [...skillList];
-    list[index][name] = value;
+    list[index]["skill"] = skillName;
+    list[index]["level"] = labelValue;
     setSkillList(list);
-  };
+  }
+
+  function setSkillLevel(e, index) {
+    let labelValue = e.target.value;
+
+    const list = [...skillList];
+    list[index]["level"] = labelValue;
+    setSkillList(list);
+  }
+
+  function setSkillValue(e, index) {
+    e.preventDefault();
+    let skillName = e.target.value;
+
+    let list = [...skillList];
+    list[index]["skill"] = skillName;
+    setSkillList(list);
+    console.log(index);
+    console.log(list);
+  }
 
   function RenderedContent({ content }) {
     const sanitizedContent = DOMPurify.sanitize(content);
@@ -419,20 +604,24 @@ function Template() {
           </div>
           {showMoreSkill && (
             <div className="more-skill skill">
-              {skillList.map((skillData, index) => (
+              {skillList.map((skillData, skillIndex) => (
                 <div className="skill-container">
-                  <div key={index} className="skill-left-option">
+                  <div key={skillIndex} className="skill-left-option">
                     <input
                       placeholder="Enter Skill"
-                      id="new_skill"
-                      // value={skillName} 
+                      id={"new_skill" + skillIndex}
+                      key={skillIndex}
+                      value={skillList[skillIndex]["skill"]}
+                      onChange={(e) => setSkillValue(e, skillIndex)}
+                      // value={skillName}
                       // onBlur={handleSkill}
-                      onChange={(e) => skillChange(e, index)}
-                      value={skillData.skill}
+                      // onChange={(e) => skillChange(e, index)}
+                      // value={skillData.skill}
                     />
                     <select
                       id="skill_level"
-                      onChange={(e) => skillChange(e, index)}
+                      value={skillData.level}
+                      onChange={(e) => setSkillLevel(e, skillIndex)}
                     >
                       <option value="1">Level 1</option>
                       <option value="2">Level 2</option>
@@ -442,13 +631,13 @@ function Template() {
                     </select>
 
                     <div className="skill-remover">
-                        <button
-                          type="button"
-                          onClick={() => removeSkill(index)}
-                          className="remove-btn"
-                        >
-                          Remove
-                        </button>
+                      <button
+                        type="button"
+                        onClick={() => removeSkill(skillIndex)}
+                        className="remove-btn"
+                      >
+                        Remove
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -668,7 +857,7 @@ function Template() {
           addMore(value["label"]);
         }}
       >
-        + Add {value["label"]}
+        + Add more {value["label"]}
       </button>
     </div>
   ));
@@ -687,11 +876,11 @@ function Template() {
     );
   });
 
-  const sortEnd = ({ oldIndex, newIndex }) => {
-    setState({
-      items: arrayMoveImmutable(state.items, oldIndex, newIndex),
-    });
-  };
+  // const sortEnd = ({ oldIndex, newIndex }) => {
+  //   setState({
+  //     items: arrayMoveImmutable(state.items, oldIndex, newIndex),
+  //   });
+  // };
 
   return (
     <div className="resume-builder">
@@ -1154,7 +1343,390 @@ function Template() {
                 </div> */}
 
                 <div className="drag-drop-fields">
-                  <SortableList items={state.items} onSortEnd={sortEnd} />
+                  <DragDropContext onDragEnd={handleDragDrop}>
+                    <div>
+                      <Droppable droppableId="Root" type="group">
+                        {(provided) => (
+                          <div
+                            {...provided.droppableProps}
+                            ref={provided.innerRef}
+                          >
+                            {store.map((store, index) => (
+                              <Draggable
+                                draggableId={store.id}
+                                key={store.id}
+                                index={index}
+                              >
+                                {(provided) => (
+                                  <div
+                                    {...provided.dragHandleProps}
+                                    {...provided.draggableProps}
+                                    ref={provided.innerRef}
+                                  >
+                                    <h3>{store.name}</h3>
+                                    <p>{store.description}</p>
+                                    {store.name === "Employment History" ? (
+                                      <div>
+                                        {objects.map((object) => (
+                                          <div key={object.id}>
+                                            <div className="emp-main">
+                                              <div className="left-title">
+                                                <div className="left-job_title-container">
+                                                  <div>
+                                                    <input
+                                                      type="text"
+                                                      value={object.input1}
+                                                      className="left-job-input"
+                                                      placeholder="Enter Job-Title"
+                                                      onChange={(e) =>
+                                                        handleInputChange(
+                                                          e,
+                                                          object.id,
+                                                          "input1"
+                                                        )
+                                                      }
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <div className="left-job_title-container">
+                                                  <input
+                                                    type="text"
+                                                    value={object.input2}
+                                                    className="left-job-input"
+                                                    placeholder="Enter Employer"
+                                                    onChange={(e) =>
+                                                      handleInputChange(
+                                                        e,
+                                                        object.id,
+                                                        "input2"
+                                                      )
+                                                    }
+                                                  />
+                                                </div>
+                                              </div>
+                                              <div className="left-date-city-box">
+                                                <div className="left-job_title-container">
+                                                  <Calendar />
+                                                </div>
+                                                <div className="left-job_title-container">
+                                                  <input
+                                                    type="text"
+                                                    value={object.input3}
+                                                    className="left-job-input"
+                                                    placeholder="Enter City"
+                                                    onChange={(e) =>
+                                                      handleInputChange(
+                                                        e,
+                                                        object.id,
+                                                        "input3"
+                                                      )
+                                                    }
+                                                  />
+                                                </div>
+                                              </div>
+                                              <div className="left-emp-editor-box">
+                                                <div className="left-emp-editor">
+                                                  <CKEditor
+                                                    editor={ClassicEditor}
+                                                    data={job_summary}
+                                                    id="job_ckedit"
+                                                    onReady={(editor) => {
+                                                      console.log(
+                                                        "CKEditor5 React Component is ready to use!",
+                                                        editor
+                                                      );
+                                                    }}
+                                                    onChange={(
+                                                      event,
+                                                      editor
+                                                    ) => {
+                                                      // console.log({ event, editor, editor.getData() });
+                                                      console.log(
+                                                        setjob_summary(
+                                                          editor.getData()
+                                                        )
+                                                      );
+                                                    }}
+                                                  />
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div>
+                                              <button
+                                                onClick={() =>
+                                                  deleteObject(object.id)
+                                                }
+                                                className="btn btn-primary"
+                                              >
+                                                Delete
+                                              </button>
+                                            </div>
+                                          </div>
+                                        ))}
+                                        <button
+                                          onClick={createObject}
+                                          className="left-emp-repeate"
+                                        >
+                                          {" "}
+                                          + Add Employment
+                                        </button>
+                                      </div>
+                                    ) : (
+                                      <span></span>
+                                    )}
+
+                                    {/* Education */}
+
+                                    {store.name === "Education" ? (
+                                      <div>
+                                        {education.map((object) => (
+                                          <div key={object.id}>
+                                            <div className="emp-main">
+                                              <div className="left-education">
+                                                <div className="left-scl_deg-container">
+                                                  <div>
+                                                    <input
+                                                      type="text"
+                                                      value={object.input1}
+                                                      className="left-scl-input"
+                                                      placeholder="Enter School"
+                                                      onChange={(e) =>
+                                                        handleInputedu(
+                                                          e,
+                                                          object.id,
+                                                          "input1"
+                                                        )
+                                                      }
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <div className="left-scl_deg-container">
+                                                  <input
+                                                    type="text"
+                                                    value={object.input2}
+                                                    className="left-scl-input"
+                                                    placeholder="Enter Degree"
+                                                    onChange={(e) =>
+                                                      handleInputedu(
+                                                        e,
+                                                        object.id,
+                                                        "input2"
+                                                      )
+                                                    }
+                                                  />
+                                                </div>
+                                              </div>
+
+                                              <div className="left-date-city-box">
+                                                <div className="left-scl_deg-container">
+                                                  <Calendar />
+                                                </div>
+                                                <div className="left-scl_deg-container">
+                                                  <input
+                                                    type="text"
+                                                    value={object.input3}
+                                                    className="left-scl-input"
+                                                    placeholder="Enter City"
+                                                    onChange={(e) =>
+                                                      handleInputedu(
+                                                        e,
+                                                        object.id,
+                                                        "input3"
+                                                      )
+                                                    }
+                                                  />
+                                                </div>
+                                              </div>
+                                              <div className="left-edu-editor-box">
+                                                <div className="left-edu-editor">
+                                                  <CKEditor
+                                                    editor={ClassicEditor}
+                                                    data={education_summary}
+                                                    id="job_ckedit"
+                                                    onReady={(editor) => {
+                                                      console.log(
+                                                        "CKEditor5 React Component is ready to use!",
+                                                        editor
+                                                      );
+                                                    }}
+                                                    onChange={(
+                                                      event,
+                                                      editor
+                                                    ) => {
+                                                      // console.log({ event, editor, editor.getData() });
+                                                      console.log(
+                                                        seteducation_summary(
+                                                          editor.getData()
+                                                        )
+                                                      );
+                                                    }}
+                                                  />
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div>
+                                              <button
+                                                onClick={() =>
+                                                  deleteedu(object.id)
+                                                }
+                                                className="btn btn-primary"
+                                              >
+                                                Delete
+                                              </button>
+                                            </div>
+                                          </div>
+                                        ))}
+                                        <button
+                                          onClick={createeducation}
+                                          className="left-edu-repeate"
+                                        >
+                                          {" "}
+                                          + Add education
+                                        </button>
+                                      </div>
+                                    ) : (
+                                      <span></span>
+                                    )}
+                                    {/* Website */}
+
+                                    {store.name === "Website & Social Links" ? (
+                                      <div>
+                                        {website.map((object) => (
+                                          <div key={object.id}>
+                                            <div className="emp-main">
+                                              <div className="left-social-container">
+                                                <div className="left_social">
+                                                  <input
+                                                    type="text"
+                                                    value={object.input1}
+                                                    className="left-label-input"
+                                                    placeholder="Enter Label"
+                                                    onChange={(e) =>
+                                                      handleInputweb(
+                                                        e,
+                                                        object.id,
+                                                        "input1"
+                                                      )
+                                                    }
+                                                  />
+                                                </div>
+                                                <div className="left_social">
+                                                  <input
+                                                    type="text"
+                                                    value={object.input2}
+                                                    className="left-label-input"
+                                                    placeholder="Enter Link"
+                                                    onChange={(e) =>
+                                                      handleInputweb(
+                                                        e,
+                                                        object.id,
+                                                        "input2"
+                                                      )
+                                                    }
+                                                  />
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div>
+                                              <button
+                                                onClick={() =>
+                                                  deleteweb(object.id)
+                                                }
+                                                className="btn btn-primary"
+                                              >
+                                                Delete
+                                              </button>
+                                            </div>
+                                          </div>
+                                        ))}
+                                        <button
+                                          onClick={createweb}
+                                          className="left-social-repeate"
+                                        >
+                                          {" "}
+                                          + Add Link
+                                        </button>
+                                      </div>
+                                    ) : (
+                                      <span></span>
+                                    )}
+
+                                    {/* Code for skill */}
+                                    {store.name === "Skills" ? (
+                                      <div>
+                                        {skill.map((object) => (
+                                          <div key={object.id}>
+                                            <div className="emp-main">
+                                              <div className="left-skill-container">
+                                                <div className="left-skill">
+                                                  <input
+                                                    type="text"
+                                                    value={object.input1}
+                                                    className="left-skill-input"
+                                                    placeholder="Enter Skill"
+                                                    onChange={(e) =>
+                                                      handleInputskill(
+                                                        e,
+                                                        object.id,
+                                                        "input1"
+                                                      )
+                                                    }
+                                                  />
+                                                </div>
+                                                <div className="left-skill">
+                                                  <select className="left-skill-input">
+                                                    <option value="1">
+                                                      Level 1
+                                                    </option>
+                                                    <option value="2">
+                                                      Level 2
+                                                    </option>
+                                                    <option value="3">
+                                                      Level 3
+                                                    </option>
+                                                    <option value="4">
+                                                      Level 4
+                                                    </option>
+                                                    <option value="5">
+                                                      Level 5
+                                                    </option>
+                                                  </select>
+                                                </div>
+                                                <div>
+                                                  <button
+                                                    onClick={() =>
+                                                      deleteskill(object.id)
+                                                    }
+                                                    className="btn btn-primary skill-delete"
+                                                  >
+                                                    Delete
+                                                  </button>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        ))}
+                                        <button
+                                          onClick={createskill}
+                                          className="left-skill-repeate"
+                                        >
+                                          {" "}
+                                          + Add more skill
+                                        </button>
+                                      </div>
+                                    ) : (
+                                      <span></span>
+                                    )}
+                                    <div></div>
+                                  </div>
+                                )}
+                              </Draggable>
+                            ))}
+                          </div>
+                        )}
+                      </Droppable>
+                    </div>
+                  </DragDropContext>
                 </div>
               </div>
             </div>
@@ -1218,7 +1790,7 @@ function Template() {
                       </p>
                     </div>
                   </div>
-                  <div className="row">
+                  {/* <div className="row">
                     <div className="col-4 skill-links">
                       <ul>
                         {state.items.map((item, ind) => (
@@ -1268,9 +1840,9 @@ function Template() {
                                   <div className="education-content">
                                     <div className="edu-basic-info">
                                       <p key={index}>{edu.edu_degree}</p>
-                                      <p key={index}>{edu.edu_type}</p>
-                                      <p key={index}>{edu.edu_city}</p>
                                     </div>
+                                    <p key={index}>{edu.edu_type}</p>
+                                    <p key={index}>{edu.edu_city}</p>
                                     <p key={edu.index}>
                                       <RenderedContent
                                         content={education_summary}
@@ -1290,9 +1862,9 @@ function Template() {
                                     <div className="emp-basic-info">
                                       <p key={index}> {emp.emp_type}</p>
                                       <p key={index}> {emp.emp_level}</p>
-                                      <p key={index}> {emp.emp_city}</p>
                                     </div>
-                                    <p key={emp.index}>
+                                    <p key={index}> {emp.emp_city}</p>
+                                    <p className key={emp.index}>
                                       <RenderedContent content={job_summary} />
                                       {emp.job_ckedit}
                                     </p>
@@ -1304,7 +1876,7 @@ function Template() {
                         ))}
                       </ul>
                     </div>
-                  </div>
+                  </div> */}
 
                   {/* <div className="row">
                     <div className="col-5">

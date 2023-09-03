@@ -27,7 +27,7 @@ const Calendar = () => {
           endDate={endDate}
           className="fromda"
           placeholderText={"start Date"}
-          dateFormat={'dd/mm/yyyy'}
+          
           
         />
       </div>
