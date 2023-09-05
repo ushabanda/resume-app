@@ -251,6 +251,25 @@
     margin-bottom: 40px;
 }
 
+.personal ul,
+.right-skill-box li{
+    list-style-type:none;
+    padding:0;
+    margin:0;
+}
+
+.left-emp-btn,
+.left-edu-btn{
+    margin-bottom: 20px;
+}
+
+.store-heading{
+    font-size: 23px;
+    font-weight: 600;
+}
+.right-skill-box li{
+    line-height: 20px;
+}
 .details-heading-content {
     display: flex;
     flex-flow: row;
@@ -843,10 +862,15 @@ font-weight: 700;
     text-align: center;
 }
 
+.right-skill-box{
+margin-bottom: 30px;
+}
+
 .edu-emp h6,
 .skill-links h6{
 font-size: 10px;
 font-weight: 700;
+
 }
 
 .edu-emp ul{
@@ -991,5 +1015,28 @@ text-align: center;
   }
     
 .skill-delete{
-    margin-bottom: 30px;
+    margin-bottom: 0px;
+}
+
+.right-emp-date{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.right-emp-box p,
+.right-emp-box span{
+    padding:0;
+    margin:2px 0;
+    margin-right: 2px;
+    text-align:justify;
+
+}
+
+.right-emp-city{
+    display: flex;
+    font-weight: 600;
+}
+
+.right-emp-role{
+    font-weight: 600;
 }

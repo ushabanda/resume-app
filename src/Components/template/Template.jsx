@@ -26,9 +26,9 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 import { PDFExport } from "@progress/kendo-react-pdf";
 
-import { SortableContainer, SortableElement } from "react-sortable-hoc";
-import { arrayMoveImmutable } from "array-move";
-import Calendar from "../Calendar/Calendar";
+import "../Calendar/calendar.styles.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const Data = [
   {
@@ -191,33 +191,35 @@ function Template() {
 
   // ======  End of Employment History code  =========
 
-  const [objects, setObjects] = useState([]);
+  const [empHistory, setempHistory] = useState([]);
 
   const createObject = () => {
     const newObject = {
-      id: objects.length + 1,
+      id: empHistory.length + 1,
       input1: "",
       input2: "",
       input3: "",
       input4: "",
       input5: "",
     };
-    setObjects([...objects, newObject]);
+    setempHistory([...empHistory, newObject]);
   };
 
   const handleInputChange = (e, objectId, inputName) => {
-    const updatedObjects = objects.map((object) => {
+    const updatedempHistory = empHistory.map((object) => {
       if (object.id === objectId) {
         return { ...object, [inputName]: e.target.value };
       }
       return object;
     });
-    setObjects(updatedObjects);
+    setempHistory(updatedempHistory);
   };
 
   const deleteObject = (objectId) => {
-    const updatedObjects = objects.filter((object) => object.id !== objectId);
-    setObjects(updatedObjects);
+    const updatedObjects = empHistory.filter(
+      (object) => object.id !== objectId
+    );
+    setempHistory(updatedObjects);
   };
   // ======  End of Employment History code  =========
 
@@ -263,6 +265,7 @@ function Template() {
   };
 
   const handleInputweb = (e, objectId, inputName) => {
+    console.log(objectId);
     const updatedObjects = website.map((object) => {
       if (object.id === objectId) {
         return { ...object, [inputName]: e.target.value };
@@ -539,348 +542,27 @@ function Template() {
     setShowEdusHeading(true);
   };
 
-  // const splitContentIntoPages = (content) => {
-  //   const pageHeight = '800px'; // Define the height of each page
-  //   const pages = [];
+  const [empStartDate, setEmpStartDate] = useState();
+  const [empEndDate, setEmpEndDate] = useState();
 
-  //   let currentPage = [];
-  //   let currentPageHeight = 0;
+  const [eduStartDate, setEduStartDate] = useState();
+  const [eduEndDate, setEduEndDate] = useState();
 
-  //   for (const section of content) {
-  //     const sectionHeight = '85vh';
+  const handleEduStartDateChange = (date) => {
+    setEduStartDate(date);
+  };
 
-  //     // Check if adding the section will exceed the page height
-  //     if (currentPageHeight + sectionHeight > parseInt(pageHeight)) {
-  //       pages.push(currentPage);
-  //       currentPage = [section];
-  //       currentPageHeight = sectionHeight;
-  //     } else {
-  //       currentPage.push(section);
-  //       currentPageHeight += sectionHeight;
-  //     }
-  //   }
+  const handleEduEndDateChange = (date) => {
+    setEduEndDate(date);
+  };
 
-  //   // Push the last page
-  //   if (currentPage.length > 0) {
-  //     pages.push(currentPage);
-  //   }
+  const handleEmpStartDateChange = (date) => {
+    setEmpStartDate(date);
+  };
 
-  //   return pages.map((pageSections, index) => (
-  //     <div key={index} style={{ height: pageHeight, overflow: 'auto', pageBreakAfter: 'always' }}>
-  //       {pageSections.map((section, sectionIndex) => (
-  //         <div key={sectionIndex}>
-  //           {section}
-  //         </div>
-  //       ))}
-  //     </div>
-  //   ));
-  // };
-
-  const SortableItem = SortableElement(({ value }) => (
-    <div>
-      <br></br>
-      <div className="drag-content">
-        <div className="drag-icon-container">
-          <DragIndicatorIcon />
-        </div>
-        <h3>{value["label"]}</h3>
-        <EditIcon />
-      </div>
-
-      <div className="drag-para">
-        <p>{value["description"]}</p>
-      </div>
-
-      {value["label"] === "skill" && (
-        <div>
-          <div className="skill-list">
-            <ul>
-              {value["data"].map((skill, index) => (
-                <li key={skill.index}>
-                  <button>{skill["skill_type"]}</button>
-                </li>
-              ))}
-            </ul>
-          </div>
-          {showMoreSkill && (
-            <div className="more-skill skill">
-              {skillList.map((skillData, skillIndex) => (
-                <div className="skill-container">
-                  <div key={skillIndex} className="skill-left-option">
-                    <input
-                      placeholder="Enter Skill"
-                      id={"new_skill" + skillIndex}
-                      key={skillIndex}
-                      value={skillList[skillIndex]["skill"]}
-                      onChange={(e) => setSkillValue(e, skillIndex)}
-                      // value={skillName}
-                      // onBlur={handleSkill}
-                      // onChange={(e) => skillChange(e, index)}
-                      // value={skillData.skill}
-                    />
-                    <select
-                      id="skill_level"
-                      value={skillData.level}
-                      onChange={(e) => setSkillLevel(e, skillIndex)}
-                    >
-                      <option value="1">Level 1</option>
-                      <option value="2">Level 2</option>
-                      <option value="3">Level 3</option>
-                      <option value="4">Level 4</option>
-                      <option value="5">Level 5</option>
-                    </select>
-
-                    <div className="skill-remover">
-                      <button
-                        type="button"
-                        onClick={() => removeSkill(skillIndex)}
-                        className="remove-btn"
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-              <div className="skill-button">
-                <button className="add" onClick={addSkillList}>
-                  Add
-                </button>
-              </div>
-            </div>
-          )}
-          <div className="selected-skills-container">
-            <h6>Selected Skills</h6>
-            <ul>
-              {selectedSkills.map((skill, index) => (
-                <li key={skill.index}>
-                  {skill.skill_type} - {skill.level}
-                  <button onClick={() => handleDeleteSkill(index)}>X</button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      )}
-
-      {value["label"] == "education" && (
-        <div>
-          <div className="edu-list">
-            <ul>
-              {value["data"].map((edu, index) => (
-                <li key={index}>
-                  <button>{edu["edu_type"]}</button>
-                </li>
-              ))}
-            </ul>
-          </div>
-          {showMoreEdu && (
-            <div className="edu-skill skill">
-              <div className="edu-left-name">
-                <input placeholder="Enter School" id="new_edu" />
-                <input placeholder="Enter Degree" id="new_degree" />
-              </div>
-              <div className="edu-left-city">
-                <InputMask
-                  mask="99.99.9999"
-                  placeholder="start-date"
-                  id="edu-calendar"
-                  className="fromdate"
-                />
-                <InputMask
-                  mask="99.99.9999"
-                  placeholder="end-date"
-                  id="edu-calendar"
-                  className="todate"
-                />
-                <input placeholder="Enter City" id="new_city" />
-              </div>
-              <div className="education-ckeditor">
-                <CKEditor
-                  editor={ClassicEditor}
-                  data={education_summary}
-                  id="edu_ckedit"
-                  onReady={(editor) => {
-                    console.log(
-                      "CKEditor5 React Component is ready to use!",
-                      editor
-                    );
-                  }}
-                  onChange={(event, editor) => {
-                    // console.log({ event, editor, editor.getData() });
-                    console.log(seteducation_summary(editor.getData()));
-                  }}
-                />
-              </div>
-              <div className="skill-button">
-                <button
-                  className="edu-add"
-                  onClick={() => {
-                    const newEdu = document.getElementById("new_edu").value;
-                    const eduDegree =
-                      document.getElementById("new_degree").value;
-                    const eduCity = document.getElementById("new_city").value;
-                    // const eduCkedit= document.getElementById('edu_ckedit').value;
-                    addEducation(selectedEdus, newEdu, eduDegree, eduCity);
-                    {
-                      handleAddEducation();
-                    }
-                  }}
-                >
-                  Add
-                </button>
-              </div>
-            </div>
-          )}
-          <div className="selected-edus-container">
-            <h6>Selected Education History</h6>
-            <ul>
-              {selectedEdus.map((edu, index) => (
-                <li key={edu.index}>
-                  {edu.edu_degree}
-                  <span>at</span>
-                  {edu.edu_type} - {edu.level}
-                  <button onClick={() => handleDeleteEdu(index)}>X</button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      )}
-
-      {value["label"] === "Websites and social links" && (
-        <div>
-          <div className="link-list">
-            <ul>
-              {value["data"].map((link, index) => (
-                <li key={link.index}>
-                  <button>{link["link_type"]}</button>
-                </li>
-              ))}
-            </ul>
-          </div>
-          {showMoreLink && (
-            <div className="more-link skill">
-              <div className="link-left-input">
-                <input placeholder="Enter label" id="new_link" />
-                <input placeholder="Enter link" id="link_label" />
-              </div>
-              <div className="skill-button">
-                <button
-                  className="add"
-                  onClick={() => {
-                    const newLink = document.getElementById("new_link").value;
-                    const linkLevel =
-                      document.getElementById("link_label").value;
-                    addSocialLink(setSelectedLinks, newLink, linkLevel);
-                  }}
-                >
-                  Add
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-
-      {value["label"] == "Employment History" && (
-        <div>
-          <div className="skill-list">
-            <ul>
-              {value["data"].map((emp, index) => (
-                <li key={emp.index}>
-                  <button>{emp["emp_type"]}</button>
-                </li>
-              ))}
-            </ul>
-          </div>
-          {showMoreEmp && (
-            <div className="more-emp skill">
-              <div className="emp-left-input">
-                <input placeholder="Enter Job-title" id="new_emp" />
-                <input placeholder="Enter Employer" id="new_employer" />
-              </div>
-              <div className="edu-left-city">
-                <InputMask
-                  mask="99.99.9999"
-                  placeholder="start-date"
-                  id="edu-calendar"
-                  className="fromdate"
-                />
-                <InputMask
-                  mask="99.99.9999"
-                  placeholder="end-date"
-                  id="edu-calendar"
-                  className="todate"
-                />
-                <input placeholder="Enter City" id="emp_city" />
-              </div>
-              <div className="education-ckeditor">
-                <CKEditor
-                  editor={ClassicEditor}
-                  data={job_summary}
-                  id="job_ckedit"
-                  onReady={(editor) => {
-                    console.log(
-                      "CKEditor5 React Component is ready to use!",
-                      editor
-                    );
-                  }}
-                  onChange={(event, editor) => {
-                    // console.log({ event, editor, editor.getData() });
-                    console.log(setjob_summary(editor.getData()));
-                  }}
-                />
-              </div>
-              <div className="skill-button">
-                <button
-                  className="add"
-                  onClick={() => {
-                    const newEmp = document.getElementById("new_emp").value;
-                    const empLevel =
-                      document.getElementById("new_employer").value;
-                    const empCity = document.getElementById("emp_city").value;
-                    addEmployment(selectedEmps, newEmp, empLevel, empCity);
-                  }}
-                >
-                  Add
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-
-      <button
-        className="add-extra"
-        onClick={() => {
-          addMore(value["label"]);
-        }}
-      >
-        + Add more {value["label"]}
-      </button>
-    </div>
-  ));
-
-  const SortableList = SortableContainer(({ items }) => {
-    return (
-      <div>
-        <br></br>
-        <ul className="drag-body">
-          {items.map((value, index) => (
-            <SortableItem key={`item-${index}`} index={index} value={value} />
-          ))}
-        </ul>
-        <br></br>
-      </div>
-    );
-  });
-
-  // const sortEnd = ({ oldIndex, newIndex }) => {
-  //   setState({
-  //     items: arrayMoveImmutable(state.items, oldIndex, newIndex),
-  //   });
-  // };
+  const handleEmpEndDateChange = (date) => {
+    setEmpEndDate(date);
+  };
 
   return (
     <div className="resume-builder">
@@ -1363,11 +1045,11 @@ function Template() {
                                     {...provided.draggableProps}
                                     ref={provided.innerRef}
                                   >
-                                    <h3>{store.name}</h3>
+                                    <h3 className="store-heading">{store.name}</h3>
                                     <p>{store.description}</p>
                                     {store.name === "Employment History" ? (
                                       <div>
-                                        {objects.map((object) => (
+                                        {empHistory.map((object) => (
                                           <div key={object.id}>
                                             <div className="emp-main">
                                               <div className="left-title">
@@ -1406,19 +1088,51 @@ function Template() {
                                               </div>
                                               <div className="left-date-city-box">
                                                 <div className="left-job_title-container">
-                                                  <Calendar />
+                                                  <div className="calendar">
+                                                    <div className="fromdate">
+                                                      <DatePicker
+                                                        selected={empStartDate}
+                                                        onChange={
+                                                          handleEmpStartDateChange
+                                                        }
+                                                        selectsStart
+                                                        empStartDate={empStartDate}
+                                                        empEndDate={empEndDate}
+                                                        className="fromda"
+                                                        placeholderText={
+                                                          "start Date"
+                                                        }
+                                                      />
+                                                    </div>
+                                                    <div className="todate">
+                                                      <DatePicker
+                                                        selected={empEndDate}
+                                                        onChange={
+                                                          handleEmpEndDateChange
+                                                        }
+                                                        selectsEnd
+                                                        empStartDate={empStartDate}
+                                                        empEndDate={empEndDate}
+                                                        minDate={empStartDate}
+                                                        className="toda"
+                                                        placeholderText={
+                                                          "End Date"
+                                                        }
+                                                      />
+                                                    </div>
+                                                  </div>
                                                 </div>
                                                 <div className="left-job_title-container">
                                                   <input
                                                     type="text"
-                                                    value={object.input3}
+                                                    value={object.input5}
                                                     className="left-job-input"
                                                     placeholder="Enter City"
                                                     onChange={(e) =>
                                                       handleInputChange(
                                                         e,
                                                         object.id,
-                                                        "input3"
+                                                        "input5"
                                                       )
                                                     }
                                                   />
@@ -1456,7 +1170,7 @@ function Template() {
                                                 onClick={() =>
                                                   deleteObject(object.id)
                                                 }
-                                                className="btn btn-primary"
+                                                className="btn btn-primary left-emp-btn"
                                               >
                                                 Delete
                                               </button>
@@ -1519,24 +1233,57 @@ function Template() {
 
                                               <div className="left-date-city-box">
                                                 <div className="left-scl_deg-container">
-                                                  <Calendar />
+                                                  <div className="calendar">
+                                                    <div className="fromdate">
+                                                      <DatePicker
+                                                        selected={eduStartDate}
+                                                        onChange={
+                                                          handleEduStartDateChange
+                                                        }
+                                                        selectsStart
+                                                        eduStartDate={eduStartDate}
+                                                        eduEndDate={eduEndDate}
+                                                        className="fromda"
+                                                        placeholderText={
+                                                          "start Date"
+                                                        }
+                                                      />
+                                                    </div>
+                                                    <div className="todate">
+                                                      <DatePicker
+                                                        selected={eduEndDate}
+                                                        onChange={
+                                                          handleEduEndDateChange
+                                                        }
+                                                        selectsEnd
+                                                        eduStartDate={eduStartDate}
+                                                        eduEndDate={eduEndDate}
+                                                        minDate={eduStartDate}
+                                                        className="toda"
+                                                        placeholderText={
+                                                          "End Date"
+                                                        }
+                                                      />
+                                                    </div>
+                                                  </div>
                                                 </div>
                                                 <div className="left-scl_deg-container">
                                                   <input
                                                     type="text"
-                                                    value={object.input3}
+                                                    value={object.input5}
                                                     className="left-scl-input"
                                                     placeholder="Enter City"
                                                     onChange={(e) =>
                                                       handleInputedu(
                                                         e,
                                                         object.id,
-                                                        "input3"
+                                                        "input5"
                                                       )
                                                     }
                                                   />
                                                 </div>
                                               </div>
+
                                               <div className="left-edu-editor-box">
                                                 <div className="left-edu-editor">
                                                   <CKEditor
@@ -1564,12 +1311,13 @@ function Template() {
                                                 </div>
                                               </div>
                                             </div>
+
                                             <div>
                                               <button
                                                 onClick={() =>
                                                   deleteedu(object.id)
                                                 }
-                                                className="btn btn-primary"
+                                                className="btn btn-primary left-edu-btn"
                                               >
                                                 Delete
                                               </button>
@@ -1610,6 +1358,7 @@ function Template() {
                                                     }
                                                   />
                                                 </div>
+
                                                 <div className="left_social">
                                                   <input
                                                     type="text"
@@ -1625,17 +1374,16 @@ function Template() {
                                                     }
                                                   />
                                                 </div>
+
+                                                <button
+                                                  onClick={() =>
+                                                    deleteweb(object.id)
+                                                  }
+                                                  className="btn btn-primary"
+                                                >
+                                                  Delete
+                                                </button>
                                               </div>
-                                            </div>
-                                            <div>
-                                              <button
-                                                onClick={() =>
-                                                  deleteweb(object.id)
-                                                }
-                                                className="btn btn-primary"
-                                              >
-                                                Delete
-                                              </button>
                                             </div>
                                           </div>
                                         ))}
@@ -1673,25 +1421,39 @@ function Template() {
                                                     }
                                                   />
                                                 </div>
+
                                                 <div className="left-skill">
-                                                  <select className="left-skill-input">
+                                                  <select
+                                                    className="left-skill-input"
+                                                    onChange={(e) =>
+                                                      handleInputskill(
+                                                        e,
+                                                        object.id,
+                                                        "input2"
+                                                      )
+                                                    }
+                                                  >
+                                                    <option value="0">
+                                                      Select Skill level
+                                                    </option>
                                                     <option value="1">
-                                                      Level 1
+                                                      Novice
                                                     </option>
                                                     <option value="2">
-                                                      Level 2
+                                                      Beginner
                                                     </option>
                                                     <option value="3">
-                                                      Level 3
+                                                      Skillful
                                                     </option>
                                                     <option value="4">
-                                                      Level 4
+                                                      Experienced
                                                     </option>
                                                     <option value="5">
-                                                      Level 5
+                                                      Expert
                                                     </option>
                                                   </select>
                                                 </div>
+
                                                 <div>
                                                   <button
                                                     onClick={() =>
@@ -1758,11 +1520,17 @@ function Template() {
                       )}
                     </div>
                     <div className="col-8 custom-height-column personal">
+                      <ul>
+                        <li>
                       <div className="resume-name">
                         <h6 className="fname">{firstName}</h6>
                         <h6>{lastName}</h6>
                       </div>
+                      </li>
+                      <li>
                       <p className="right-title">{title}</p>
+                      </li>
+                      </ul>
                       <p className="resume-address">{address}</p>
                       <div className="personal-data">
                         <p className="resume-city">{city}</p>
@@ -1771,6 +1539,7 @@ function Template() {
                       </div>
                     </div>
                   </div>
+
                   <div className="row">
                     <div className="col-4 personal-details">
                       {/* <h6>Personal details</h6> */}
@@ -1782,6 +1551,18 @@ function Template() {
                       <p>{nation}</p>
                       <h6>Driving License</h6>
                       <p>{license}</p>
+                      <h6>Contact</h6>
+                      <p>{phone}</p>
+                      <h6>Email</h6>
+                      <p>{email}</p>
+                      <div className="right-skill-box">
+                      <h6>Skills</h6>
+                      {skill.map((skillData, index) => (
+                        <li key={index}>
+                          {skillData.input1} - Level {skillData.input2}
+                        </li>
+                      ))}
+                      </div>
                     </div>
                     <div className="col-8 profile-details">
                       <h6>Profile summary</h6>
@@ -1790,7 +1571,65 @@ function Template() {
                       </p>
                     </div>
                   </div>
-                  {/* <div className="row">
+
+                  <div className="row">
+                    <div className="col-4 skill-links">
+                      <div>
+                        <h6>Social links</h6>
+                        {website.map((webData, index) => (
+                          <p key={index}>{webData.input1}</p>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="col-8 edu-emp">
+                      <div className="right-skill-box">
+                        <h6>Education history</h6>
+                        {education.map((eduData, index) => (
+                          <div key={index} className="right-emp-box" >
+                            <p className="right-emp-role">{eduData.input1}</p>
+                            <div className="right-emp-city">
+                            <p>{eduData.input2}</p>
+                            <p>{eduData.input5}</p>
+                            </div>
+                            <div className="right-emp-date">
+                            <p>{eduStartDate ? `${eduStartDate.getDate()}/${eduStartDate.getMonth() + 1}/${eduStartDate.getFullYear()}` : ""}</p>
+                            <span>To</span>
+                            <p>{eduEndDate ? `${eduEndDate.getDate()}/${eduEndDate.getMonth() + 1}/${eduEndDate.getFullYear()}` : ""}</p>
+                            </div>
+                            
+                            <p>
+                              <RenderedContent content={education_summary} />
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                      <div>
+                        <h6>Employment history</h6>
+                        {empHistory.map((empData, index) => (
+                          <div key={index} className="right-emp-box">
+                            <p className="right-emp-role">{empData.input1}</p>
+                            <div className="right-emp-city">
+                            <p>{empData.input2}</p>
+                            <p>{empData.input5}</p>
+                            </div>
+                            <div className="right-emp-date">
+                            <p>{empStartDate ? `${empStartDate.getDate()}/${empStartDate.getMonth() + 1}/${empStartDate.getFullYear()}` : ""}</p>
+                            <span>To</span>
+                            <p>{empEndDate ? `${empEndDate.getDate()}/${empEndDate.getMonth() + 1}/${empEndDate.getFullYear()}` : ""}</p>
+                            </div>
+                            
+                            <p>
+                              <RenderedContent content={job_summary} />
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/*                   
+                  <div className="row">
                     <div className="col-4 skill-links">
                       <ul>
                         {state.items.map((item, ind) => (
@@ -1876,9 +1715,9 @@ function Template() {
                         ))}
                       </ul>
                     </div>
-                  </div> */}
+                  </div>
 
-                  {/* <div className="row">
+                  <div className="row">
                     <div className="col-5">
                       <ul>
                         {state.items.map((item) => (
@@ -1907,9 +1746,9 @@ function Template() {
                       </ul>
                     </div>
                     <div className="col-8 ">{profile_summary}</div>
-                  </div> */}
+                  </div>
 
-                  {/* <div className="row">
+                  <div className="row">
                     <div className="col-5">
                       <h6>Social links</h6>
                       {selectedLinks.map((link, index) => (
@@ -1923,6 +1762,7 @@ function Template() {
                       ))}
                     </div>
                   </div>
+
                   <div className="row">
                     <div className="col-5">{heading}</div>
                     <div className="col-8 ">
@@ -1942,6 +1782,32 @@ function Template() {
               </div>
             </div>
           </div>
+
+          {/* <div className="calendar">
+            <div className="fromdate">
+              <DatePicker
+                selected={startDate}
+                onChange={handleStartDateChange}
+                selectsStart
+                startDate={startDate}
+                endDate={endDate}
+                className="fromda"
+                placeholderText={"start Date"}
+              />
+            </div>
+            <div className="todate">
+              <DatePicker
+                selected={endDate}
+                onChange={handleEndDateChange}
+                selectsEnd
+                startDate={startDate}
+                endDate={endDate}
+                minDate={startDate}
+                className="toda"
+                placeholderText={"End Date"}
+              />
+            </div>
+          </div> */}
         </div>
       </div>
     </div>
