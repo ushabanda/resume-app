@@ -519,7 +519,9 @@
 .container {
     font-size: 10px;
     background-color: white;
-    width: 30vw;
+    width: 36vw;
+    max-width: 490px;
+    min-width: 430px;
     height: 85vh;
     border-radius: 5px;
     padding: 10px;
@@ -610,8 +612,11 @@ font-weight: 700;
     bottom: 25px
 }
 
-.left-education {
+.left-education,
+.left-custom {
     display: flex;
+    grid-gap:20px;
+    margin-bottom: 24px;
 }
 
 .left-education h6 {
@@ -1040,3 +1045,51 @@ text-align: center;
 .right-emp-role{
     font-weight: 600;
 }
+
+.add-section-head{
+    font-size: 23px;
+    font-weight: 600;
+}
+
+.add-section-box{
+    display: flex;
+    flex-flow: wrap;
+}
+
+.custom-section{
+    display: flex;
+    margin-right: 32px;
+    margin-bottom: 10px;
+    width: calc(50% - 32px);
+    
+    
+}
+.custom-btn{
+    display: flex;
+    align-items: center;
+    border:none;
+    outline:none;
+    background-color: transparent;
+    width:calc(50% -32px);
+    flex:0 0 calc(50% -32px);
+}
+
+.custom-btn:hover{
+    color: #1a91f0;
+    font-weight: 600;
+}
+
+.custom-btn img{
+    height:40px;
+    width:40px;
+    margin-right: 5px;
+}
+.custom-section p{
+    margin-top: 10px;
+}
+
+.custom-para{
+    word-break: break-all;
+    text-align: justify;
+}
+

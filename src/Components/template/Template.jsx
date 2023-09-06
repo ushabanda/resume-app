@@ -22,6 +22,13 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import InputMask from "react-input-mask";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import image from "../images/custom-section.svg";
+import image1 from "../images/custom-course.svg";
+import image2 from "../images/custom-extra.svg";
+import image3 from "../images/custom-internship.svg";
+import image4 from "../images/custom-hobbies.svg";
+import image5 from "../images/custom-languages.svg";
+import image6 from "../images/custom-references.svg";
 // import Dropzone from 'react-dropzone';
 
 import { PDFExport } from "@progress/kendo-react-pdf";
@@ -54,6 +61,37 @@ const Data = [
     name: "Skills",
     description:
       "Choose 5 important skills that show you fit the position. Make sure they match the key skills mentioned in the job listing(especially when applying via an online system)",
+  },
+];
+
+const Item = [
+  {
+    id: "01",
+    name: "Custom Section",
+  },
+  {
+    id: "02",
+    name: "Course",
+  },
+  {
+    id: "03",
+    name: "Extra-curricular activites",
+  },
+  {
+    id: "04",
+    name: "Internships",
+  },
+  {
+    id: "05",
+    name: "Hobbies",
+  },
+  {
+    id: "06",
+    name: "Languages",
+  },
+  {
+    id: "07",
+    name: "Refrences",
   },
 ];
 
@@ -130,11 +168,15 @@ function Template() {
   const [profile_summary, setprofile_summary] = useState("");
   const [education_summary, seteducation_summary] = useState("");
   const [job_summary, setjob_summary] = useState("");
+  const [custom_summary, setCustom_summary] = useState("");
+  
   const [showSkillsHeading, setShowSkillsHeading] = useState(false);
   const [showEdusHeading, setShowEdusHeading] = useState(false);
   const [skillName, setSkillName] = useState();
   const [skillList, setSkillList] = useState([{ skill: "", level: "" }]);
   const [store, setStores] = useState(Data);
+  const [specific, setspecific] = useState(true);
+  const [link, setlink] = useState(Item);
 
   // const Data = [
   //   {
@@ -186,6 +228,29 @@ function Template() {
       reorderedStores.splice(destinationindex, 0, removedStore);
 
       return setStores(reorderedStores);
+    }
+  };
+
+  const handleDrag = (results) => {
+    const { source, destination, type } = results;
+
+    if (!destination) return;
+    if (
+      source.droppableId === destination.droppableId &&
+      source.index === destination.index
+    )
+      return;
+
+    if (type === "group") {
+      const reorderedStores = [...link];
+
+      const sourceindex = source.index;
+      const destinationindex = destination.index;
+
+      const [removedStore] = reorderedStores.splice(sourceindex, 1);
+      reorderedStores.splice(destinationindex, 0, removedStore);
+
+      return setlink(reorderedStores);
     }
   };
 
@@ -314,6 +379,36 @@ function Template() {
     if (file) {
       setSelectedImage(file);
     }
+  };
+
+  // Code for Custom
+  const [cust, setcust] = useState([]);
+
+  const createcust = () => {
+    const newObject = {
+      id: cust.length + 1,
+      input1: "",
+      input2: "",
+      input3: "",
+      input4: "",
+      input5: "",
+    };
+    setcust([...cust, newObject]);
+  };
+
+  const handleInputcust = (e, objectId, inputName) => {
+    const updatedObjects = cust.map((object) => {
+      if (object.id === objectId) {
+        return { ...object, [inputName]: e.target.value };
+      }
+      return object;
+    });
+    setcust(updatedObjects);
+  };
+
+  const deletecust = (objectId) => {
+    const updatedObjects = cust.filter((object) => object.id !== objectId);
+    setcust(updatedObjects);
   };
 
   const imageUrl = selectedImage ? URL.createObjectURL(selectedImage) : "";
@@ -548,6 +643,9 @@ function Template() {
   const [eduStartDate, setEduStartDate] = useState();
   const [eduEndDate, setEduEndDate] = useState();
 
+  const [customStartDate, setCustomStartDate] = useState();
+  const [customEndDate, setCustomEndDate] = useState();
+
   const handleEduStartDateChange = (date) => {
     setEduStartDate(date);
   };
@@ -562,6 +660,22 @@ function Template() {
 
   const handleEmpEndDateChange = (date) => {
     setEmpEndDate(date);
+  };
+
+  const handleCustomStartDateChange = (date) => {
+    setCustomStartDate(date);
+  };
+
+  const handleCustomEndDateChange = (date) => {
+    setCustomEndDate(date);
+  };
+
+  let customClick = () => {
+    setspecific(false);
+  };
+
+  const delete1 = () => {
+    setspecific(true);
   };
 
   return (
@@ -1045,7 +1159,9 @@ function Template() {
                                     {...provided.draggableProps}
                                     ref={provided.innerRef}
                                   >
-                                    <h3 className="store-heading">{store.name}</h3>
+                                    <h3 className="store-heading">
+                                      {store.name}
+                                    </h3>
                                     <p>{store.description}</p>
                                     {store.name === "Employment History" ? (
                                       <div>
@@ -1096,7 +1212,9 @@ function Template() {
                                                           handleEmpStartDateChange
                                                         }
                                                         selectsStart
-                                                        empStartDate={empStartDate}
+                                                        empStartDate={
+                                                          empStartDate
+                                                        }
                                                         empEndDate={empEndDate}
                                                         className="fromda"
                                                         placeholderText={
@@ -1111,7 +1229,9 @@ function Template() {
                                                           handleEmpEndDateChange
                                                         }
                                                         selectsEnd
-                                                        empStartDate={empStartDate}
+                                                        empStartDate={
+                                                          empStartDate
+                                                        }
                                                         empEndDate={empEndDate}
                                                         minDate={empStartDate}
                                                         className="toda"
@@ -1241,7 +1361,9 @@ function Template() {
                                                           handleEduStartDateChange
                                                         }
                                                         selectsStart
-                                                        eduStartDate={eduStartDate}
+                                                        eduStartDate={
+                                                          eduStartDate
+                                                        }
                                                         eduEndDate={eduEndDate}
                                                         className="fromda"
                                                         placeholderText={
@@ -1256,7 +1378,9 @@ function Template() {
                                                           handleEduEndDateChange
                                                         }
                                                         selectsEnd
-                                                        eduStartDate={eduStartDate}
+                                                        eduStartDate={
+                                                          eduStartDate
+                                                        }
                                                         eduEndDate={eduEndDate}
                                                         minDate={eduStartDate}
                                                         className="toda"
@@ -1489,6 +1613,583 @@ function Template() {
                       </Droppable>
                     </div>
                   </DragDropContext>
+
+                  <DragDropContext onDragEnd={handleDrag}>
+                    <div>
+                      <Droppable droppableId="Root" type="group">
+                        {(proved) => (
+                          <div {...proved.droppableProps} ref={proved.innerRef}>
+                            {link.map((link, index) => (
+                              <Draggable
+                                draggableId={link.id}
+                                key={link.id}
+                                index={index}
+                              >
+                                {(proved) => (
+                                  <div
+                                    {...proved.dragHandleProps}
+                                    {...proved.draggableProps}
+                                    ref={proved.innerRef}
+                                  >
+                                    {link.name === "Custom Section" ? (
+                                      <div
+                                        className={
+                                          specific ? "hidden" : "visible"
+                                        }
+                                      >
+                                        <div className="emp-div">
+                                          {cust.map((object) => (
+                                            <div key={object.id}>
+                                              <div className="emp-main">
+                                                <div className="left-custom">
+                                                  <div className="left-scl_deg-container">
+                                                    <div>
+                                                      <input
+                                                        type="text"
+                                                        value={object.input1}
+                                                        className="left-scl-input"
+                                                        placeholder="Activity name, job title, book title etc."
+                                                        onChange={(e) =>
+                                                          handleInputcust(
+                                                            e,
+                                                            object.id,
+                                                            "input1"
+                                                          )
+                                                        }
+                                                      />
+                                                    </div>
+                                                  </div>
+                                                  <div className="left-scl_deg-container">
+                                                    <input
+                                                      type="text"
+                                                      value={object.input2}
+                                                      className="left-scl-input"
+                                                      placeholder="Enter City "
+                                                      onChange={(e) =>
+                                                        handleInputcust(
+                                                          e,
+                                                          object.id,
+                                                          "input2"
+                                                        )
+                                                      }
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <div className="left-date-city-box">
+                                                  <div className="left-scl_deg-container">
+                                                    <div className="calendar">
+                                                    <div className="fromdate">
+                                                      <DatePicker
+                                                        selected={customStartDate}
+                                                        onChange={
+                                                          handleCustomStartDateChange
+                                                        }
+                                                        selectsStart
+                                                        customStartDate={
+                                                          customStartDate
+                                                        }
+                                                        customEndDate={customEndDate}
+                                                        className="fromda"
+                                                        placeholderText={
+                                                          "start Date"
+                                                        }
+                                                      />
+                                                    </div>
+                                                    <div className="todate">
+                                                      <DatePicker
+                                                        selected={customEndDate}
+                                                        onChange={
+                                                          handleCustomEndDateChange
+                                                        }
+                                                        selectsEnd
+                                                        customStartDate={
+                                                          customStartDate
+                                                        }
+                                                        customEndDate={customEndDate}
+                                                        minDate={customStartDate}
+                                                        className="toda"
+                                                        placeholderText={
+                                                          "End Date"
+                                                        }
+                                                      />
+                                                    </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                <div className="left-edu-editor-box">
+                                                <div className="left-edu-editor">
+                                                  <CKEditor
+                                                    editor={ClassicEditor}
+                                                    data={custom_summary}
+                                                    id="job_ckedit"
+                                                    onReady={(editor) => {
+                                                      console.log(
+                                                        "CKEditor5 React Component is ready to use!",
+                                                        editor
+                                                      );
+                                                    }}
+                                                    onChange={(
+                                                      event,
+                                                      editor
+                                                    ) => {
+                                                      // console.log({ event, editor, editor.getData() });
+                                                      console.log(
+                                                        setCustom_summary(
+                                                          editor.getData()
+                                                        )
+                                                      );
+                                                    }}
+                                                  />
+                                                </div>
+                                              </div>
+                                              </div>
+                                              <div>
+                                                <button
+                                                  onClick={() =>
+                                                    deletecust(object.id)
+                                                  }
+                                                  className="btn btn-primary left-edu-btn"
+                                                >
+                                                  Delete
+                                                </button>
+                                              </div>
+                                            </div>
+                                          ))}
+                                          <button onClick={createcust}
+                                          className="left-edu-repeate">
+                                            {" "}
+                                            + Add one more item
+                                          </button>
+                                        </div>
+                                        <button onClick={delete1}>
+                                          delete
+                                        </button>
+                                      </div>
+                                    ) : (
+                                      <span></span>
+                                    )}
+                                    {/* {
+                                link.name === "Course" ? <div className={coursee ? "hidden" : "visible"}>
+                                  <div className='emp-div'>
+
+{course.map((object) => (
+  <div key={object.id} style={{ display: "flex" }}>
+    <div className='emp-main'>
+
+      <div style={{ display: "flex" }}>
+        <div className='wanted'>
+          <div>
+            <label htmlFor="">Job title</label> <br />
+            <input
+              type="text"
+              value={object.input1}
+              className='work'
+              onChange={(e) => handleInputcourse(e, object.id, 'input1')}
+            />
+          </div>
+        </div>
+        <div>
+          <label htmlFor="">Employer</label> <br />
+          <input
+            type="text"
+            value={object.input2}
+            className='work'
+            onChange={(e) => handleInputcourse(e, object.id, 'input2')}
+          />
+        </div>
+      </div>
+      <div style={{ display: "flex" }}>
+        <div className='wanted'>
+          <div>
+            <label htmlFor="">Start & End Date</label> <br />
+            <input type='date'
+              value={object.input4}
+              className='work'
+              onChange={(e) => handleInputcourse(e, object.id, 'input4')}
+            />
+          </div>
+        </div>
+
+      </div>
+
+
+
+    </div>
+    <div>
+      <button onClick={() => deletecourse(object.id)}>Delete</button>
+    </div>
+  </div>
+))}
+<button onClick={createcourse}> + Add one more course</button>
+
+</div>
+<button onClick={delete2}>delete</button>
+                                </div> : <span></span>
+                              }
+                              {
+                                link.name === "Internships" ? <div className={ship? "hidden" : "visible"}>
+                                  <div className='emp-div'>
+
+{five.map((object) => (
+  <div key={object.id} style={{ display: "flex" }}>
+    <div className='emp-main'>
+
+      <div style={{ display: "flex" }}>
+        <div className='wanted'>
+          <div>
+            <label htmlFor="">Job title</label> <br />
+            <input
+              type="text"
+              value={object.input1}
+              className='work'
+              onChange={(e) => handleInputfive(e, object.id, 'input1')}
+            />
+          </div>
+        </div>
+        <div>
+          <label htmlFor="">Employer</label> <br />
+          <input
+            type="text"
+            value={object.input2}
+            className='work'
+            onChange={(e) => handleInputfive(e, object.id, 'input2')}
+          />
+        </div>
+      </div>
+      <div style={{ display: "flex" }}>
+        <div className='wanted'>
+          <div>
+            <label htmlFor="">Start & End Date</label> <br />
+            <input type='date'
+              value={object.input4}
+              className='work'
+              onChange={(e) => handleInputfive(e, object.id, 'input4')}
+            />
+          </div>
+        </div>
+        <div>
+          <label htmlFor="">City</label> <br />
+          <input
+            type="text"
+            value={object.input3}
+            className='work'
+            onChange={(e) => handleInputfive(e, object.id, 'input3')}
+          />
+        </div>
+      </div>
+      <div>
+        <div>
+          <label htmlFor="">Description</label> <br />
+          
+        </div>
+      </div>
+
+
+    </div>
+    <div>
+      <button onClick={() => deletefive(object.id)}>Delete</button>
+    </div>
+  </div>
+))}
+<button onClick={createfive}> + Add one more internship</button>
+
+</div>
+<button onClick={delete4}>delete</button>
+                                </div> : <span></span>
+                              }
+                              {
+                                link.name === "Hobbies" ? <div className={hobbie? "hidden" : "visible"}>
+                                  <div className='emp-div'>
+
+{six.map((object) => (
+  <div key={object.id} style={{ display: "flex" }}>
+    <div className='emp-main'>
+
+      <div style={{ display: "flex" }}>
+        <div className='wanted'>
+          <div>
+            <label htmlFor="">Label</label> <br />
+            <input
+              type="text"
+              value={object.input1}
+              className='work'
+              onChange={(e) => handleInputsix(e, object.id, 'input1')}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <button onClick={() => deletesix(object.id)}>Delete</button>
+    </div>
+  </div>
+))}
+<button onClick={createsix}> + Add more Hobbie</button>
+
+</div>
+<button onClick={delete6}>delete</button>
+                                </div> : <span></span>
+                              }
+                              {
+                                link.name === "Languages" ? <div className={langu? "hidden" : "visible"}>
+                                  <div className='emp-div'>
+
+{seven.map((object) => (
+  <div key={object.id} style={{ display: "flex" }}>
+    <div className='emp-main'>
+
+      <div style={{ display: "flex" }}>
+        <div className='wanted'>
+          <div>
+            <label htmlFor="">Job title</label> <br />
+            <input
+              type="text"
+              value={object.input1}
+              className='work'
+              onChange={(e) => handleInputseven(e, object.id, 'input1')}
+            />
+          </div>
+        </div>
+        <div>
+          <label htmlFor="">Employer</label> <br />
+          <input
+            type="text"
+            value={object.input2}
+            className='work'
+            onChange={(e) => handleInputseven(e, object.id, 'input2')}
+          />
+        </div>
+      </div>
+
+
+    </div>
+    <div>
+      <button onClick={() => deleteseven(object.id)}>Delete</button>
+    </div>
+  </div>
+))}
+<button onClick={createseven}> + Add one more languages</button>
+
+</div>
+<button onClick={delete5}>delete</button>
+                                </div> : <span></span>
+                              }
+                              {
+                                link.name === "Refrences" ? <div className={reference ? "hidden" : "visible"}>
+                                  <div className='emp-div'>
+
+{three.map((object) => (
+  <div key={object.id} style={{ display: "flex" }}>
+    <div className='emp-main'>
+
+      <div style={{ display: "flex" }}>
+        <div className='wanted'>
+          <div>
+            <label htmlFor="">Job title</label> <br />
+            <input
+              type="text"
+              value={object.input1}
+              className='work'
+              onChange={(e) => handleInputthree(e, object.id, 'input1')}
+            />
+          </div>
+        </div>
+        <div>
+          <label htmlFor="">Employer</label> <br />
+          <input
+            type="text"
+            value={object.input2}
+            className='work'
+            onChange={(e) => handleInputthree(e, object.id, 'input2')}
+          />
+        </div>
+      </div>
+      <div style={{ display: "flex" }}>
+        <div className='wanted'>
+          <div>
+            <label htmlFor="">Start & End Date</label> <br />
+            <input type='date'
+              value={object.input4}
+              className='work'
+              onChange={(e) => handleInputthree(e, object.id, 'input4')}
+            />
+          </div>
+        </div>
+
+      </div>
+
+
+
+    </div>
+    <div>
+      <button onClick={() => deletethree(object.id)}>Delete</button>
+    </div>
+  </div>
+))}
+<button onClick={createthree}> + Add one more reference</button>
+
+</div>
+<button onClick={delete3}>delete</button>
+                                </div> : <span></span>
+                              }
+                              {
+                                link.name === "Extra-curricular activites" ? <div className={curricular ? "hidden" : "visible"}>
+                                  <div className='emp-div'>
+
+{four.map((object) => (
+  <div key={object.id} style={{ display: "flex" }}>
+    <div className='emp-main'>
+
+      <div style={{ display: "flex" }}>
+        <div className='wanted'>
+          <div>
+            <label htmlFor="">Job title</label> <br />
+            <input
+              type="text"
+              value={object.input1}
+              className='work'
+              onChange={(e) => handleInputfour(e, object.id, 'input1')}
+            />
+          </div>
+        </div>
+        <div>
+          <label htmlFor="">Employer</label> <br />
+          <input
+            type="text"
+            value={object.input2}
+            className='work'
+            onChange={(e) => handleInputfour(e, object.id, 'input2')}
+          />
+        </div>
+      </div>
+      <div style={{ display: "flex" }}>
+        <div className='wanted'>
+          <div>
+            <label htmlFor="">Start & End Date</label> <br />
+            <input type='date'
+              value={object.input4}
+              className='work'
+              onChange={(e) => handleInputfour(e, object.id, 'input4')}
+            />
+          </div>
+        </div>
+        <div>
+          <label htmlFor="">City</label> <br />
+          <input
+            type="text"
+            value={object.input3}
+            className='work'
+            onChange={(e) => handleInputfour(e, object.id, 'input3')}
+          />
+        </div>
+      </div>
+      <div>
+        <div>
+          <label htmlFor="">Description</label> <br />
+          <textarea name="" id="" cols="90" rows="15" value={object.input5} onChange={(e) => handleInputfour(e, object.id, 'input5')}
+            placeholder='e.g. Created and implemented lesson plans based on child-led
+interests and curiosities'/>
+        </div>
+      </div>
+
+
+    </div>
+    <div>
+      <button onClick={() => deletefour(object.id)}>Delete</button>
+    </div>
+  </div>
+))}
+<button onClick={createfour}> + Add Employment</button>
+
+</div>
+<button onClick={delete7}>delete</button>
+                                </div> : <span></span>
+                              } */}
+                                  </div>
+                                )}
+                              </Draggable>
+                            ))}
+                          </div>
+                        )}
+                      </Droppable>
+                    </div>
+                  </DragDropContext>
+
+                  <div className="add-section-container">
+                    <h3 className="add-section-head">Add Section</h3>
+                    <div className="add-section-box">
+                      <div className="custom-section">
+                        <button className="custom-btn" onClick={customClick}>
+                          <img
+                            src={image}
+                            alt="custom-section"
+                            className="custom-pic"
+                          />
+                          <p>Custom Section</p>
+                        </button>
+                      </div>
+                      <div className="custom-section">
+                        <button className="custom-btn">
+                          <img
+                            src={image1}
+                            alt="custom-course"
+                            className="custom-pic"
+                          />
+                          <p>Course</p>
+                        </button>
+                      </div>
+                      <div className="custom-section">
+                        <button className="custom-btn">
+                          <img
+                            src={image2}
+                            alt="custom-extra"
+                            className="custom-pic"
+                          />
+                          <p>Extra curricular activity</p>
+                        </button>
+                      </div>
+                      <div className="custom-section">
+                        <button className="custom-btn">
+                          <img
+                            src={image3}
+                            alt="custom-internship"
+                            className="custom-pic"
+                          />
+                          <p>Internships</p>
+                        </button>
+                      </div>
+                      <div className="custom-section">
+                        <button className="custom-btn">
+                          <img
+                            src={image4}
+                            alt="custom-hobbies"
+                            className="custom-pic"
+                          />
+                          <p>Hobbies</p>
+                        </button>
+                      </div>
+                      <div className="custom-section">
+                        <button className="custom-btn">
+                          <img
+                            src={image5}
+                            alt="custom-languages"
+                            className="custom-pic"
+                          />
+                          <p>Languages</p>
+                        </button>
+                      </div>
+                      <div className="custom-section">
+                        <button className="custom-btn">
+                          <img
+                            src={image6}
+                            alt="custom-references"
+                            className="custom-pic"
+                          />
+                          <p>Referrances</p>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1522,14 +2223,14 @@ function Template() {
                     <div className="col-8 custom-height-column personal">
                       <ul>
                         <li>
-                      <div className="resume-name">
-                        <h6 className="fname">{firstName}</h6>
-                        <h6>{lastName}</h6>
-                      </div>
-                      </li>
-                      <li>
-                      <p className="right-title">{title}</p>
-                      </li>
+                          <div className="resume-name">
+                            <h6 className="fname">{firstName}</h6>
+                            <h6>{lastName}</h6>
+                          </div>
+                        </li>
+                        <li>
+                          <p className="right-title">{title}</p>
+                        </li>
                       </ul>
                       <p className="resume-address">{address}</p>
                       <div className="personal-data">
@@ -1556,12 +2257,12 @@ function Template() {
                       <h6>Email</h6>
                       <p>{email}</p>
                       <div className="right-skill-box">
-                      <h6>Skills</h6>
-                      {skill.map((skillData, index) => (
-                        <li key={index}>
-                          {skillData.input1} - Level {skillData.input2}
-                        </li>
-                      ))}
+                        <h6>Skills</h6>
+                        {skill.map((skillData, index) => (
+                          <li key={index}>
+                            {skillData.input1} - Level {skillData.input2}
+                          </li>
+                        ))}
                       </div>
                     </div>
                     <div className="col-8 profile-details">
@@ -1580,24 +2281,69 @@ function Template() {
                           <p key={index}>{webData.input1}</p>
                         ))}
                       </div>
+                      <div className="right-skill-box">
+                        <h6>Custom section</h6>
+                        {cust.map((cuData, index) => (
+                          <div key={index} className="right-emp-box">
+                            <p className="right-emp-role">{cuData.input1}</p>
+                            <div className="right-emp-city">
+                              <p>{cuData.input2}</p>
+                              <p>{cuData.input5}</p>
+                            </div>
+                            <div className="right-emp-date">
+                              <p>
+                                {customStartDate
+                                  ? `${customStartDate.getDate()}/${
+                                    customStartDate.getMonth() + 1
+                                    }/${customStartDate.getFullYear()}`
+                                  : ""}
+                              </p>
+                              <span>To</span>
+                              <p>
+                                {customEndDate
+                                  ? `${customEndDate.getDate()}/${
+                                    customEndDate.getMonth() + 1
+                                    }/${customEndDate.getFullYear()}`
+                                  : ""}
+                              </p>
+                            </div>
+
+                            <p className="custom-para">
+                              <RenderedContent content={custom_summary} />
+                            </p>
+                          </div>
+                        ))}
+                      </div>
                     </div>
 
                     <div className="col-8 edu-emp">
                       <div className="right-skill-box">
                         <h6>Education history</h6>
                         {education.map((eduData, index) => (
-                          <div key={index} className="right-emp-box" >
+                          <div key={index} className="right-emp-box">
                             <p className="right-emp-role">{eduData.input1}</p>
                             <div className="right-emp-city">
-                            <p>{eduData.input2}</p>
-                            <p>{eduData.input5}</p>
+                              <p>{eduData.input2}</p>
+                              <p>{eduData.input5}</p>
                             </div>
                             <div className="right-emp-date">
-                            <p>{eduStartDate ? `${eduStartDate.getDate()}/${eduStartDate.getMonth() + 1}/${eduStartDate.getFullYear()}` : ""}</p>
-                            <span>To</span>
-                            <p>{eduEndDate ? `${eduEndDate.getDate()}/${eduEndDate.getMonth() + 1}/${eduEndDate.getFullYear()}` : ""}</p>
+                              <p>
+                                {eduStartDate
+                                  ? `${eduStartDate.getDate()}/${
+                                      eduStartDate.getMonth() + 1
+                                    }/${eduStartDate.getFullYear()}`
+                                  : ""}
+                              </p>
+                              <span>To</span>
+                              <p>
+                                {eduEndDate
+                                  ? `${eduEndDate.getDate()}/${
+                                      eduEndDate.getMonth() + 1
+                                    }/${eduEndDate.getFullYear()}`
+                                  : ""}
+                              </p>
                             </div>
-                            
+
                             <p>
                               <RenderedContent content={education_summary} />
                             </p>
@@ -1610,15 +2356,27 @@ function Template() {
                           <div key={index} className="right-emp-box">
                             <p className="right-emp-role">{empData.input1}</p>
                             <div className="right-emp-city">
-                            <p>{empData.input2}</p>
-                            <p>{empData.input5}</p>
+                              <p>{empData.input2}</p>
+                              <p>{empData.input5}</p>
                             </div>
                             <div className="right-emp-date">
-                            <p>{empStartDate ? `${empStartDate.getDate()}/${empStartDate.getMonth() + 1}/${empStartDate.getFullYear()}` : ""}</p>
-                            <span>To</span>
-                            <p>{empEndDate ? `${empEndDate.getDate()}/${empEndDate.getMonth() + 1}/${empEndDate.getFullYear()}` : ""}</p>
+                              <p>
+                                {empStartDate
+                                  ? `${empStartDate.getDate()}/${
+                                      empStartDate.getMonth() + 1
+                                    }/${empStartDate.getFullYear()}`
+                                  : ""}
+                              </p>
+                              <span>To</span>
+                              <p>
+                                {empEndDate
+                                  ? `${empEndDate.getDate()}/${
+                                      empEndDate.getMonth() + 1
+                                    }/${empEndDate.getFullYear()}`
+                                  : ""}
+                              </p>
                             </div>
-                            
+
                             <p>
                               <RenderedContent content={job_summary} />
                             </p>
