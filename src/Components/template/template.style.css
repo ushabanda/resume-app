@@ -528,6 +528,11 @@
     overflow-y: scroll;
 }
 
+.hidden{
+    display: none;
+}
+
+
 .pic-container {
     height: 100px;
     flex-wrap: wrap;
@@ -1009,6 +1014,7 @@ text-align: center;
 
   .left-emp-repeate,
   .left-edu-repeate,
+  .more-custom-section-btn,
   .left-social-repeate,
   .left-skill-repeate{
     border:none;
@@ -1017,6 +1023,10 @@ text-align: center;
     background-color: transparent;
     color:#1a91f0;
     font-weight: 600;
+  }
+
+  .custom_delete{
+    margin-bottom: 20px;
   }
     
 .skill-delete{
@@ -1089,7 +1099,21 @@ text-align: center;
 }
 
 .custom-para{
-    word-break: break-all;
     text-align: justify;
+}
+
+.activity-para{
+    text-align: justify;
+}
+
+.left-hobbie-input{
+    outline:none;
+    border:none;
+    width:100%;
+    caret-color: #1a91f0;
+    background-color: #eff2f9;
+    padding:12px 16px;
+    border-radius: 3px;
+    margin-bottom: 20px;
 }
 

@@ -169,7 +169,10 @@ function Template() {
   const [education_summary, seteducation_summary] = useState("");
   const [job_summary, setjob_summary] = useState("");
   const [custom_summary, setCustom_summary] = useState("");
-  
+  const [course_summary, setCourse_summary] = useState("");
+  const [activity_summary, setActivity_summary] = useState("");
+  const [intern_summary, setIntern_summary] = useState("");
+
   const [showSkillsHeading, setShowSkillsHeading] = useState(false);
   const [showEdusHeading, setShowEdusHeading] = useState(false);
   const [skillName, setSkillName] = useState();
@@ -177,6 +180,12 @@ function Template() {
   const [store, setStores] = useState(Data);
   const [specific, setspecific] = useState(true);
   const [link, setlink] = useState(Item);
+  const [coursee, setcoursee] = useState(true);
+  const [reference, setreference] = useState(true);
+  const [langu, setlangu] = useState(true);
+  const [curricular, setcurricular] = useState(true);
+  const [ship, setship] = useState(true);
+  const [hobbies, sethobbies] = useState(true);
 
   // const Data = [
   //   {
@@ -409,6 +418,152 @@ function Template() {
   const deletecust = (objectId) => {
     const updatedObjects = cust.filter((object) => object.id !== objectId);
     setcust(updatedObjects);
+  };
+
+  const [course, setcourse] = useState([]);
+
+  const createcourse = () => {
+    const newObject = {
+      id: course.length + 1,
+      input1: "",
+      input2: "",
+      input3: "",
+      input4: "",
+      input5: "",
+    };
+    setcourse([...course, newObject]);
+  };
+
+  const handleInputcourse = (e, objectId, inputName) => {
+    const updatedObjects = course.map((object) => {
+      if (object.id === objectId) {
+        return { ...object, [inputName]: e.target.value };
+      }
+      return object;
+    });
+    setcourse(updatedObjects);
+  };
+
+  const deletecourse = (objectId) => {
+    const updatedObjects = course.filter((object) => object.id !== objectId);
+    setcourse(updatedObjects);
+  };
+
+  //code for Extra-curricular
+
+  const [activity, setActivity] = useState([]);
+
+  const createactivity = () => {
+    const newObject = {
+      id: activity.length + 1,
+      input1: "",
+      input2: "",
+      input3: "",
+      input4: "",
+      input5: "",
+    };
+    setActivity([...activity, newObject]);
+  };
+
+  const handleInputactivity = (e, objectId, inputName) => {
+    const updatedObjects = activity.map((object) => {
+      if (object.id === objectId) {
+        return { ...object, [inputName]: e.target.value };
+      }
+      return object;
+    });
+    setActivity(updatedObjects);
+  };
+
+  const deleteactivity = (objectId) => {
+    const updatedObjects = activity.filter((object) => object.id !== objectId);
+    setActivity(updatedObjects);
+  };
+
+  //code for Intern
+
+  const [intern, setIntern] = useState([]);
+
+  const createintern = () => {
+    const newObject = {
+      id: intern.length + 1,
+      input1: "",
+      input2: "",
+      input3: "",
+      input4: "",
+      input5: "",
+    };
+    setIntern([...intern, newObject]);
+  };
+
+  const handleInputintern = (e, objectId, inputName) => {
+    const updatedObjects = intern.map((object) => {
+      if (object.id === objectId) {
+        return { ...object, [inputName]: e.target.value };
+      }
+      return object;
+    });
+    setIntern(updatedObjects);
+  };
+
+  const deleteintern = (objectId) => {
+    const updatedObjects = intern.filter((object) => object.id !== objectId);
+    setIntern(updatedObjects);
+  };
+
+  //code for Hobbies
+
+  const [hobb, sethobb] = useState([]);
+
+  const createhobb = () => {
+    const newObject = { id: hobb.length + 1, input1: "", input2: "" };
+    sethobb([...hobb, newObject]);
+  };
+
+  const handleInputhobb = (e, objectId, inputName) => {
+    const updatedObjects = hobb.map((object) => {
+      if (object.id === objectId) {
+        return { ...object, [inputName]: e.target.value };
+      }
+      return object;
+    });
+    sethobb(updatedObjects);
+  };
+
+  const deletehobb = (objectId) => {
+    const updatedObjects = hobb.filter((object) => object.id !== objectId);
+    sethobb(updatedObjects);
+  };
+
+  //code for language
+
+  const [language, setlanguage] = useState([]);
+
+  const createlanguage = () => {
+    const newObject = {
+      id: language.length + 1,
+      input1: "",
+      input2: "",
+      input3: "",
+      input4: "",
+      input5: "",
+    };
+    setlanguage([...language, newObject]);
+  };
+
+  const handleInputlanguage = (e, objectId, inputName) => {
+    const updatedObjects = language.map((object) => {
+      if (object.id === objectId) {
+        return { ...object, [inputName]: e.target.value };
+      }
+      return object;
+    });
+    setlanguage(updatedObjects);
+  };
+
+  const deletelanguage = (objectId) => {
+    const updatedObjects = language.filter((object) => object.id !== objectId);
+    setlanguage(updatedObjects);
   };
 
   const imageUrl = selectedImage ? URL.createObjectURL(selectedImage) : "";
@@ -646,6 +801,15 @@ function Template() {
   const [customStartDate, setCustomStartDate] = useState();
   const [customEndDate, setCustomEndDate] = useState();
 
+  const [courseStartDate, setCourseStartDate] = useState();
+  const [courseEndDate, setCourseEndDate] = useState();
+
+  const [activityStartDate, setActivityStartDate] = useState();
+  const [activityEndDate, setActivityEndDate] = useState();
+
+  const [internStartDate, setInternStartDate] = useState();
+  const [internEndDate, setInternEndDate] = useState();
+
   const handleEduStartDateChange = (date) => {
     setEduStartDate(date);
   };
@@ -670,12 +834,83 @@ function Template() {
     setCustomEndDate(date);
   };
 
+  const handleCourseStartDateChange = (date) => {
+    setCourseStartDate(date);
+  };
+
+  const handleCourseEndDateChange = (date) => {
+    setCourseEndDate(date);
+  };
+
+  const handleActivityStartDateChange = (date) => {
+    setActivityStartDate(date);
+  };
+
+  const handleActivityEndDateChange = (date) => {
+    setActivityEndDate(date);
+  };
+
+  const handleInternStartDateChange = (date) => {
+    setInternStartDate(date);
+  };
+
+  const handleInternEndDateChange = (date) => {
+    setInternEndDate(date);
+  };
+
   let customClick = () => {
     setspecific(false);
   };
 
   const delete1 = () => {
-    setspecific(true);
+    setspecific(!specific);
+    setcust([]);
+  };
+
+  const certi = () => {
+    setcoursee(false);
+  };
+
+  const delete2 = () => {
+    setcoursee(true);
+    setcourse([]);
+  };
+
+  const extra = () => {
+    setcurricular(false);
+  };
+
+  const delete7 = () => {
+    setcurricular(true);
+    setActivity([]);
+  };
+
+  const delete4 = () => {
+    setship(true);
+    setIntern([]);
+  };
+
+  const internship = () => {
+    setship(false);
+  };
+
+  const hobbieClick = () => {
+    sethobbies(false);
+    console.log("hobbie click");
+  };
+
+  const delete6 = () => {
+    sethobbies(true);
+    sethobbies([]);
+  };
+
+  const langClick = () => {
+    setlangu(false);
+  };
+
+  const delete5 = () => {
+    setlangu(true);
+    setlangu([]);
   };
 
   return (
@@ -1637,10 +1872,11 @@ function Template() {
                                           specific ? "hidden" : "visible"
                                         }
                                       >
-                                        <div className="emp-div">
+                                        <div className="emp-div ">
                                           {cust.map((object) => (
                                             <div key={object.id}>
                                               <div className="emp-main">
+                                                <h6>Custom section</h6>
                                                 <div className="left-custom">
                                                   <div className="left-scl_deg-container">
                                                     <div>
@@ -1678,70 +1914,80 @@ function Template() {
                                                 <div className="left-date-city-box">
                                                   <div className="left-scl_deg-container">
                                                     <div className="calendar">
-                                                    <div className="fromdate">
-                                                      <DatePicker
-                                                        selected={customStartDate}
-                                                        onChange={
-                                                          handleCustomStartDateChange
-                                                        }
-                                                        selectsStart
-                                                        customStartDate={
-                                                          customStartDate
-                                                        }
-                                                        customEndDate={customEndDate}
-                                                        className="fromda"
-                                                        placeholderText={
-                                                          "start Date"
-                                                        }
-                                                      />
-                                                    </div>
-                                                    <div className="todate">
-                                                      <DatePicker
-                                                        selected={customEndDate}
-                                                        onChange={
-                                                          handleCustomEndDateChange
-                                                        }
-                                                        selectsEnd
-                                                        customStartDate={
-                                                          customStartDate
-                                                        }
-                                                        customEndDate={customEndDate}
-                                                        minDate={customStartDate}
-                                                        className="toda"
-                                                        placeholderText={
-                                                          "End Date"
-                                                        }
-                                                      />
-                                                    </div>
+                                                      <div className="fromdate">
+                                                        <DatePicker
+                                                          selected={
+                                                            customStartDate
+                                                          }
+                                                          onChange={
+                                                            handleCustomStartDateChange
+                                                          }
+                                                          selectsStart
+                                                          customStartDate={
+                                                            customStartDate
+                                                          }
+                                                          customEndDate={
+                                                            customEndDate
+                                                          }
+                                                          className="fromda"
+                                                          placeholderText={
+                                                            "start Date"
+                                                          }
+                                                        />
+                                                      </div>
+                                                      <div className="todate">
+                                                        <DatePicker
+                                                          selected={
+                                                            customEndDate
+                                                          }
+                                                          onChange={
+                                                            handleCustomEndDateChange
+                                                          }
+                                                          selectsEnd
+                                                          customStartDate={
+                                                            customStartDate
+                                                          }
+                                                          customEndDate={
+                                                            customEndDate
+                                                          }
+                                                          minDate={
+                                                            customStartDate
+                                                          }
+                                                          className="toda"
+                                                          placeholderText={
+                                                            "End Date"
+                                                          }
+                                                        />
+                                                      </div>
                                                     </div>
                                                   </div>
                                                 </div>
                                                 <div className="left-edu-editor-box">
-                                                <div className="left-edu-editor">
-                                                  <CKEditor
-                                                    editor={ClassicEditor}
-                                                    data={custom_summary}
-                                                    id="job_ckedit"
-                                                    onReady={(editor) => {
-                                                      console.log(
-                                                        "CKEditor5 React Component is ready to use!",
+                                                  <div className="left-edu-editor">
+                                                    <CKEditor
+                                                      editor={ClassicEditor}
+                                                      data={custom_summary}
+                                                      id="job_ckedit"
+                                                      onReady={(editor) => {
+                                                        console.log(
+                                                          "CKEditor5 React Component is ready to use!",
+                                                          editor
+                                                        );
+                                                      }}
+                                                      onChange={(
+                                                        event,
                                                         editor
-                                                      );
-                                                    }}
-                                                    onChange={(
-                                                      event,
-                                                      editor
-                                                    ) => {
-                                                      // console.log({ event, editor, editor.getData() });
-                                                      console.log(
-                                                        setCustom_summary(
-                                                          editor.getData()
-                                                        )
-                                                      );
-                                                    }}
-                                                  />
+                                                      ) => {
+                                                        // console.log({ event, editor, editor.getData() });
+                                                        console.log(
+                                                          setCustom_summary(
+                                                            editor.getData()
+                                                          )
+                                                        );
+                                                      }}
+                                                    />
+                                                  </div>
                                                 </div>
-                                              </div>
                                               </div>
                                               <div>
                                                 <button
@@ -1755,225 +2001,669 @@ function Template() {
                                               </div>
                                             </div>
                                           ))}
-                                          <button onClick={createcust}
-                                          className="left-edu-repeate">
+                                          {/* <h6>Custom section</h6> */}
+                                          <button
+                                            onClick={createcust}
+                                            className="more-custom-section-btn"
+                                          >
                                             {" "}
-                                            + Add one more item
+                                            + Add item
                                           </button>
                                         </div>
-                                        <button onClick={delete1}>
+                                        <button
+                                          onClick={delete1}
+                                          className="btn btn-primary custom_delete"
+                                        >
+                                          delete custom section
+                                        </button>
+                                      </div>
+                                    ) : (
+                                      <span></span>
+                                    )}
+                                    {link.name === "Course" ? (
+                                      <div
+                                        className={
+                                          coursee ? "hidden" : "visible"
+                                        }
+                                      >
+                                        <div className="emp-div">
+                                          {course.map((object) => (
+                                            <div key={object.id}>
+                                              <div className="emp-main">
+                                                <h6>Course</h6>
+                                                <div className="left-custom">
+                                                  <div className="left-scl_deg-container">
+                                                    <div>
+                                                      <input
+                                                        type="text"
+                                                        value={object.input1}
+                                                        className="left-scl-input"
+                                                        placeholder="Enter Course"
+                                                        onChange={(e) =>
+                                                          handleInputcourse(
+                                                            e,
+                                                            object.id,
+                                                            "input1"
+                                                          )
+                                                        }
+                                                      />
+                                                    </div>
+                                                  </div>
+                                                  <div className="left-scl_deg-container">
+                                                    <input
+                                                      type="text"
+                                                      value={object.input2}
+                                                      className="left-scl-input"
+                                                      placeholder="Enter institution"
+                                                      onChange={(e) =>
+                                                        handleInputcourse(
+                                                          e,
+                                                          object.id,
+                                                          "input2"
+                                                        )
+                                                      }
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <div className="left-date-city-box">
+                                                  <div className="left-scl_deg-container">
+                                                    <div className="calendar">
+                                                      <div className="fromdate">
+                                                        <DatePicker
+                                                          selected={
+                                                            courseStartDate
+                                                          }
+                                                          onChange={
+                                                            handleCourseStartDateChange
+                                                          }
+                                                          selectsStart
+                                                          courseStartDate={
+                                                            courseStartDate
+                                                          }
+                                                          courseEndDate={
+                                                            courseEndDate
+                                                          }
+                                                          className="fromda"
+                                                          placeholderText={
+                                                            "start Date"
+                                                          }
+                                                        />
+                                                      </div>
+                                                      <div className="todate">
+                                                        <DatePicker
+                                                          selected={
+                                                            courseEndDate
+                                                          }
+                                                          onChange={
+                                                            handleCourseEndDateChange
+                                                          }
+                                                          selectsEnd
+                                                          courseStartDate={
+                                                            courseStartDate
+                                                          }
+                                                          courseEndDate={
+                                                            courseEndDate
+                                                          }
+                                                          minDate={
+                                                            courseStartDate
+                                                          }
+                                                          className="toda"
+                                                          placeholderText={
+                                                            "End Date"
+                                                          }
+                                                        />
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                <div className="left-edu-editor-box">
+                                                  <div className="left-edu-editor">
+                                                    <CKEditor
+                                                      editor={ClassicEditor}
+                                                      data={course_summary}
+                                                      id="job_ckedit"
+                                                      onReady={(editor) => {
+                                                        console.log(
+                                                          "CKEditor5 React Component is ready to use!",
+                                                          editor
+                                                        );
+                                                      }}
+                                                      onChange={(
+                                                        event,
+                                                        editor
+                                                      ) => {
+                                                        // console.log({ event, editor, editor.getData() });
+                                                        console.log(
+                                                          setCustom_summary(
+                                                            editor.getData()
+                                                          )
+                                                        );
+                                                      }}
+                                                    />
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div>
+                                                <button
+                                                  onClick={() =>
+                                                    deletecourse(object.id)
+                                                  }
+                                                  className="btn btn-primary left-edu-btn"
+                                                >
+                                                  Delete
+                                                </button>
+                                              </div>
+                                            </div>
+                                          ))}
+                                          <button
+                                            onClick={createcourse}
+                                            className="more-custom-section-btn"
+                                          >
+                                            {" "}
+                                            + Add course
+                                          </button>
+                                        </div>
+                                        <button
+                                          onClick={delete2}
+                                          className="btn btn-primary"
+                                        >
+                                          delete course section
+                                        </button>
+                                      </div>
+                                    ) : (
+                                      <span></span>
+                                    )}
+                                    {link.name ===
+                                    "Extra-curricular activites" ? (
+                                      <div
+                                        className={
+                                          curricular ? "hidden" : "visible"
+                                        }
+                                      >
+                                        <div className="emp-div">
+                                          {activity.map((object) => (
+                                            <div key={object.id}>
+                                              <div className="emp-main">
+                                                <h6>
+                                                  Extra curricular activity{" "}
+                                                </h6>
+                                                <div className="left-education">
+                                                  <div className="left-scl_deg-container">
+                                                    <div>
+                                                      <input
+                                                        type="text"
+                                                        value={object.input1}
+                                                        className="left-scl-input"
+                                                        placeholder="Function Title"
+                                                        onChange={(e) =>
+                                                          handleInputactivity(
+                                                            e,
+                                                            object.id,
+                                                            "input1"
+                                                          )
+                                                        }
+                                                      />
+                                                    </div>
+                                                  </div>
+                                                  <div className="left-scl_deg-container">
+                                                    <input
+                                                      type="text"
+                                                      value={object.input2}
+                                                      className="left-scl-input"
+                                                      placeholder="Enter Employer"
+                                                      onChange={(e) =>
+                                                        handleInputactivity(
+                                                          e,
+                                                          object.id,
+                                                          "input2"
+                                                        )
+                                                      }
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <div className="left-date-city-box">
+                                                  <div className="left-scl_deg-container">
+                                                    <div className="calendar">
+                                                      <div className="fromdate">
+                                                        <DatePicker
+                                                          selected={
+                                                            activityStartDate
+                                                          }
+                                                          onChange={
+                                                            handleActivityStartDateChange
+                                                          }
+                                                          selectsStart
+                                                          activityStartDate={
+                                                            activityStartDate
+                                                          }
+                                                          activityEndDate={
+                                                            activityEndDate
+                                                          }
+                                                          className="fromda"
+                                                          placeholderText={
+                                                            "start Date"
+                                                          }
+                                                        />
+                                                      </div>
+                                                      <div className="todate">
+                                                        <DatePicker
+                                                          selected={
+                                                            activityEndDate
+                                                          }
+                                                          onChange={
+                                                            handleActivityEndDateChange
+                                                          }
+                                                          selectsEnd
+                                                          activityStartDate={
+                                                            activityStartDate
+                                                          }
+                                                          activityEndDate={
+                                                            activityEndDate
+                                                          }
+                                                          minDate={
+                                                            activityStartDate
+                                                          }
+                                                          className="toda"
+                                                          placeholderText={
+                                                            "End Date"
+                                                          }
+                                                        />
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                  <div className="left-scl_deg-container">
+                                                    <input
+                                                      type="text"
+                                                      value={object.input5}
+                                                      className="left-scl-input"
+                                                      placeholder="Enter City"
+                                                      onChange={(e) =>
+                                                        handleInputactivity(
+                                                          e,
+                                                          object.id,
+                                                          "input5"
+                                                        )
+                                                      }
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <div className="left-edu-editor-box">
+                                                  <div className="left-edu-editor">
+                                                    <CKEditor
+                                                      editor={ClassicEditor}
+                                                      data={activity_summary}
+                                                      id="job_ckedit"
+                                                      onReady={(editor) => {
+                                                        console.log(
+                                                          "CKEditor5 React Component is ready to use!",
+                                                          editor
+                                                        );
+                                                      }}
+                                                      onChange={(
+                                                        event,
+                                                        editor
+                                                      ) => {
+                                                        // console.log({ event, editor, editor.getData() });
+                                                        console.log(
+                                                          setActivity_summary(
+                                                            editor.getData()
+                                                          )
+                                                        );
+                                                      }}
+                                                    />
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div>
+                                                <button
+                                                  onClick={() =>
+                                                    deleteactivity(object.id)
+                                                  }
+                                                  className="btn btn-primary left-edu-btn"
+                                                >
+                                                  Delete
+                                                </button>
+                                              </div>
+                                            </div>
+                                          ))}
+                                          <button
+                                            onClick={createactivity}
+                                            className="more-custom-section-btn"
+                                          >
+                                            + Add Activity
+                                          </button>
+                                        </div>
+                                        <button
+                                          onClick={delete7}
+                                          className="btn btn-primary custom_delete"
+                                        >
+                                          delete extra curricular Activity
+                                        </button>
+                                      </div>
+                                    ) : (
+                                      <span></span>
+                                    )}
+                                    {link.name === "Internships" ? (
+                                      <div
+                                        className={ship ? "hidden" : "visible"}
+                                      >
+                                        <div className="emp-div">
+                                          {intern.map((object) => (
+                                            <div key={object.id}>
+                                              <div className="emp-main">
+                                                <h6>Internships</h6>
+                                                <div className="left-education">
+                                                  <div className="left-scl_deg-container">
+                                                    <div>
+                                                      <input
+                                                        type="text"
+                                                        value={object.input1}
+                                                        className="left-scl-input"
+                                                        placeholder="Enter Job title"
+                                                        onChange={(e) =>
+                                                          handleInputintern(
+                                                            e,
+                                                            object.id,
+                                                            "input1"
+                                                          )
+                                                        }
+                                                      />
+                                                    </div>
+                                                  </div>
+                                                  <div className="left-scl_deg-container">
+                                                    <input
+                                                      type="text"
+                                                      value={object.input2}
+                                                      className="left-scl-input"
+                                                      placeholder="Enter Employer"
+                                                      onChange={(e) =>
+                                                        handleInputintern(
+                                                          e,
+                                                          object.id,
+                                                          "input2"
+                                                        )
+                                                      }
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <div className="left-date-city-box">
+                                                  <div className="left-scl_deg-container">
+                                                    <div className="calendar">
+                                                      <div className="fromdate">
+                                                        <DatePicker
+                                                          selected={
+                                                            internStartDate
+                                                          }
+                                                          onChange={
+                                                            handleInternStartDateChange
+                                                          }
+                                                          selectsStart
+                                                          internStartDate={
+                                                            internStartDate
+                                                          }
+                                                          internEndDate={
+                                                            internEndDate
+                                                          }
+                                                          className="fromda"
+                                                          placeholderText={
+                                                            "start Date"
+                                                          }
+                                                        />
+                                                      </div>
+                                                      <div className="todate">
+                                                        <DatePicker
+                                                          selected={
+                                                            internEndDate
+                                                          }
+                                                          onChange={
+                                                            handleInternEndDateChange
+                                                          }
+                                                          selectsEnd
+                                                          internStartDate={
+                                                            internStartDate
+                                                          }
+                                                          internEndDate={
+                                                            internEndDate
+                                                          }
+                                                          minDate={
+                                                            internStartDate
+                                                          }
+                                                          className="toda"
+                                                          placeholderText={
+                                                            "End Date"
+                                                          }
+                                                        />
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                  <div className="left-scl_deg-container">
+                                                    <input
+                                                      type="text"
+                                                      value={object.input5}
+                                                      className="left-scl-input"
+                                                      placeholder="Enter City"
+                                                      onChange={(e) =>
+                                                        handleInputintern(
+                                                          e,
+                                                          object.id,
+                                                          "input5"
+                                                        )
+                                                      }
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <div className="left-edu-editor-box">
+                                                  <div className="left-edu-editor">
+                                                    <CKEditor
+                                                      editor={ClassicEditor}
+                                                      data={intern_summary}
+                                                      id="job_ckedit"
+                                                      onReady={(editor) => {
+                                                        console.log(
+                                                          "CKEditor5 React Component is ready to use!",
+                                                          editor
+                                                        );
+                                                      }}
+                                                      onChange={(
+                                                        event,
+                                                        editor
+                                                      ) => {
+                                                        // console.log({ event, editor, editor.getData() });
+                                                        console.log(
+                                                          setIntern_summary(
+                                                            editor.getData()
+                                                          )
+                                                        );
+                                                      }}
+                                                    />
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div>
+                                                <button
+                                                  onClick={() =>
+                                                    deleteintern(object.id)
+                                                  }
+                                                  className="btn btn-primary left-edu-btn"
+                                                >
+                                                  Delete
+                                                </button>
+                                              </div>
+                                            </div>
+                                          ))}
+                                          <button
+                                            onClick={createintern}
+                                            className="more-custom-section-btn"
+                                          >
+                                            {" "}
+                                            + Add internship
+                                          </button>
+                                        </div>
+                                        <button
+                                          onClick={delete4}
+                                          className="btn btn-primary custom_delete"
+                                        >
+                                          delete internship
+                                        </button>
+                                      </div>
+                                    ) : (
+                                      <span></span>
+                                    )}
+                                    {link.name === "Hobbies" ? (
+                                      <div
+                                        className={
+                                          hobbies ? "hidden" : "visible"
+                                        }
+                                      >
+                                        <div className="emp-div">
+                                          {hobb.map((object) => (
+                                            <div key={object.id}>
+                                              <div className="emp-main">
+                                                <div>
+                                                  <h6>Hobbie</h6>
+                                                  <div className="wanted">
+                                                    <div>
+                                                      <textarea
+                                                        type="text"
+                                                        rows="3"
+                                                        value={object.input1}
+                                                        className="left-hobbie-input"
+                                                        placeholder="Enter a hobbie e.g.skipping, skydiving, painting "
+                                                        onChange={(e) =>
+                                                          handleInputhobb(
+                                                            e,
+                                                            object.id,
+                                                            "input1"
+                                                          )
+                                                        }
+                                                      />
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div>
+                                                <button
+                                                  onClick={() =>
+                                                    deletehobb(object.id)
+                                                  }
+                                                  className="btn btn-primary left-edu-btn"
+                                                >
+                                                  Delete
+                                                </button>
+                                              </div>
+                                            </div>
+                                          ))}
+                                          <button
+                                            onClick={createhobb}
+                                            className="more-custom-section-btn"
+                                          >
+                                            {" "}
+                                            + Add more Hobbie
+                                          </button>
+                                        </div>
+                                        <button
+                                          onClick={delete6}
+                                          className="btn btn-primary custom_delete"
+                                        >
                                           delete
                                         </button>
                                       </div>
                                     ) : (
                                       <span></span>
                                     )}
-                                    {/* {
-                                link.name === "Course" ? <div className={coursee ? "hidden" : "visible"}>
-                                  <div className='emp-div'>
-
-{course.map((object) => (
-  <div key={object.id} style={{ display: "flex" }}>
-    <div className='emp-main'>
-
-      <div style={{ display: "flex" }}>
-        <div className='wanted'>
-          <div>
-            <label htmlFor="">Job title</label> <br />
-            <input
-              type="text"
-              value={object.input1}
-              className='work'
-              onChange={(e) => handleInputcourse(e, object.id, 'input1')}
-            />
-          </div>
-        </div>
-        <div>
-          <label htmlFor="">Employer</label> <br />
-          <input
-            type="text"
-            value={object.input2}
-            className='work'
-            onChange={(e) => handleInputcourse(e, object.id, 'input2')}
-          />
-        </div>
-      </div>
-      <div style={{ display: "flex" }}>
-        <div className='wanted'>
-          <div>
-            <label htmlFor="">Start & End Date</label> <br />
-            <input type='date'
-              value={object.input4}
-              className='work'
-              onChange={(e) => handleInputcourse(e, object.id, 'input4')}
-            />
-          </div>
-        </div>
-
-      </div>
-
-
-
-    </div>
-    <div>
-      <button onClick={() => deletecourse(object.id)}>Delete</button>
-    </div>
-  </div>
-))}
-<button onClick={createcourse}> + Add one more course</button>
-
-</div>
-<button onClick={delete2}>delete</button>
-                                </div> : <span></span>
-                              }
-                              {
-                                link.name === "Internships" ? <div className={ship? "hidden" : "visible"}>
-                                  <div className='emp-div'>
-
-{five.map((object) => (
-  <div key={object.id} style={{ display: "flex" }}>
-    <div className='emp-main'>
-
-      <div style={{ display: "flex" }}>
-        <div className='wanted'>
-          <div>
-            <label htmlFor="">Job title</label> <br />
-            <input
-              type="text"
-              value={object.input1}
-              className='work'
-              onChange={(e) => handleInputfive(e, object.id, 'input1')}
-            />
-          </div>
-        </div>
-        <div>
-          <label htmlFor="">Employer</label> <br />
-          <input
-            type="text"
-            value={object.input2}
-            className='work'
-            onChange={(e) => handleInputfive(e, object.id, 'input2')}
-          />
-        </div>
-      </div>
-      <div style={{ display: "flex" }}>
-        <div className='wanted'>
-          <div>
-            <label htmlFor="">Start & End Date</label> <br />
-            <input type='date'
-              value={object.input4}
-              className='work'
-              onChange={(e) => handleInputfive(e, object.id, 'input4')}
-            />
-          </div>
-        </div>
-        <div>
-          <label htmlFor="">City</label> <br />
-          <input
-            type="text"
-            value={object.input3}
-            className='work'
-            onChange={(e) => handleInputfive(e, object.id, 'input3')}
-          />
-        </div>
-      </div>
-      <div>
-        <div>
-          <label htmlFor="">Description</label> <br />
-          
-        </div>
-      </div>
-
-
-    </div>
-    <div>
-      <button onClick={() => deletefive(object.id)}>Delete</button>
-    </div>
-  </div>
-))}
-<button onClick={createfive}> + Add one more internship</button>
-
-</div>
-<button onClick={delete4}>delete</button>
-                                </div> : <span></span>
-                              }
-                              {
-                                link.name === "Hobbies" ? <div className={hobbie? "hidden" : "visible"}>
-                                  <div className='emp-div'>
-
-{six.map((object) => (
-  <div key={object.id} style={{ display: "flex" }}>
-    <div className='emp-main'>
-
-      <div style={{ display: "flex" }}>
-        <div className='wanted'>
-          <div>
-            <label htmlFor="">Label</label> <br />
-            <input
-              type="text"
-              value={object.input1}
-              className='work'
-              onChange={(e) => handleInputsix(e, object.id, 'input1')}
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-    <div>
-      <button onClick={() => deletesix(object.id)}>Delete</button>
-    </div>
-  </div>
-))}
-<button onClick={createsix}> + Add more Hobbie</button>
-
-</div>
-<button onClick={delete6}>delete</button>
-                                </div> : <span></span>
-                              }
-                              {
-                                link.name === "Languages" ? <div className={langu? "hidden" : "visible"}>
-                                  <div className='emp-div'>
-
-{seven.map((object) => (
-  <div key={object.id} style={{ display: "flex" }}>
-    <div className='emp-main'>
-
-      <div style={{ display: "flex" }}>
-        <div className='wanted'>
-          <div>
-            <label htmlFor="">Job title</label> <br />
-            <input
-              type="text"
-              value={object.input1}
-              className='work'
-              onChange={(e) => handleInputseven(e, object.id, 'input1')}
-            />
-          </div>
-        </div>
-        <div>
-          <label htmlFor="">Employer</label> <br />
-          <input
-            type="text"
-            value={object.input2}
-            className='work'
-            onChange={(e) => handleInputseven(e, object.id, 'input2')}
-          />
-        </div>
-      </div>
-
-
-    </div>
-    <div>
-      <button onClick={() => deleteseven(object.id)}>Delete</button>
-    </div>
-  </div>
-))}
-<button onClick={createseven}> + Add one more languages</button>
-
-</div>
-<button onClick={delete5}>delete</button>
-                                </div> : <span></span>
-                              }
+                                    {link.name === "Languages" ? (
+                                      <div
+                                        className={langu ? "hidden" : "visible"}
+                                      >
+                                        <div className="emp-div">
+                                          {language.map((object) => (
+                                            <div key={object.id}>
+                                              <div className="emp-main">
+                                                <h6>Languages</h6>
+                                                <div className="left-skill-container">
+                                                  <div className="left-skill">
+                                                    <input
+                                                      type="text"
+                                                      value={object.input1}
+                                                      className="left-skill-input"
+                                                      placeholder="Enter Language"
+                                                      onChange={(e) =>
+                                                        handleInputlanguage(
+                                                          e,
+                                                          object.id,
+                                                          "input1"
+                                                        )
+                                                      }
+                                                    />
+                                                  </div>
+                                                  <div className="left-skill">
+                                                    <select
+                                                      className="left-skill-input"
+                                                      onChange={(e) =>
+                                                        handleInputlanguage(
+                                                          e,
+                                                          object.id,
+                                                          "input2"
+                                                        )
+                                                      }
+                                                    >
+                                                      <option value="0">
+                                                        Select Skill level
+                                                      </option>
+                                                      <option value="1">
+                                                        Novice
+                                                      </option>
+                                                      <option value="2">
+                                                        Beginner
+                                                      </option>
+                                                      <option value="3">
+                                                        Skillful
+                                                      </option>
+                                                      <option value="4">
+                                                        Experienced
+                                                      </option>
+                                                      <option value="5">
+                                                        Expert
+                                                      </option>
+                                                    </select>
+                                                  </div>
+                                                  <div>
+                                                    <button
+                                                      onClick={() =>
+                                                        deletelanguage(
+                                                          object.id
+                                                        )
+                                                      }
+                                                      className="btn btn-primary left-edu-btn"
+                                                    >
+                                                      Delete
+                                                    </button>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          ))}
+                                          <button
+                                            onClick={createlanguage}
+                                            className="more-custom-section-btn"
+                                          >
+                                            {" "}
+                                            + Add one more languages
+                                          </button>
+                                        </div>
+                                        <button
+                                          onClick={delete5}
+                                          className="btn btn-primary custom_delete"
+                                        >
+                                          delete
+                                        </button>
+                                      </div>
+                                    ) : (
+                                      <span></span>
+                                    )}
+                                    {/*
+                              
+                              
                               {
                                 link.name === "Refrences" ? <div className={reference ? "hidden" : "visible"}>
                                   <div className='emp-div'>
@@ -2032,79 +2722,7 @@ function Template() {
 <button onClick={delete3}>delete</button>
                                 </div> : <span></span>
                               }
-                              {
-                                link.name === "Extra-curricular activites" ? <div className={curricular ? "hidden" : "visible"}>
-                                  <div className='emp-div'>
-
-{four.map((object) => (
-  <div key={object.id} style={{ display: "flex" }}>
-    <div className='emp-main'>
-
-      <div style={{ display: "flex" }}>
-        <div className='wanted'>
-          <div>
-            <label htmlFor="">Job title</label> <br />
-            <input
-              type="text"
-              value={object.input1}
-              className='work'
-              onChange={(e) => handleInputfour(e, object.id, 'input1')}
-            />
-          </div>
-        </div>
-        <div>
-          <label htmlFor="">Employer</label> <br />
-          <input
-            type="text"
-            value={object.input2}
-            className='work'
-            onChange={(e) => handleInputfour(e, object.id, 'input2')}
-          />
-        </div>
-      </div>
-      <div style={{ display: "flex" }}>
-        <div className='wanted'>
-          <div>
-            <label htmlFor="">Start & End Date</label> <br />
-            <input type='date'
-              value={object.input4}
-              className='work'
-              onChange={(e) => handleInputfour(e, object.id, 'input4')}
-            />
-          </div>
-        </div>
-        <div>
-          <label htmlFor="">City</label> <br />
-          <input
-            type="text"
-            value={object.input3}
-            className='work'
-            onChange={(e) => handleInputfour(e, object.id, 'input3')}
-          />
-        </div>
-      </div>
-      <div>
-        <div>
-          <label htmlFor="">Description</label> <br />
-          <textarea name="" id="" cols="90" rows="15" value={object.input5} onChange={(e) => handleInputfour(e, object.id, 'input5')}
-            placeholder='e.g. Created and implemented lesson plans based on child-led
-interests and curiosities'/>
-        </div>
-      </div>
-
-
-    </div>
-    <div>
-      <button onClick={() => deletefour(object.id)}>Delete</button>
-    </div>
-  </div>
-))}
-<button onClick={createfour}> + Add Employment</button>
-
-</div>
-<button onClick={delete7}>delete</button>
-                                </div> : <span></span>
-                              } */}
+                               */}
                                   </div>
                                 )}
                               </Draggable>
@@ -2129,7 +2747,7 @@ interests and curiosities'/>
                         </button>
                       </div>
                       <div className="custom-section">
-                        <button className="custom-btn">
+                        <button className="custom-btn" onClick={certi}>
                           <img
                             src={image1}
                             alt="custom-course"
@@ -2139,7 +2757,7 @@ interests and curiosities'/>
                         </button>
                       </div>
                       <div className="custom-section">
-                        <button className="custom-btn">
+                        <button className="custom-btn" onClick={extra}>
                           <img
                             src={image2}
                             alt="custom-extra"
@@ -2149,7 +2767,7 @@ interests and curiosities'/>
                         </button>
                       </div>
                       <div className="custom-section">
-                        <button className="custom-btn">
+                        <button className="custom-btn" onClick={internship}>
                           <img
                             src={image3}
                             alt="custom-internship"
@@ -2159,7 +2777,7 @@ interests and curiosities'/>
                         </button>
                       </div>
                       <div className="custom-section">
-                        <button className="custom-btn">
+                        <button className="custom-btn" onClick={hobbieClick}>
                           <img
                             src={image4}
                             alt="custom-hobbies"
@@ -2169,7 +2787,7 @@ interests and curiosities'/>
                         </button>
                       </div>
                       <div className="custom-section">
-                        <button className="custom-btn">
+                        <button className="custom-btn" onClick={langClick}>
                           <img
                             src={image5}
                             alt="custom-languages"
@@ -2294,7 +2912,7 @@ interests and curiosities'/>
                               <p>
                                 {customStartDate
                                   ? `${customStartDate.getDate()}/${
-                                    customStartDate.getMonth() + 1
+                                      customStartDate.getMonth() + 1
                                     }/${customStartDate.getFullYear()}`
                                   : ""}
                               </p>
@@ -2302,7 +2920,7 @@ interests and curiosities'/>
                               <p>
                                 {customEndDate
                                   ? `${customEndDate.getDate()}/${
-                                    customEndDate.getMonth() + 1
+                                      customEndDate.getMonth() + 1
                                     }/${customEndDate.getFullYear()}`
                                   : ""}
                               </p>
@@ -2312,6 +2930,47 @@ interests and curiosities'/>
                               <RenderedContent content={custom_summary} />
                             </p>
                           </div>
+                        ))}
+                      </div>
+                      <div className="right-skill-box">
+                        <h6>Course </h6>
+                        {course.map((coData, index) => (
+                          <div key={index} className="right-emp-box">
+                            <p className="right-emp-role">{coData.input1}</p>
+                            <div className="right-emp-city">
+                              <p>{coData.input2}</p>
+                              <p>{coData.input5}</p>
+                            </div>
+                            <div className="right-emp-date">
+                              <p>
+                                {courseStartDate
+                                  ? `${courseStartDate.getDate()}/${
+                                      courseStartDate.getMonth() + 1
+                                    }/${courseStartDate.getFullYear()}`
+                                  : ""}
+                              </p>
+                              <span>To</span>
+                              <p>
+                                {courseEndDate
+                                  ? `${courseEndDate.getDate()}/${
+                                      courseEndDate.getMonth() + 1
+                                    }/${courseEndDate.getFullYear()}`
+                                  : ""}
+                              </p>
+                            </div>
+
+                            <p className="custom-para">
+                              <RenderedContent content={custom_summary} />
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="right-skill-box">
+                        <h6>Languages</h6>
+                        {language.map((langData, index) => (
+                          <li key={index}>
+                            {langData.input1} - Level {langData.input2}
+                          </li>
                         ))}
                       </div>
                     </div>
@@ -2379,6 +3038,72 @@ interests and curiosities'/>
 
                             <p>
                               <RenderedContent content={job_summary} />
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="right-skill-box">
+                        <h6>Curricular Activities</h6>
+                        {activity.map((actData, index) => (
+                          <div key={index} className="right-emp-box">
+                            <p className="right-emp-role">{actData.input1}</p>
+                            <div className="right-emp-city">
+                              <p>{actData.input2}</p>
+                              <p>{actData.input5}</p>
+                            </div>
+                            <div className="right-emp-date">
+                              <p>
+                                {activityStartDate
+                                  ? `${activityStartDate.getDate()}/${
+                                      activityStartDate.getMonth() + 1
+                                    }/${activityStartDate.getFullYear()}`
+                                  : ""}
+                              </p>
+                              <span>To</span>
+                              <p>
+                                {activityEndDate
+                                  ? `${activityEndDate.getDate()}/${
+                                      activityEndDate.getMonth() + 1
+                                    }/${activityEndDate.getFullYear()}`
+                                  : ""}
+                              </p>
+                            </div>
+
+                            <p className="activity-para">
+                              <RenderedContent content={activity_summary} />
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="right-skill-box">
+                        <h6>Internships</h6>
+                        {intern.map((intData, index) => (
+                          <div key={index} className="right-emp-box">
+                            <p className="right-emp-role">{intData.input1}</p>
+                            <div className="right-emp-city">
+                              <p>{intData.input2}</p>
+                              <p>{intData.input5}</p>
+                            </div>
+                            <div className="right-emp-date">
+                              <p>
+                                {internStartDate
+                                  ? `${internStartDate.getDate()}/${
+                                      internStartDate.getMonth() + 1
+                                    }/${internStartDate.getFullYear()}`
+                                  : ""}
+                              </p>
+                              <span>To</span>
+                              <p>
+                                {internEndDate
+                                  ? `${internEndDate.getDate()}/${
+                                      internEndDate.getMonth() + 1
+                                    }/${internEndDate.getFullYear()}`
+                                  : ""}
+                              </p>
+                            </div>
+
+                            <p className="activity-para">
+                              <RenderedContent content={intern_summary} />
                             </p>
                           </div>
                         ))}
