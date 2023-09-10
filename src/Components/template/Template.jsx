@@ -8,6 +8,7 @@ import LinkIcon from "@mui/icons-material/Link";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import DOMPurify from "dompurify";
+import ProgressBar from "@ramonak/react-progress-bar";
 
 // import image from "../images/account-image.svg";
 
@@ -22,6 +23,8 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import InputMask from "react-input-mask";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import "react-phone-input-2/lib/style.css";
+import PhoneInput from "react-phone-input-2";
 import image from "../images/custom-section.svg";
 import image1 from "../images/custom-course.svg";
 import image2 from "../images/custom-extra.svg";
@@ -139,10 +142,11 @@ function Template() {
   // const onSelect = (code) => setSelect(code);
   const [selectedImage, setSelectedImage] = useState(null);
   // const [pdetails, setPdetails] = useState();
-  const [firstName, setfirstName] = useState();
+  const [jobTitle, setJobTitle] = useState("");
+  const [firstName, setfirstName] = useState("");
   const [lastName, setlastName] = useState();
   const [email, setEmail] = useState();
-  const [phone, setPhone] = useState();
+  const [phone, setPhone] = useState("");
   const [country, setCountry] = useState();
   const [city, setCity] = useState();
   const [address, setAddress] = useState();
@@ -186,6 +190,41 @@ function Template() {
   const [curricular, setcurricular] = useState(true);
   const [ship, setship] = useState(true);
   const [hobbies, sethobbies] = useState(true);
+  const [filledFields, setFilledFields] = useState(0);
+  const [completionPercentage, setCompletionPercentage] = useState(0);
+
+  const [selectedCountry, setSelectedCountry] = useState("");
+
+  const handleJobTitleChange = (event) => {
+    setJobTitle(event.target.value);
+    if (event.target.value.trim() !== "") {
+      setFilledFields((prevFilledFields) => prevFilledFields + 1);
+    }
+  };
+
+  function handleFirstNameChange(value) {
+
+    if (value.trim() !== "") {
+      setfirstName(value);
+
+      if (firstName == '') {
+        setCompletionPercentage(
+          (completionPercentage) => completionPercentage + 1
+        );
+      }
+    } else {
+      setfirstName(value);
+      setCompletionPercentage(
+        (completionPercentage) => completionPercentage - 1
+      );
+    }
+  }
+
+  const calculateCompletionPercentage = () => {
+    const numberOfFields = 2;
+    const percentage = (filledFields / numberOfFields) * 100;
+    setCompletionPercentage(percentage);
+  };
 
   // const Data = [
   //   {
@@ -566,6 +605,35 @@ function Template() {
     setlanguage(updatedObjects);
   };
 
+  const [refer, setRefer] = useState([]);
+
+  const createrefer = () => {
+    const newObject = {
+      id: refer.length + 1,
+      input1: "",
+      input2: "",
+      input3: "",
+      input4: "",
+      input5: "",
+    };
+    setRefer([...refer, newObject]);
+  };
+
+  const handleInputrefer = (e, objectId, inputName) => {
+    const updatedObjects = refer.map((object) => {
+      if (object.id === objectId) {
+        return { ...object, [inputName]: e.target.value };
+      }
+      return object;
+    });
+    setRefer(updatedObjects);
+  };
+
+  const deleterefer = (objectId) => {
+    const updatedObjects = refer.filter((object) => object.id !== objectId);
+    setRefer(updatedObjects);
+  };
+
   const imageUrl = selectedImage ? URL.createObjectURL(selectedImage) : "";
 
   // let [profile] = useState(`<p>profile_summary</p>`)
@@ -913,6 +981,20 @@ function Template() {
     setlangu([]);
   };
 
+  const referClick = () => {
+    setreference(false);
+  };
+
+  const delete3 = () => {
+    setreference(true);
+    setreference([]);
+  };
+
+  const handleOnChange = (value, selectedCountryData) => {
+    setPhone(value);
+    setSelectedCountry(selectedCountryData.name);
+  };
+
   return (
     <div className="resume-builder">
       <div className="resume-body">
@@ -953,8 +1035,11 @@ function Template() {
                 <div className="score-body">
                   <div className="score-content">
                     <div className="score-left-body">
-                      <div className="score-percent">0%</div>
-                      <p className="resume-para">Resume Score</p>
+                      <div className="progress-bar">
+                        {completionPercentage}
+                        {/* <ProgressBar completed={completionPercentage} /> */}
+                      </div>
+                      <p className="resume-para">Completion Score</p>
                     </div>
                     <div className="resume-profile-body">
                       <div className="resume-profile-content">
@@ -1005,7 +1090,7 @@ function Template() {
                   <div className="job-title input-section">
                     <div className="job-title-section field-section">
                       <div className="help-icon">
-                        <label className="input-label">Job Title</label>
+                        <label className="input-label">Role</label>
                         <Tooltip
                           title="Add a title like 'Senior Marketer' or 'Sales Executive' 
                                 that quickly describes your overall experience or the type of role you are applying to"
@@ -1070,7 +1155,7 @@ function Template() {
                           name="firstname"
                           value={firstName}
                           onChange={(e) => {
-                            setfirstName(e.target.value);
+                            handleFirstNameChange(e.target.value);
                           }}
                         />
                       </div>
@@ -1111,17 +1196,11 @@ function Template() {
                     <div className="phone-section field-section">
                       <label className="input-label">Phone</label>
                       <div className="phone-input-body">
-                        <input
-                          type="number"
-                          name="phone"
+                        <PhoneInput
+                          country={"us"}
                           className="field-input"
                           value={phone}
-                          onChange={(e) => {
-                            setPhone(e.target.value);
-                            if (e.target.value.length > 15) {
-                              e.stopPropagation();
-                            }
-                          }}
+                          onChange={handleOnChange}
                         />
                       </div>
                     </div>
@@ -1306,7 +1385,6 @@ function Template() {
                 </div>
 
                 <div className="professional-summary">
-                  {/* <div id="editor"></div> */}
                   <div className="details-heading-content">
                     <div className="header-label">
                       <h3>Professional Summary</h3>
@@ -1353,25 +1431,6 @@ function Template() {
                     </span>
                   </div>
                 </div>
-
-                {/* <div className="dragdrop-box">
-                  <div className="left-education">
-                    <DragIndicatorIcon />
-                    <h6>Education</h6>
-                  </div>
-                  <p>
-                    A varied education on your resume sums up the value that
-                    your learnings and background will bring to job.
-                  </p>
-                  <div className="education-content">
-                    <DragIndicatorIcon />
-                    <div className="education-box">
-                      <div className="education-box1">
-
-                      </div>
-                    </div>
-                  </div>
-                </div> */}
 
                 <div className="drag-drop-fields">
                   <DragDropContext onDragEnd={handleDragDrop}>
@@ -2661,68 +2720,114 @@ function Template() {
                                     ) : (
                                       <span></span>
                                     )}
-                                    {/*
-                              
-                              
-                              {
-                                link.name === "Refrences" ? <div className={reference ? "hidden" : "visible"}>
-                                  <div className='emp-div'>
 
-{three.map((object) => (
-  <div key={object.id} style={{ display: "flex" }}>
-    <div className='emp-main'>
-
-      <div style={{ display: "flex" }}>
-        <div className='wanted'>
-          <div>
-            <label htmlFor="">Job title</label> <br />
-            <input
-              type="text"
-              value={object.input1}
-              className='work'
-              onChange={(e) => handleInputthree(e, object.id, 'input1')}
-            />
-          </div>
-        </div>
-        <div>
-          <label htmlFor="">Employer</label> <br />
-          <input
-            type="text"
-            value={object.input2}
-            className='work'
-            onChange={(e) => handleInputthree(e, object.id, 'input2')}
-          />
-        </div>
-      </div>
-      <div style={{ display: "flex" }}>
-        <div className='wanted'>
-          <div>
-            <label htmlFor="">Start & End Date</label> <br />
-            <input type='date'
-              value={object.input4}
-              className='work'
-              onChange={(e) => handleInputthree(e, object.id, 'input4')}
-            />
-          </div>
-        </div>
-
-      </div>
-
-
-
-    </div>
-    <div>
-      <button onClick={() => deletethree(object.id)}>Delete</button>
-    </div>
-  </div>
-))}
-<button onClick={createthree}> + Add one more reference</button>
-
-</div>
-<button onClick={delete3}>delete</button>
-                                </div> : <span></span>
-                              }
-                               */}
+                                    {link.name === "Refrences" ? (
+                                      <div
+                                        className={
+                                          reference ? "hidden" : "visible"
+                                        }
+                                      >
+                                        <div className="emp-div">
+                                          {refer.map((object) => (
+                                            <div key={object.id}>
+                                              <div className="emp-main">
+                                                <div>
+                                                  <div className="left-refer-ncbox">
+                                                    <div className="left-refer">
+                                                      <input
+                                                        type="text"
+                                                        value={object.input1}
+                                                        className="left-refer-input"
+                                                        placeholder="Referent's Full Name"
+                                                        onChange={(e) =>
+                                                          handleInputrefer(
+                                                            e,
+                                                            object.id,
+                                                            "input1"
+                                                          )
+                                                        }
+                                                      />
+                                                    </div>
+                                                    <div className="left-refer">
+                                                      <input
+                                                        type="text"
+                                                        value={object.input2}
+                                                        className="left-refer-input"
+                                                        placeholder="Company"
+                                                        onChange={(e) =>
+                                                          handleInputrefer(
+                                                            e,
+                                                            object.id,
+                                                            "input2"
+                                                          )
+                                                        }
+                                                      />
+                                                    </div>
+                                                  </div>
+                                                  <div className="left-refer-ncbox">
+                                                    <div className="left-refer">
+                                                      <input
+                                                        type="tel"
+                                                        value={object.input3}
+                                                        className="left-refer-input"
+                                                        placeholder="Phone"
+                                                        onChange={(e) =>
+                                                          handleInputrefer(
+                                                            e,
+                                                            object.id,
+                                                            "input3"
+                                                          )
+                                                        }
+                                                      />
+                                                    </div>
+                                                    <div className="left-refer">
+                                                      <input
+                                                        type="mail"
+                                                        value={object.input4}
+                                                        className="left-refer-input"
+                                                        placeholder="Email"
+                                                        onChange={(e) =>
+                                                          handleInputrefer(
+                                                            e,
+                                                            object.id,
+                                                            "input4"
+                                                          )
+                                                        }
+                                                      />
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div>
+                                                <button
+                                                  onClick={() =>
+                                                    deleterefer(object.id)
+                                                  }
+                                                  className="btn btn-primary left-edu-btn"
+                                                >
+                                                  Delete
+                                                </button>
+                                              </div>
+                                            </div>
+                                          ))}
+                                          <button
+                                            onClick={createrefer}
+                                            className="more-custom-section-btn"
+                                          >
+                                            {" "}
+                                            + Add one more reference
+                                          </button>
+                                        </div>
+                                        <button
+                                          onClick={delete3}
+                                          className="btn btn-primary custom_delete"
+                                        >
+                                          Delete reference
+                                        </button>
+                                      </div>
+                                    ) : (
+                                      <span></span>
+                                    )}
                                   </div>
                                 )}
                               </Draggable>
@@ -2797,7 +2902,7 @@ function Template() {
                         </button>
                       </div>
                       <div className="custom-section">
-                        <button className="custom-btn">
+                        <button className="custom-btn" onClick={referClick}>
                           <img
                             src={image6}
                             alt="custom-references"
@@ -2824,7 +2929,7 @@ function Template() {
                 // margin="2cm"
                 ref={pdfExportComponent}
                 // keepTogether="p"
-                margin={{ top: 20, left: 10, right: 10, bottom: 2 }}
+                margin={{ top: 20, left: 10, right: 10, bottom: 10 }}
               >
                 <div className="container ">
                   {/* {splitContentIntoPages(state.items)} */}
@@ -2971,6 +3076,23 @@ function Template() {
                           <li key={index}>
                             {langData.input1} - Level {langData.input2}
                           </li>
+                        ))}
+                      </div>
+                      <div className="right-skill-box">
+                        <h6>Hobbies</h6>
+                        {hobb.map((hobData, index) => (
+                          <li key={index}>{hobData.input1}</li>
+                        ))}
+                      </div>
+                      <div className="right-skill-box">
+                        <h6>Reference</h6>
+                        {refer.map((refData, index) => (
+                          <div>
+                            <li key={index}>{refData.input1}</li>
+                            <li key={index}>{refData.input2}</li>
+                            <li key={index}>{refData.input3}</li>
+                            <li key={index}>{refData.input4}</li>
+                          </div>
                         ))}
                       </div>
                     </div>
@@ -3265,32 +3387,6 @@ function Template() {
               </div>
             </div>
           </div>
-
-          {/* <div className="calendar">
-            <div className="fromdate">
-              <DatePicker
-                selected={startDate}
-                onChange={handleStartDateChange}
-                selectsStart
-                startDate={startDate}
-                endDate={endDate}
-                className="fromda"
-                placeholderText={"start Date"}
-              />
-            </div>
-            <div className="todate">
-              <DatePicker
-                selected={endDate}
-                onChange={handleEndDateChange}
-                selectsEnd
-                startDate={startDate}
-                endDate={endDate}
-                minDate={startDate}
-                className="toda"
-                placeholderText={"End Date"}
-              />
-            </div>
-          </div> */}
         </div>
       </div>
     </div>
