@@ -145,16 +145,16 @@ function Template() {
   const [jobTitle, setJobTitle] = useState("");
   const [firstName, setfirstName] = useState("");
   const [lastName, setlastName] = useState();
-  const [email, setEmail] = useState();
+  const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [country, setCountry] = useState();
-  const [city, setCity] = useState();
-  const [address, setAddress] = useState();
-  const [code, setCode] = useState();
+  const [country, setCountry] = useState("");
+  const [city, setCity] = useState("");
+  const [address, setAddress] = useState("");
+  const [code, setCode] = useState("");
   const [license, setLicense] = useState();
-  const [nation, setNation] = useState();
-  const [pob, setpob] = useState();
-  const [dob, setdob] = useState();
+  const [nation, setNation] = useState("");
+  const [pob, setpob] = useState("");
+  const [dob, setdob] = useState("");
   // const [image, setImage] = useState();
   const [title, setTitle] = useState();
   const [editing, setEditing] = useState(false);
@@ -195,25 +195,84 @@ function Template() {
 
   const [selectedCountry, setSelectedCountry] = useState("");
 
-  const handleJobTitleChange = (event) => {
-    setJobTitle(event.target.value);
-    if (event.target.value.trim() !== "") {
-      setFilledFields((prevFilledFields) => prevFilledFields + 1);
-    }
-  };
+  // const handleJobTitleChange = (event) => {
+  //   setJobTitle(event.target.value);
+  //   if (event.target.value.trim() !== "") {
+  //     setFilledFields((prevFilledFields) => prevFilledFields + 1);
+  //   }
+  // };
 
-  function handleFirstNameChange(value) {
-
+  function handleTitleChange(value) {
     if (value.trim() !== "") {
-      setfirstName(value);
+      setJobTitle(value);
 
-      if (firstName == '') {
+      if (jobTitle == "") {
         setCompletionPercentage(
           (completionPercentage) => completionPercentage + 1
         );
       }
     } else {
-      setfirstName(value);
+      setJobTitle(value);
+      setCompletionPercentage(
+        (completionPercentage) => completionPercentage - 1
+      );
+    }
+  }
+
+  function setField(value, type) {
+    switch (type) {
+      case "firstName":
+        setfirstName(value);
+        break;
+
+      case "email":
+        setEmail(value);
+        break;
+
+      case 'pob':
+        setpob(value);
+        break;
+
+      case 'dob':
+        setdob(value);
+        break;
+
+      case 'code':
+        setCode(value);
+        break;
+        
+      case 'country':
+        setCountry(value);
+        break;
+
+      case 'city':
+        setCity(value);
+        break;
+      
+      case 'address':
+        setAddress(value);
+        break;
+      
+      case 'nation':
+        setNation(value);
+        break;
+      
+      default:
+        console.log("Inside switch default case");
+    }
+  }
+
+  function handleChange(value, typevalue, type) {
+    if (value.trim() !== "") {
+      setField(value, type);
+
+      if (typevalue == "") {
+        setCompletionPercentage(
+          (completionPercentage) => completionPercentage + 1
+        );
+      }
+    } else {
+      setField(value, type);
       setCompletionPercentage(
         (completionPercentage) => completionPercentage - 1
       );
@@ -225,36 +284,6 @@ function Template() {
     const percentage = (filledFields / numberOfFields) * 100;
     setCompletionPercentage(percentage);
   };
-
-  // const Data = [
-  //   {
-  //     label: "education",
-  //     label_value: "Education Details",
-  //     description:
-  //       "A varied education on your resume sums up the value that your learnings and background will bring to job",
-  //   },
-
-  //   {
-  //     label: "Websites and social links",
-  //     label_value: "social profile Details",
-  //     description: `You can add links to websites you want hiring managers to see!
-  //     Perhaps It will be  a link to your portfolio, LinkedIn profile, or personal website`,
-  //   },
-
-  //   {
-  //     label: "Employment History",
-  //     label_value: "Employment Details",
-  //     description: `Show your relevant experience (last 10 years).
-  //     Use bullet points to note your achievements, if possible - use numbers/facts (Achieved X, measured by Y, by doing Z).`,
-  //   },
-
-  //   {
-  //     label: "skill",
-  //     label_value: "skill Details",
-  //     description:
-  //       "Choose 5 important skills that show you fit the position. Make sure they match the key skills mentioned in the job listing (especially when applying via an online system).",
-  //   },
-  // ]
 
   const handleDragDrop = (results) => {
     const { source, destination, type } = results;
@@ -1109,7 +1138,7 @@ function Template() {
                           placeholder="e.g Teacher"
                           value={title}
                           onChange={(e) => {
-                            setTitle(e.target.value);
+                            handleTitleChange(e.target.value);
                           }}
                         />
                       </div>
@@ -1155,7 +1184,11 @@ function Template() {
                           name="firstname"
                           value={firstName}
                           onChange={(e) => {
-                            handleFirstNameChange(e.target.value);
+                            handleChange(
+                              e.target.value,
+                              firstName,
+                              "firstName"
+                            );
                           }}
                         />
                       </div>
@@ -1187,7 +1220,7 @@ function Template() {
                           name="email"
                           value={email}
                           onChange={(e) => {
-                            setEmail(e.target.value);
+                            handleChange(e.target.value, email, "email");
                           }}
                         />
                       </div>
@@ -1197,7 +1230,7 @@ function Template() {
                       <label className="input-label">Phone</label>
                       <div className="phone-input-body">
                         <PhoneInput
-                          country={"us"}
+                          country={"in"}
                           className="field-input"
                           value={phone}
                           onChange={handleOnChange}
@@ -1216,7 +1249,7 @@ function Template() {
                           name="country"
                           value={country}
                           onChange={(e) => {
-                            setCountry(e.target.value);
+                            handleChange(e.target.value, country, "country");
                           }}
                         />
                       </div>
@@ -1231,7 +1264,7 @@ function Template() {
                           className="field-input"
                           value={city}
                           onChange={(e) => {
-                            setCity(e.target.value);
+                            handleChange(e.target.value, city, "city");
                           }}
                         />
                       </div>
@@ -1250,7 +1283,7 @@ function Template() {
                               name="address"
                               value={address}
                               onChange={(e) => {
-                                setAddress(e.target.value);
+                                handleChange(e.target.value, address, "address");
                               }}
                             />
                           </div>
@@ -1265,7 +1298,7 @@ function Template() {
                               className="field-input"
                               value={code}
                               onChange={(e) => {
-                                setCode(e.target.value);
+                                handleChange(e.target.value, code, "code");
                               }}
                             />
                           </div>
@@ -1317,7 +1350,7 @@ function Template() {
                               className="field-input"
                               value={nation}
                               onChange={(e) => {
-                                setNation(e.target.value);
+                                handleChange(e.target.value, nation, "nation");
                               }}
                             />
                           </div>
@@ -1334,7 +1367,7 @@ function Template() {
                               name="pob"
                               value={pob}
                               onChange={(e) => {
-                                setpob(e.target.value);
+                                handleChange(e.target.value, pob, "pob");
                               }}
                             />
                           </div>
@@ -1358,7 +1391,7 @@ function Template() {
                               className="field-input"
                               value={dob}
                               onChange={(e) => {
-                                setdob(e.target.value);
+                                handleChange(e.target.value, dob, "dob");
                               }}
                             />
                           </div>
@@ -2079,6 +2112,7 @@ function Template() {
                                     ) : (
                                       <span></span>
                                     )}
+
                                     {link.name === "Course" ? (
                                       <div
                                         className={
@@ -2232,6 +2266,7 @@ function Template() {
                                     ) : (
                                       <span></span>
                                     )}
+
                                     {link.name ===
                                     "Extra-curricular activites" ? (
                                       <div
@@ -2402,6 +2437,7 @@ function Template() {
                                     ) : (
                                       <span></span>
                                     )}
+
                                     {link.name === "Internships" ? (
                                       <div
                                         className={ship ? "hidden" : "visible"}
@@ -2568,6 +2604,7 @@ function Template() {
                                     ) : (
                                       <span></span>
                                     )}
+
                                     {link.name === "Hobbies" ? (
                                       <div
                                         className={
@@ -2630,6 +2667,7 @@ function Template() {
                                     ) : (
                                       <span></span>
                                     )}
+
                                     {link.name === "Languages" ? (
                                       <div
                                         className={langu ? "hidden" : "visible"}
@@ -2818,6 +2856,7 @@ function Template() {
                                             + Add one more reference
                                           </button>
                                         </div>
+
                                         <button
                                           onClick={delete3}
                                           className="btn btn-primary custom_delete"
@@ -2851,6 +2890,7 @@ function Template() {
                           <p>Custom Section</p>
                         </button>
                       </div>
+
                       <div className="custom-section">
                         <button className="custom-btn" onClick={certi}>
                           <img
@@ -2861,6 +2901,7 @@ function Template() {
                           <p>Course</p>
                         </button>
                       </div>
+
                       <div className="custom-section">
                         <button className="custom-btn" onClick={extra}>
                           <img
@@ -2871,6 +2912,7 @@ function Template() {
                           <p>Extra curricular activity</p>
                         </button>
                       </div>
+
                       <div className="custom-section">
                         <button className="custom-btn" onClick={internship}>
                           <img
@@ -2881,6 +2923,7 @@ function Template() {
                           <p>Internships</p>
                         </button>
                       </div>
+
                       <div className="custom-section">
                         <button className="custom-btn" onClick={hobbieClick}>
                           <img
@@ -2891,6 +2934,7 @@ function Template() {
                           <p>Hobbies</p>
                         </button>
                       </div>
+
                       <div className="custom-section">
                         <button className="custom-btn" onClick={langClick}>
                           <img
@@ -2901,6 +2945,7 @@ function Template() {
                           <p>Languages</p>
                         </button>
                       </div>
+
                       <div className="custom-section">
                         <button className="custom-btn" onClick={referClick}>
                           <img
@@ -2923,6 +2968,7 @@ function Template() {
               <button className="btn btn-primary" onClick={downloadPDF}>
                 Download PDF
               </button>
+
               <PDFExport
                 scale={1.1}
                 paperSize="A4"
@@ -2931,7 +2977,7 @@ function Template() {
                 // keepTogether="p"
                 margin={{ top: 20, left: 10, right: 10, bottom: 10 }}
               >
-                <div className="container ">
+                <div className="container">
                   {/* {splitContentIntoPages(state.items)} */}
                   <div className="row pic-container">
                     <div className="col-4 profile-photo">
@@ -2943,6 +2989,7 @@ function Template() {
                         />
                       )}
                     </div>
+
                     <div className="col-8 custom-height-column personal">
                       <ul>
                         <li>
@@ -3004,6 +3051,7 @@ function Template() {
                           <p key={index}>{webData.input1}</p>
                         ))}
                       </div>
+
                       <div className="right-skill-box">
                         <h6>Custom section</h6>
                         {cust.map((cuData, index) => (
@@ -3037,6 +3085,7 @@ function Template() {
                           </div>
                         ))}
                       </div>
+
                       <div className="right-skill-box">
                         <h6>Course </h6>
                         {course.map((coData, index) => (
@@ -3070,6 +3119,7 @@ function Template() {
                           </div>
                         ))}
                       </div>
+
                       <div className="right-skill-box">
                         <h6>Languages</h6>
                         {language.map((langData, index) => (
@@ -3078,12 +3128,14 @@ function Template() {
                           </li>
                         ))}
                       </div>
+
                       <div className="right-skill-box">
                         <h6>Hobbies</h6>
                         {hobb.map((hobData, index) => (
                           <li key={index}>{hobData.input1}</li>
                         ))}
                       </div>
+
                       <div className="right-skill-box">
                         <h6>Reference</h6>
                         {refer.map((refData, index) => (
@@ -3131,6 +3183,7 @@ function Template() {
                           </div>
                         ))}
                       </div>
+
                       <div>
                         <h6>Employment history</h6>
                         {empHistory.map((empData, index) => (
@@ -3164,6 +3217,7 @@ function Template() {
                           </div>
                         ))}
                       </div>
+
                       <div className="right-skill-box">
                         <h6>Curricular Activities</h6>
                         {activity.map((actData, index) => (
@@ -3197,6 +3251,7 @@ function Template() {
                           </div>
                         ))}
                       </div>
+
                       <div className="right-skill-box">
                         <h6>Internships</h6>
                         {intern.map((intData, index) => (
@@ -3232,154 +3287,9 @@ function Template() {
                       </div>
                     </div>
                   </div>
-
-                  {/*                   
-                  <div className="row">
-                    <div className="col-4 skill-links">
-                      <ul>
-                        {state.items.map((item, ind) => (
-                          <div key={item.ind}>
-                            {item["label"] === "skill" && (
-                              <div>
-                                <h6>Skills</h6>
-                                {selectedSkills.map((skill, index) => (
-                                  // <li key={index}>
-                                  //   {skill.skill_type} - {skill.level}
-                                  // </li>
-                                  <div
-                                    key={skill.index}
-                                    className="selected-skill"
-                                  >
-                                    <div
-                                      className={`skill-level-${getSkillLevelClass(
-                                        skill.level
-                                      )}`}
-                                    ></div>
-                                    <span>{skill.skill_type}</span>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-
-                            {item["label"] === "Websites and social links" && (
-                              <div className="right-link-box">
-                                <LinkIcon />
-                                {selectedLinks.map((link, index) => (
-                                  <p key={link.index}>{link.link_type}</p>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </ul>
-                    </div>
-                    <div className="col-8 edu-emp">
-                      <ul>
-                        {state.items.map((item, ind) => (
-                          <div key={ind}>
-                            {item["label"] === "education" && (
-                              <div>
-                                <h6>Education</h6>
-                                {selectedEdus.map((edu, index) => (
-                                  <div className="education-content">
-                                    <div className="edu-basic-info">
-                                      <p key={index}>{edu.edu_degree}</p>
-                                    </div>
-                                    <p key={index}>{edu.edu_type}</p>
-                                    <p key={index}>{edu.edu_city}</p>
-                                    <p key={edu.index}>
-                                      <RenderedContent
-                                        content={education_summary}
-                                      />
-                                      {edu.edu_ckedit}
-                                    </p>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-
-                            {item["label"] === "Employment History" && (
-                              <div>
-                                <h6>Employment History</h6>
-                                {selectedEmps.map((emp, index) => (
-                                  <div className="employment-content">
-                                    <div className="emp-basic-info">
-                                      <p key={index}> {emp.emp_type}</p>
-                                      <p key={index}> {emp.emp_level}</p>
-                                    </div>
-                                    <p key={index}> {emp.emp_city}</p>
-                                    <p className key={emp.index}>
-                                      <RenderedContent content={job_summary} />
-                                      {emp.job_ckedit}
-                                    </p>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-
-                  <div className="row">
-                    <div className="col-5">
-                      <ul>
-                        {state.items.map((item) => (
-                          <div>
-                            {item["label"] === "skill" && (
-                              <div>
-                                <h6>Skills</h6>
-                                {selectedSkills.map((skill, index) => (
-                                  <li key={index}>
-                                    {skill.skill_type} - Level {skill.level}
-                                  </li>
-                                ))}
-                              </div>
-                            )}
-
-                            {item["label"] === "Websites and social links" && (
-                              <div>
-                                <h6>Websites and social links</h6>
-                                {selectedLinks.map((link, index) => (
-                                  <p key={index}>{link.link_type} - Link {link.link}</p>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </ul>
-                    </div>
-                    <div className="col-8 ">{profile_summary}</div>
-                  </div>
-
-                  <div className="row">
-                    <div className="col-5">
-                      <h6>Social links</h6>
-                      {selectedLinks.map((link, index) => (
-                        <p key={index}>{link.link_type}</p>
-                      ))}
-                    </div>
-                    <div className="col-8 ">
-                      <h6>Employment History</h6>
-                      {selectedEmps.map((emp, index) => (
-                        <p key={index}>{emp.emp_type}</p>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="row">
-                    <div className="col-5">{heading}</div>
-                    <div className="col-8 ">
-                      <h6>Education</h6>
-
-                      {selectedEdus.map((edu, index) => (
-                        <p key={index}>{edu.edu_type}</p>
-                      ))}
-                    </div>
-                  </div> */}
                 </div>
               </PDFExport>
+
               <div className="page-handle-container">
                 <ArrowBackIosIcon />
                 <p className="right-page-num">1 / 2</p>
