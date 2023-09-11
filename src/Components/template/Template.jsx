@@ -138,10 +138,7 @@ function Template() {
 
   /* End PDF Code */
 
-  const [select, setSelect] = useState("SE");
-  // const onSelect = (code) => setSelect(code);
   const [selectedImage, setSelectedImage] = useState(null);
-  // const [pdetails, setPdetails] = useState();
   const [jobTitle, setJobTitle] = useState("");
   const [firstName, setfirstName] = useState("");
   const [lastName, setlastName] = useState();
@@ -156,7 +153,6 @@ function Template() {
   const [pob, setpob] = useState("");
   const [dob, setdob] = useState("");
   // const [image, setImage] = useState();
-  const [title, setTitle] = useState();
   const [editing, setEditing] = useState(false);
   const editingRef = useRef(editing);
   const [heading, setHeading] = useState("Personal Details");
@@ -168,7 +164,6 @@ function Template() {
   const [showMoreLink, setShowMoreLink] = useState();
   const [showMoreEdu, setShowMoreEdu] = useState();
   const [showMoreEmp, setshowMoreEmp] = useState();
-  // const [draggedComponents, setDraggedComponents] = useState([]);
   const [profile_summary, setprofile_summary] = useState("");
   const [education_summary, seteducation_summary] = useState("");
   const [job_summary, setjob_summary] = useState("");
@@ -194,30 +189,6 @@ function Template() {
   const [completionPercentage, setCompletionPercentage] = useState(0);
 
   const [selectedCountry, setSelectedCountry] = useState("");
-
-  // const handleJobTitleChange = (event) => {
-  //   setJobTitle(event.target.value);
-  //   if (event.target.value.trim() !== "") {
-  //     setFilledFields((prevFilledFields) => prevFilledFields + 1);
-  //   }
-  // };
-
-  function handleTitleChange(value) {
-    if (value.trim() !== "") {
-      setJobTitle(value);
-
-      if (jobTitle == "") {
-        setCompletionPercentage(
-          (completionPercentage) => completionPercentage + 1
-        );
-      }
-    } else {
-      setJobTitle(value);
-      setCompletionPercentage(
-        (completionPercentage) => completionPercentage - 1
-      );
-    }
-  }
 
   function setField(value, type) {
     switch (type) {
@@ -257,24 +228,28 @@ function Template() {
         setNation(value);
         break;
       
+      case 'jobTitle':
+        setJobTitle(value);
+        break;
+        
       default:
         console.log("Inside switch default case");
     }
   }
 
-  function handleChange(value, typevalue, type) {
+  function handleChange(value, typevalue, type, score) {
     if (value.trim() !== "") {
       setField(value, type);
 
       if (typevalue == "") {
         setCompletionPercentage(
-          (completionPercentage) => completionPercentage + 1
+          (completionPercentage) => completionPercentage + score
         );
       }
     } else {
       setField(value, type);
       setCompletionPercentage(
-        (completionPercentage) => completionPercentage - 1
+        (completionPercentage) => completionPercentage - score
       );
     }
   }
@@ -1136,9 +1111,14 @@ function Template() {
                           className="field-input"
                           name="job-title"
                           placeholder="e.g Teacher"
-                          value={title}
+                          value={jobTitle}
                           onChange={(e) => {
-                            handleTitleChange(e.target.value);
+                            handleChange(
+                              e.target.value,
+                              jobTitle,
+                              "jobTitle",
+                              5
+                            );
                           }}
                         />
                       </div>
@@ -1187,7 +1167,8 @@ function Template() {
                             handleChange(
                               e.target.value,
                               firstName,
-                              "firstName"
+                              "firstName",
+                              5
                             );
                           }}
                         />
@@ -1220,7 +1201,7 @@ function Template() {
                           name="email"
                           value={email}
                           onChange={(e) => {
-                            handleChange(e.target.value, email, "email");
+                            handleChange(e.target.value, email, "email", 5);
                           }}
                         />
                       </div>
@@ -1249,7 +1230,7 @@ function Template() {
                           name="country"
                           value={country}
                           onChange={(e) => {
-                            handleChange(e.target.value, country, "country");
+                            handleChange(e.target.value, country, "country", 5);
                           }}
                         />
                       </div>
@@ -1264,7 +1245,7 @@ function Template() {
                           className="field-input"
                           value={city}
                           onChange={(e) => {
-                            handleChange(e.target.value, city, "city");
+                            handleChange(e.target.value, city, "city", 5);
                           }}
                         />
                       </div>
@@ -1283,7 +1264,7 @@ function Template() {
                               name="address"
                               value={address}
                               onChange={(e) => {
-                                handleChange(e.target.value, address, "address");
+                                handleChange(e.target.value, address, "address", 5);
                               }}
                             />
                           </div>
@@ -1298,7 +1279,7 @@ function Template() {
                               className="field-input"
                               value={code}
                               onChange={(e) => {
-                                handleChange(e.target.value, code, "code");
+                                handleChange(e.target.value, code, "code", 5);
                               }}
                             />
                           </div>
@@ -1350,7 +1331,7 @@ function Template() {
                               className="field-input"
                               value={nation}
                               onChange={(e) => {
-                                handleChange(e.target.value, nation, "nation");
+                                handleChange(e.target.value, nation, "nation", 5);
                               }}
                             />
                           </div>
@@ -1367,7 +1348,7 @@ function Template() {
                               name="pob"
                               value={pob}
                               onChange={(e) => {
-                                handleChange(e.target.value, pob, "pob");
+                                handleChange(e.target.value, pob, "pob", 5);
                               }}
                             />
                           </div>
@@ -1391,7 +1372,7 @@ function Template() {
                               className="field-input"
                               value={dob}
                               onChange={(e) => {
-                                handleChange(e.target.value, dob, "dob");
+                                handleChange(e.target.value, dob, "dob", 5);
                               }}
                             />
                           </div>
@@ -2999,7 +2980,7 @@ function Template() {
                           </div>
                         </li>
                         <li>
-                          <p className="right-title">{title}</p>
+                          <p className="right-title">{jobTitle}</p>
                         </li>
                       </ul>
                       <p className="resume-address">{address}</p>
