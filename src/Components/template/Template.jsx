@@ -254,12 +254,6 @@ function Template() {
     }
   }
 
-  const calculateCompletionPercentage = () => {
-    const numberOfFields = 2;
-    const percentage = (filledFields / numberOfFields) * 100;
-    setCompletionPercentage(percentage);
-  };
-
   const handleDragDrop = (results) => {
     const { source, destination, type } = results;
 
@@ -640,7 +634,6 @@ function Template() {
 
   const imageUrl = selectedImage ? URL.createObjectURL(selectedImage) : "";
 
-  // let [profile] = useState(`<p>profile_summary</p>`)
   let handleEditClick = () => {
     setEditing(true);
   };
@@ -657,212 +650,11 @@ function Template() {
     setEditing(!editing);
   };
 
-  const handleDeleteSkill = (index) => {
-    const newSkills = selectedSkills.filter((_, i) => i !== index);
-    setSelectedSkills(newSkills);
-  };
-
-  const handleDeleteEdu = (index) => {
-    const newEdus = selectedEdus.filter((_, i) => i !== index);
-    setSelectedEdus(newEdus);
-  };
-
-  function addMore(type) {
-    if (type === "education") {
-      setShowMoreEdu(!showMoreEdu);
-    } else if (type === "skill") {
-      setShowMoreSkill(true);
-      // addSkillList()
-      // const newSkill = document.getElementById("new_skill").value;
-      // const skillLevel = document.getElementById("skill_level").value;
-      // addSkill(selectedSkills, newSkill, skillLevel);
-    } else if (type === "Websites and social links") {
-      setShowMoreLink(!showMoreLink);
-    } else if (type === "Employment History") {
-      setshowMoreEmp(!showMoreEmp);
-    }
-  }
-
-  const addSkillList = () => {
-    setSkillList([...skillList, { skill: "", level: "" }]);
-  };
-
-  function removeSkill(index) {
-    const list = [...skillList];
-    list.splice(index, 1);
-    setSkillList(list);
-  }
-
-  function skillChange(e, index) {
-    let skillName = e.target.value;
-    let labelValue = e.target.value;
-
-    const list = [...skillList];
-    list[index]["skill"] = skillName;
-    list[index]["level"] = labelValue;
-    setSkillList(list);
-  }
-
-  function setSkillLevel(e, index) {
-    let labelValue = e.target.value;
-
-    const list = [...skillList];
-    list[index]["level"] = labelValue;
-    setSkillList(list);
-  }
-
-  function setSkillValue(e, index) {
-    e.preventDefault();
-    let skillName = e.target.value;
-
-    let list = [...skillList];
-    list[index]["skill"] = skillName;
-    setSkillList(list);
-    console.log(index);
-    console.log(list);
-  }
-
   function RenderedContent({ content }) {
     const sanitizedContent = DOMPurify.sanitize(content);
 
     return <div dangerouslySetInnerHTML={{ __html: sanitizedContent }} />;
   }
-
-  function getSkillLevelClass(skillLevel) {
-    switch (skillLevel) {
-      case "Novice":
-        console.log("hello graph");
-        return "1";
-      case "Beginner":
-        return "2";
-      case "Skillful":
-        return "3";
-      case "Experienced":
-        return "4";
-      case "Expert":
-        return "5";
-      default:
-        return "1"; // Default to Novice
-    }
-  }
-
-  function addSkill(selectedSkills, new_skill, skill_level) {
-    if (new_skill) {
-      const updatedSkills = [
-        ...selectedSkills,
-        { skill_type: new_skill, level: skill_level },
-      ];
-      setSelectedSkills(updatedSkills);
-    }
-    setSkillName();
-  }
-
-  function handleSkill() {
-    console.log(document.getElementById("new_skill").value);
-    setSkillName(document.getElementById("new_skill").value);
-  }
-
-  function addEducation(
-    selectedEdus,
-    new_edu,
-    new_degree,
-    new_city,
-    edu_ckedit
-  ) {
-    if (new_edu) {
-      const updatedEdu = [
-        ...selectedEdus,
-        {
-          edu_type: new_edu,
-          edu_degree: new_degree,
-          edu_city: new_city,
-          edu_ckedit: edu_ckedit,
-        },
-      ];
-      setSelectedEdus(updatedEdu);
-    }
-  }
-
-  function addSocialLink(setSelectedLinks, new_link, link_label) {
-    if (new_link) {
-      const updatedLinks = [
-        ...selectedLinks,
-        { link_type: new_link, link: link_label },
-      ];
-      setSelectedLinks(updatedLinks);
-    }
-  }
-
-  function addEmployment(
-    selectedEmps,
-    new_emp,
-    new_employer,
-    emp_city,
-    job_ckedit
-  ) {
-    if (new_emp) {
-      const updatedEmp = [
-        ...selectedEmps,
-        {
-          emp_type: new_emp,
-          emp_level: new_employer,
-          emp_city: emp_city,
-          job_ckedit: job_ckedit,
-        },
-      ];
-      setSelectedEmps(updatedEmp);
-    }
-  }
-
-  // const handleSelectLink = (selectedLink) => {
-  //   setState((prevState) => ({
-  //     selectedLinks: [...prevState.selectedLinks, selectedLink],
-  //   }));
-  //   // props.onSelectSkill(selectedSkill);
-  // };
-
-  // const handleSelectEdu = (selectedEdu) => {
-  //   setState((prevState) => ({
-  //     selectedEdus: [...prevState.selectedEdus, selectedEdu],
-  //   }));
-  // };
-
-  // const handleSelectEmp = (selectedEmp) => {
-  //   setState((prevState) => ({
-  //     selectedEmps: [...prevState.selectedEmps, selectedEmp],
-  //   }));
-  // };
-
-  // function handleAddSkill(skill_type, new_skill, skill_level) {
-  //   if (skill_type)
-  //     setSelectedSkills((prevSkills) => [
-  //       ...prevSkills,
-  //       { skill_type: new_skill, level: skill_level },
-  //     ]);
-  //   setShowSkillsHeading(true);
-  // }
-
-  const handleAddEducation = (
-    edu_type,
-    new_edu,
-    edu_degree,
-    new_degree,
-    edu_city,
-    new_city,
-    edu_ckedit
-  ) => {
-    if (edu_type)
-      setSelectedSkills((prevSkills) => [
-        ...prevSkills,
-        {
-          edu_type: new_edu,
-          edu_degree: new_degree,
-          edu_city: new_city,
-          edu_ckedit: edu_ckedit,
-        },
-      ]);
-    setShowEdusHeading(true);
-  };
 
   const [empStartDate, setEmpStartDate] = useState();
   const [empEndDate, setEmpEndDate] = useState();
@@ -994,7 +786,7 @@ function Template() {
     setreference([]);
   };
 
-  const handleOnChange = (value, selectedCountryData) => {
+  const phoneChange = (value, selectedCountryData) => {
     setPhone(value);
     setSelectedCountry(selectedCountryData.name);
   };
@@ -1214,7 +1006,7 @@ function Template() {
                           country={"in"}
                           className="field-input"
                           value={phone}
-                          onChange={handleOnChange}
+                          onChange={phoneChange}
                         />
                       </div>
                     </div>
