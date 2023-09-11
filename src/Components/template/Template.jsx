@@ -8,6 +8,7 @@ import LinkIcon from "@mui/icons-material/Link";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import DOMPurify from "dompurify";
+import { v4 as uuidv4 } from 'uuid';
 import ProgressBar from "@ramonak/react-progress-bar";
 
 // import image from "../images/account-image.svg";
@@ -187,8 +188,9 @@ function Template() {
   const [hobbies, sethobbies] = useState(true);
   const [filledFields, setFilledFields] = useState(0);
   const [completionPercentage, setCompletionPercentage] = useState(0);
-
+  const uniqueId = uuidv4();
   const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedEntryIndex, setSelectedEntryIndex] = useState(null);
 
   function setField(value, type) {
     switch (type) {
@@ -230,6 +232,10 @@ function Template() {
       
       case 'jobTitle':
         setJobTitle(value);
+        break;
+
+      case 'profile_summary':
+        setprofile_summary(value);
         break;
         
       default:
@@ -306,14 +312,19 @@ function Template() {
 
   const createObject = () => {
     const newObject = {
-      id: empHistory.length + 1,
+      // id: empHistory.length + 1,
+      id: uuidv4(),
       input1: "",
       input2: "",
-      input3: "",
-      input4: "",
+      empStartDate: null,
+      empEndDate: null,
       input5: "",
+      job_summary:"",
+      
     };
     setempHistory([...empHistory, newObject]);
+    setEmpStartDate(null); // Reset to default value or null
+  setEmpEndDate(null);
   };
 
   const handleInputChange = (e, objectId, inputName) => {
@@ -656,8 +667,8 @@ function Template() {
     return <div dangerouslySetInnerHTML={{ __html: sanitizedContent }} />;
   }
 
-  const [empStartDate, setEmpStartDate] = useState();
-  const [empEndDate, setEmpEndDate] = useState();
+  const [empStartDate, setEmpStartDate] = useState(null);
+  const [empEndDate, setEmpEndDate] = useState(null);
 
   const [eduStartDate, setEduStartDate] = useState();
   const [eduEndDate, setEduEndDate] = useState();
@@ -682,13 +693,31 @@ function Template() {
     setEduEndDate(date);
   };
 
-  const handleEmpStartDateChange = (date) => {
-    setEmpStartDate(date);
-  };
+  const handleEmpStartDateChange = (date, objectId) => {
+    const updatedEmpHistory = empHistory.map((object) => {
+      if (object.id === objectId) {
+        return {
+          ...object,
+        empStartDate: date,
+        }}
+        return object;
+  })
+  setempHistory(updatedEmpHistory);
+  setEmpStartDate(date);
+}
 
-  const handleEmpEndDateChange = (date) => {
-    setEmpEndDate(date);
-  };
+const handleEmpEndDateChange = (date, objectId) => {
+  const updatedEmpHistory = empHistory.map((object) => {
+    if (object.id === objectId) {
+      return {
+        ...object,
+      empEndDate: date,
+      }}
+      return object;
+})
+setempHistory(updatedEmpHistory);
+setEmpEndDate(date);
+}
 
   const handleCustomStartDateChange = (date) => {
     setCustomStartDate(date);
@@ -796,19 +825,6 @@ function Template() {
       <div className="resume-body">
         <div className="resume-content">
           <div className="resume-left">
-            {/* <div className="resume-account">
-              <div className="resume-acc-content">
-                <div className="resume-account1">
-                  <button type="button">
-                    <img
-                      src={image}
-                      alt="account-image.svg"
-                      className="account-image"
-                    />
-                  </button>
-                </div>
-              </div>
-            </div> */}
 
             <div className="resume-left-part">
               <div className="resume-left-content">
@@ -832,8 +848,8 @@ function Template() {
                   <div className="score-content">
                     <div className="score-left-body">
                       <div className="progress-bar">
-                        {completionPercentage}
-                        {/* <ProgressBar completed={completionPercentage} /> */}
+                        {completionPercentage}%
+                        
                       </div>
                       <p className="resume-para">Completion Score</p>
                     </div>
@@ -854,7 +870,8 @@ function Template() {
                     </div>
                   </div>
                   <div className="resume-hr-body">
-                    <div className="resume-hr-content"></div>
+                  { <ProgressBar completed={completionPercentage} 
+                  /> }
                   </div>
                 </div>
 
@@ -1211,6 +1228,7 @@ function Template() {
                     //     toolbar: [ 'bold', 'italic' ]
                     // } }
                     data={profile_summary}
+                    value={profile_summary}
                     onReady={(editor) => {
                       console.log(
                         "CKEditor5 React Component is ready to use!",
@@ -1220,7 +1238,14 @@ function Template() {
                     onChange={(event, editor) => {
                       // console.log({ event, editor, editor.getData() });
                       console.log(setprofile_summary(editor.getData()));
+                      if(event && editor) {
                       const data = editor.getData();
+                      handleChange(
+                        data,
+                        profile_summary,
+                        "profile_summary",
+                        30
+                      );}
                     }}
                   />
 
@@ -1263,6 +1288,7 @@ function Template() {
                                       {store.name}
                                     </h3>
                                     <p>{store.description}</p>
+
                                     {store.name === "Employment History" ? (
                                       <div>
                                         {empHistory.map((object) => (
@@ -1307,10 +1333,8 @@ function Template() {
                                                   <div className="calendar">
                                                     <div className="fromdate">
                                                       <DatePicker
-                                                        selected={empStartDate}
-                                                        onChange={
-                                                          handleEmpStartDateChange
-                                                        }
+                                                        selected={object.empStartDate}
+                                                        onChange={(date) => handleEmpStartDateChange(date, object.id)}
                                                         selectsStart
                                                         empStartDate={
                                                           empStartDate
@@ -1324,10 +1348,8 @@ function Template() {
                                                     </div>
                                                     <div className="todate">
                                                       <DatePicker
-                                                        selected={empEndDate}
-                                                        onChange={
-                                                          handleEmpEndDateChange
-                                                        }
+                                                        selected={object.empEndDate}
+                                                        onChange={(date) => handleEmpEndDateChange(date, object.id)}
                                                         selectsEnd
                                                         empStartDate={
                                                           empStartDate
@@ -1362,7 +1384,7 @@ function Template() {
                                                 <div className="left-emp-editor">
                                                   <CKEditor
                                                     editor={ClassicEditor}
-                                                    data={job_summary}
+                                                    data={empHistory[selectedEntryIndex]?.job_summary || ''}
                                                     id="job_ckedit"
                                                     onReady={(editor) => {
                                                       console.log(
@@ -1372,7 +1394,7 @@ function Template() {
                                                     }}
                                                     onChange={(
                                                       event,
-                                                      editor
+                                                      editor,job_summary
                                                     ) => {
                                                       // console.log({ event, editor, editor.getData() });
                                                       console.log(
@@ -1380,6 +1402,11 @@ function Template() {
                                                           editor.getData()
                                                         )
                                                       );
+                                                      if (selectedEntryIndex !== null && empHistory[selectedEntryIndex]) {
+                                                        const updatedHistory = [...empHistory];
+                                                        updatedHistory[selectedEntryIndex].job_summary = editor.getData();
+                                                        setempHistory(updatedHistory);
+                                                      }
                                                     }}
                                                   />
                                                 </div>
@@ -2774,13 +2801,17 @@ function Template() {
                         <li>
                           <p className="right-title">{jobTitle}</p>
                         </li>
-                      </ul>
-                      <p className="resume-address">{address}</p>
-                      <div className="personal-data">
+                        <li >
+                        <p className="resume-address">{address}</p>
+                        </li>
+                        <li className="personal-data">
                         <p className="resume-city">{city}</p>
                         <p className="resume-code">{code}</p>
                         <p className="resume-country">{country}</p>
-                      </div>
+                        </li>
+                      </ul>
+                      
+                      
                     </div>
                   </div>
 
@@ -2968,18 +2999,18 @@ function Template() {
                             </div>
                             <div className="right-emp-date">
                               <p>
-                                {empStartDate
-                                  ? `${empStartDate.getDate()}/${
-                                      empStartDate.getMonth() + 1
-                                    }/${empStartDate.getFullYear()}`
+                                {empData.empStartDate
+                                  ? `${empData.empStartDate.getDate()}/${
+                                    empData.empStartDate.getMonth() + 1
+                                    }/${empData.empStartDate.getFullYear()}`
                                   : ""}
                               </p>
                               <span>To</span>
                               <p>
                                 {empEndDate
-                                  ? `${empEndDate.getDate()}/${
-                                      empEndDate.getMonth() + 1
-                                    }/${empEndDate.getFullYear()}`
+                                  ? `${empData.empEndDate.getDate()}/${
+                                    empData.empEndDate.getMonth() + 1
+                                    }/${empData.empEndDate.getFullYear()}`
                                   : ""}
                               </p>
                             </div>

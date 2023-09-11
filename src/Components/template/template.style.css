@@ -235,9 +235,26 @@
 }
 
 .resume-hr-body {
-    height: 3px;
+    /* height: 3px; */
     background-color: #eff2f9;
 }
+.wrapper {
+    border: 3px solid blue;
+    height:2px;
+  }
+
+.barCompleted{
+    background-color: #1a91f0;
+}
+
+.container {
+    background-color: pink;
+    height:2px;
+  }
+  .label {
+    font-size: 20px;
+    color: green;
+  }
 
 .resume-hr-content {
     transform: scaleX(.35);
@@ -536,9 +553,10 @@
 
 
 .pic-container {
-    height: 100px;
+    min-height: 100px;
     flex-wrap: wrap;
     background-color: #5dffd4;
+    height: fit-content;
 
 }
 
@@ -580,7 +598,9 @@
 }
 
 .resume-pic {
-    height: 50px;
+    min-height: 50px;
+    height: fit-content;
+
 }
 
 .resume-name {
@@ -601,7 +621,7 @@
     display: flex;
     align-items: center;
     /* position: relative; */
-    bottom: 15px;
+    /* bottom: 15px; */
     flex-wrap: wrap;
 
 }
@@ -610,15 +630,15 @@
     margin-right: 3px;
 }
 
-.resume-address,
-.resume-city,
-.resume-code,
-.resume-country {
-    margin: 0;
-    position: relative;
-    bottom: 25px
-}
 
+.resume-address{
+    margin-bottom: 5px;
+    
+} 
+
+.custom-height-column personal p{
+    margin-bottom: 0 !important;
+}
 .left-education,
 .left-custom,
 .left-refer-ncbox {
@@ -905,6 +925,12 @@
 
 }
 
+.k-pdf-export .resume-pic{
+    min-height:fit-content;
+    height:130px;
+
+}
+
 .k-pdf-export .profile-details p {
     align-items: end;
 
@@ -1133,6 +1159,11 @@
     border: none !important;
     background-color: transparent !important;
 
+}
+
+.progress-bar{
+    margin-right: 5px;
+    display: inline-block !important;
 }
 
 .react-tel-input .flag-dropdown:hover {
